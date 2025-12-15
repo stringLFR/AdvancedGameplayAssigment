@@ -38,7 +38,12 @@ public sealed class ProcedualCore : MonoBehaviour
     LayerMask raycastIgnore;
 
     public NavMeshAgent Agent => agent;
-    public Vector3 ManualNavRotTarget { get { return manualNavRotTarget; } set { manualNavRotTarget = value; } }
+
+    public Vector3 ManualNavRotTarget {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
+        get { return manualNavRotTarget; }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
+        set { manualNavRotTarget = value; } }
 
     private Vector3 rpa => r_P_arm_default + r_P_arm_added;
     private Vector3 lpa => l_P_arm_default + l_P_arm_added; 

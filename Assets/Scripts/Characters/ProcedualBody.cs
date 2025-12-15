@@ -1,12 +1,9 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
+
 
 
  namespace procedual
@@ -58,9 +55,13 @@ using UnityEngine.InputSystem.HID;
             [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
             get { return bones; } }
 
-        public procedualBodyType BodyType { get { return bodyType; } }
+        public procedualBodyType BodyType {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
+            get { return bodyType; } }
 
-        private Transform parent { get { return transform.parent; } }
+        private Transform parent {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
+            get { return transform.parent; } }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -99,11 +100,11 @@ using UnityEngine.InputSystem.HID;
                     break;
 
                 case procedualBodyType.ARM:
-                    pole = parent.position + -parent.right * rightVectorModifier + toParent * toParentModifier + Vector3.down * downVectorModifier + -target * toTargetModifier;
+                    pole = parent.position + -parent.right * rightVectorModifier + toParent * toParentModifier + Vector3.down * downVectorModifier/* + -target * toTargetModifier*/;
                     //pole = root.TransformPoint(root.right);
                     break;
                 case procedualBodyType.LEG:
-                    pole = parent.position + parent.right * rightVectorModifier + toParent * toParentModifier + Vector3.down * downVectorModifier + target * toTargetModifier;
+                    pole = parent.position + parent.right * rightVectorModifier + toParent * toParentModifier + Vector3.down * downVectorModifier/* + target * toTargetModifier*/;
                     //pole = root.TransformPoint(-root.right);
                     break;
             }

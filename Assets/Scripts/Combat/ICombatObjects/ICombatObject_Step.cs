@@ -1,18 +1,17 @@
-using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class ICombatObject_Step : ICombatObject
 {
-    private DroneUnitBody myCaster;
-    private ActionEffectBase myOrigin;
-    private bool isActive = false;
-    private NavMeshPath path = new NavMeshPath();
-    private int points;
-    private int pointIndex = 0;
-    private float lerpTime;
-    private Vector3 directionVelocity;
-    private float moveSpeed = 100;
+    protected DroneUnitBody myCaster;
+    protected ActionEffectBase myOrigin;
+    protected bool isActive = false;
+    protected NavMeshPath path = new NavMeshPath();
+    protected int points;
+    protected int pointIndex = 0;
+    protected float lerpTime;
+    protected Vector3 directionVelocity;
+    protected float moveSpeed = 100;
 
     public bool IsActive => isActive;
 
@@ -21,6 +20,11 @@ public class ICombatObject_Step : ICombatObject
     public ActionEffectBase Origin => myOrigin;
 
     public void CombatUpdate()
+    {
+        LerpAlongPath();
+    }
+
+    protected void LerpAlongPath()
     {
         if (pointIndex >= points)
         {

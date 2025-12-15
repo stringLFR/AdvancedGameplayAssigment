@@ -272,8 +272,8 @@ MonoBehaviour:
   l_P_arm_default: {x: 0, y: 1, z: 0.5}
   r_P_leg_default: {x: 0, y: 0, z: -0.25}
   l_P_leg_default: {x: 0, y: 0, z: 0.25}
-  targetPointLerpSpeed: 15
-  agentRotationLerpSpeed: 15
+  targetPointLerpSpeed: 20
+  agentRotationLerpSpeed: 20
   raycastIgnore:
     serializedVersion: 2
     m_Bits: 64

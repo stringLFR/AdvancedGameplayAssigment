@@ -1,6 +1,7 @@
 using actions;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
@@ -75,6 +76,8 @@ public sealed class DroneUnitBody : MonoBehaviour
         
     }
 
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void TakeDamage(int hitRate, float manaCost)
     {
         int rand = Random.Range(hitRate - toughness, hitRate);

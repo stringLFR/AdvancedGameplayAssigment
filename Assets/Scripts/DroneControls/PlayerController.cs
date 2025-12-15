@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public class PlayerController : ControllerBase
     private bool done = false;
     public override bool isDone => done;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void ControllerDisable(DroneUnitBody user)
     {
         Debug.Log("PLAYER TURN END");
@@ -40,11 +42,13 @@ public class PlayerController : ControllerBase
         else done = true;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void SetDoneBool()
     {
         done = true;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public PlayerController(Combat c)
     {
         monoCombat = c;

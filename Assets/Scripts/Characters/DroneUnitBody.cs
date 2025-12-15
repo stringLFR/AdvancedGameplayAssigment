@@ -1,0 +1,86 @@
+using actions;
+using NUnit.Framework;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem.XR;
+
+public sealed class DroneUnitBody : MonoBehaviour
+{
+    [SerializeField]
+    private ProcedualCore procedualCore;
+
+    private DroneUnit droneUnit;
+    private bool hasInit = false;
+
+    private int maxHP, maxMana, maxSanity, toughness, ranged_P_HitRate, ranged_M_HitRate, melee_P_HitRate, melee_M_HitRate, speed;
+    private int HP, mana, sanity;
+
+    private ControllerBase controller;
+
+    private List<ActionNodeBase> reactions;
+    private List<MainActionBase> mainActions;
+
+    public List<ActionNodeBase> Reactions => reactions;
+    public List<MainActionBase> MainActions => mainActions;
+    public ControllerBase Controller => controller;
+    public ProcedualCore ProcedualCore => procedualCore;
+
+    public int MyHP => HP;
+    public int MyMana => mana;
+    public int MySanity => sanity;
+    public int MyToughness => toughness;
+    public int MyRanged_P_HitRate => ranged_P_HitRate;
+    public int MyRanged_M_HitRate => ranged_M_HitRate;
+    public int MyMelee_P_HitRate => melee_P_HitRate;
+    public int MyMelee_M_HitRate => melee_M_HitRate;
+    public int MySpeed => speed;
+
+    public DroneUnit DroneUnit => droneUnit;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        //DroneUnit = new DroneUnit(); //DEBUG!
+        //DroneUnit.TrainDroneUnit(10f,DroneUnit.CoreStatType.STR, DroneUnit.CoreStatType.DEX, DroneUnit.CoreStatType.CHA);
+        
+    }
+
+    public void Init(DroneUnit unit, ControllerBase controllerBase)
+    {
+        if (hasInit == true) return;
+        hasInit = true;
+        mainActions = new List<MainActionBase>();
+        reactions = new List<ActionNodeBase>();
+        controller = controllerBase;
+        droneUnit = unit;
+        float lm = droneUnit.GetLevelModifier;
+        maxHP = (int)(droneUnit.GetCON * lm + droneUnit.GetWIS * lm) / 2;
+        maxMana = (int)(droneUnit.GetCON * lm + droneUnit.GetINT * lm + droneUnit.GetCHA * lm) / 3;
+        maxSanity = (int)(droneUnit.GetWIS * lm);
+        speed = (int)(droneUnit.GetCON * lm + droneUnit.GetDEX * lm) / 2;
+        toughness = (int)(droneUnit.GetCON * lm + droneUnit.GetSTR * lm) / 2;
+        ranged_P_HitRate = (int)(droneUnit.GetDEX * lm + droneUnit.GetWIS * lm) / 2;
+        ranged_M_HitRate = (int)(droneUnit.GetDEX * lm + droneUnit.GetINT * lm) / 2;
+        melee_P_HitRate = (int)(droneUnit.GetSTR * lm + droneUnit.GetDEX * lm) / 2;
+        melee_M_HitRate = (int)(droneUnit.GetSTR * lm + droneUnit.GetINT * lm) / 2;
+
+        HP = maxHP;
+        mana = maxMana;
+        sanity = maxSanity;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public void TakeDamage(int hitRate, float manaCost)
+    {
+        int rand = Random.Range(hitRate - toughness, hitRate);
+        //rand -+ others 
+        int defaultValue = (rand * (int)Mathf.Clamp(manaCost, 1,float.MaxValue)) / toughness;
+        //defaultvalue -+ others 
+        HP -= defaultValue;
+    }
+}

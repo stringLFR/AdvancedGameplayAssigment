@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5ce4177001bf074cb40e7725657ff75, type: 3}
+  m_Name: TestSquad
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySquadSO
+  squad:
+    droneUnits:
+    - droneName: TestEnemy 1
+      STR: 4
+      DEX: 4
+      CON: 4
+      INT: 4
+      WIS: 4
+      CHA: 4
+      level: 13
+      myReactionNodes:
+      - NodeName: TestEnemy 1 quickThrow
+        MinScore: 50
+        ManaCost: 0
+        IsRoot: 1
+        Effect: 1
+        Node: 1
+        ActionType: 1
+        Reactions: 0400000001000000
+      myMainActions: []
+    - droneName: TestEnemy 2
+      STR: 4
+      DEX: 4
+      CON: 4
+      INT: 4
+      WIS: 4
+      CHA: 4
+      level: 13
+      myReactionNodes:
+      - NodeName: TestEnemy 2 quickThrow
+        MinScore: 50
+        ManaCost: 0
+        IsRoot: 1
+        Effect: 1
+        Node: 1
+        ActionType: 1
+        Reactions: 0400000001000000
+      myMainActions: []
+    - droneName: TestEnemy 3
+      STR: 4
+      DEX: 4
+      CON: 4
+      INT: 4
+      WIS: 4
+      CHA: 4
+      level: 13
+      myReactionNodes:
+      - NodeName: TestEnemy 3 quickThrow
+        MinScore: 50
+        ManaCost: 0
+        IsRoot: 1
+        Effect: 1
+        Node: 1
+        ActionType: 1
+        Reactions: 0400000001000000
+      myMainActions: []
+    - droneName: TestEnemy 4
+      STR: 4
+      DEX: 4
+      CON: 4
+      INT: 4
+      WIS: 4
+      CHA: 4
+      level: 13
+      myReactionNodes:
+      - NodeName: TestEnemy 4 quickThrow
+        MinScore: 50
+        ManaCost: 0
+        IsRoot: 1
+        Effect: 1
+        Node: 1
+        ActionType: 1
+        Reactions: 0400000001000000
+      myMainActions: []

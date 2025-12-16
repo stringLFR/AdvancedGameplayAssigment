@@ -5,9 +5,7 @@ using ADSNameSpace;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
-using Unity.AI.Navigation;
 using UnityEngine.AI;
-using NUnit.Framework;
 using System.Collections.Generic;
 using UniGameMaths;
 using static EnemySquadDataBaseSO;
@@ -88,11 +86,6 @@ public sealed class FlowAction_MainMenu : IflowAction
         Addressables.UnloadSceneAsync(menuScene);
         menuScene.Release();
     }
-
-    ~FlowAction_MainMenu()
-    {
-        CleanUp();
-    }
 }
 
 public sealed class FlowAction_Exploration : IflowAction
@@ -131,11 +124,6 @@ public sealed class FlowAction_Exploration : IflowAction
     {
         Addressables.UnloadSceneAsync(explorationScene);
         explorationScene.Release();
-    }
-
-    ~FlowAction_Exploration()
-    {
-        CleanUp();
     }
 }
 
@@ -306,11 +294,6 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
         enemyDatabase.Release();
         Combat.actionEffectObjects.Clear();
         adsInstance = null;
-    }
-
-    ~FlowAction_Combat()
-    {
-        cleanUp();
     }
 }
 

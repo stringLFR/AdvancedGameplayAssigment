@@ -1,7 +1,42 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class AE_ShotProjectile : ActionEffectBase
 {
+
+    protected List<ICombatObject_Projectile> projectiles;
+
+    protected AsyncOperationHandle<GameObject> projectile;
+
+    public void SetAssetPath(string path)
+    {
+        projectile = Addressables.LoadAssetAsync<GameObject>(path);
+        projectile.WaitForCompletion();
+    }
+
+    protected void SetUpProjectile(DroneUnitBody caster, Vector3 targetPos)
+    {
+        ICombatObject_Projectile p = projectiles.Find(p => p.IsActive == false);
+
+        if (p != null)
+        {
+            p.OnSpawn(caster, this);
+
+            p.Reactivate(caster.MyMana, targetPos);
+
+            return;
+        }
+
+        ICombatObject_Projectile pNew = new ICombatObject_Projectile(projectile.Result);
+        projectiles.Add(pNew);
+
+        pNew.OnSpawn(caster, this);
+        pNew.Reactivate(caster.MyMana, targetPos);
+    }
+
     public override void TriggerActionEffect(DroneUnitBody caster)
     {
         throw new System.NotImplementedException();
@@ -9,12 +44,15 @@ public class AE_ShotProjectile : ActionEffectBase
 
     public override void TriggerActionEffect(DroneUnitBody caster, Vector3 targetPos)
     {
-        throw new System.NotImplementedException();
+        SetUpProjectile(caster, targetPos);
     }
 
     public override void TriggerActionEffect(DroneUnitBody caster, Vector3[] targetPositions)
     {
-        throw new System.NotImplementedException();
+        for (int i = 0; i < targetPositions.Length; i++)
+        {
+            SetUpProjectile(caster, targetPositions[i]);
+        }
     }
 
     public override void TriggerActionEffect(DroneUnitBody caster, DroneUnitBody otherCaster)

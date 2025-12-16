@@ -2,7 +2,6 @@ using UnityEngine;
 using ActionFlowStack;
 using System.Collections.Generic;
 using TMPro;
-using static UnityEditor.Progress;
 
 
 public interface ICombatObject

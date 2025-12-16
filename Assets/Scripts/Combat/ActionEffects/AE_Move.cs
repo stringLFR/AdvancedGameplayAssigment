@@ -7,7 +7,7 @@ public class AE_Move : ActionEffectBase
         step = new ICombatObject_Step();
     }
 
-    private ICombatObject_Step step;
+    protected ICombatObject_Step step;
     public override void TriggerActionEffect(DroneUnitBody caster)
     {
         Init();
@@ -47,7 +47,7 @@ public class AE_Move : ActionEffectBase
         Init();
     }
 
-    private void Init()
+    protected void Init()
     {
         if (step.IsActive == true) return;
 

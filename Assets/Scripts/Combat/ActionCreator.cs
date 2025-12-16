@@ -24,7 +24,7 @@ public static class ActionCreator
 
                 ReactionNode_QuickThrow quickThrow = new ReactionNode_QuickThrow();
                 quickThrow.Init(stats.NodeName, stats.IsRoot, CreateActionEffect(stats.Effect),stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
-
+                quickThrow.SetProjectilesPath("Assets/Prefabs/Projectiles/Rock.prefab");
                 return quickThrow;
         }
 

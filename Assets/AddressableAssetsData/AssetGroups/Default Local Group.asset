@@ -45,6 +45,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9eaffa1d693d13945acb8fb1e8d40da9
+    m_Address: Assets/Prefabs/Projectiles/Rock.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d2685f6faed6bf547ad61a78d212a021
     m_Address: Assets/Scenes/MainMenu.unity
     m_ReadOnly: 0

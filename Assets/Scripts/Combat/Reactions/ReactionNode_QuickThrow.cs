@@ -4,6 +4,19 @@ using System;
 
 public class ReactionNode_QuickThrow : ActionNodeBase
 {
+    public void SetProjectilesPath(String projectilePath)
+    {
+        projectileStringPath = projectilePath;
+
+        if (effect is AE_ShotProjectile)
+        {
+            AE_ShotProjectile s = effect as AE_ShotProjectile;
+            s.SetAssetPath(projectileStringPath);
+        }
+    }
+
+    private string projectileStringPath;
+
     public override ActionType GetActionType => actionType;
 
     public override ActionType[] GetReactionType => reactions;

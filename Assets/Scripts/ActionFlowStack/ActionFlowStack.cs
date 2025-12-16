@@ -56,7 +56,12 @@ namespace ActionFlowStack
         {
             if (newStack == null) return false;
 
-            mainActionFlowStack.Clear();
+            while (mainActionFlowStack.Count < 1)
+            {
+                mainActionFlowStack.Peek().OnEnd();
+                mainActionFlowStack.Pop();
+            }
+
             onStackHashSet.Clear();
             mainStackDebug.Clear();
 

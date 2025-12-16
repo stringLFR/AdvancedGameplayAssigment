@@ -51,6 +51,16 @@ public class ReactionNode_QuickThrow : ActionNodeBase
     public override void HandleADSOutputChain(Func<ActionEffectBase> ancestralOutputChain, int maxChainIndex, int chainIndex)
     {
         Debug.Log($"Chain lenght at {chainIndex} out of {maxChainIndex}");
+
+        foreach (Func<ActionEffectBase> func in ancestralOutputChain.GetInvocationList())
+        {
+            AE_ShotProjectile aE_ShotProjectile = (AE_ShotProjectile)func();
+
+            if (aE_ShotProjectile != null)
+            { 
+                aE_ShotProjectile.TriggerActionEffect(caster, new Vector3(0,10,0));
+            }
+        }
     }
 
     public override void WhenPutOnADSStack(CombatListener input, ActionEffectBase output)

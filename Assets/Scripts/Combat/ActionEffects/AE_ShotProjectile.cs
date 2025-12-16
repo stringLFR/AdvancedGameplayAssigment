@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Rendering;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class AE_ShotProjectile : ActionEffectBase
 {
 
-    protected List<ICombatObject_Projectile> projectiles;
+    protected List<ICombatObject_Projectile> projectiles = new List<ICombatObject_Projectile>();
 
     protected AsyncOperationHandle<GameObject> projectile;
 
@@ -15,6 +16,7 @@ public class AE_ShotProjectile : ActionEffectBase
     {
         projectile = Addressables.LoadAssetAsync<GameObject>(path);
         projectile.WaitForCompletion();
+
     }
 
     protected void SetUpProjectile(DroneUnitBody caster, Vector3 targetPos)
@@ -27,6 +29,8 @@ public class AE_ShotProjectile : ActionEffectBase
 
             p.Reactivate(caster.MyMana, targetPos);
 
+            Combat.actionEffectObjects.Add(p);
+
             return;
         }
 
@@ -35,6 +39,8 @@ public class AE_ShotProjectile : ActionEffectBase
 
         pNew.OnSpawn(caster, this);
         pNew.Reactivate(caster.MyMana, targetPos);
+
+        Combat.actionEffectObjects.Add(pNew);
     }
 
     public override void TriggerActionEffect(DroneUnitBody caster)

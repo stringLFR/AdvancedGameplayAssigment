@@ -9,11 +9,14 @@ public class ICombatObject_Projectile : ICombatObject
 
     protected Projectile prefab;
 
+    protected Vector3 target;
+
     public ICombatObject_Projectile(GameObject path)
     {
         GameObject obj = Object.Instantiate(path);
         obj.SetActive(false);
-        prefab = obj.GetComponent<Projectile>();    
+        prefab = obj.GetComponent<Projectile>();
+        prefab.InitProjectile(this);
     }
 
     public bool IsActive => isActive;
@@ -24,7 +27,13 @@ public class ICombatObject_Projectile : ICombatObject
 
     public void CombatUpdate()
     {
-        throw new System.NotImplementedException();
+        prefab.moveProjectile();
+
+        if (Vector3.Distance(prefab.transform.position, target) < 1f)
+        {
+            prefab.gameObject.SetActive(false);
+            isActive = false;
+        }
     }
 
     public void OnSpawn(DroneUnitBody caster, ActionEffectBase origin)
@@ -41,6 +50,9 @@ public class ICombatObject_Projectile : ICombatObject
     public void Reactivate(float mana, Vector3 targetPos)
     {
         isActive = true;
+        target = targetPos;
+        prefab.gameObject.SetActive(true);
+        prefab.Fire(myCaster.MyMana, myCaster.transform.position, target);
     }
 
     public void Reactivate(float mana, DroneUnitBody otherCaster)

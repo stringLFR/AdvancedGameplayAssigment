@@ -107,7 +107,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -152,3 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0cc964c61068d419d4fb17f6cede2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
+  baseDamage: 1
+  pa_Tangent: {x: 0, y: 10, z: 0}
+  pb_Tangent: {x: 0, y: 10, z: 0}
+  pa_Tangent_Rand: {x: 1, y: 1, z: 1}
+  pb_Tangent_Rand: {x: 1, y: 1, z: 1}
+  manaDrainPerSec: 0.869
+  speed: 1.086

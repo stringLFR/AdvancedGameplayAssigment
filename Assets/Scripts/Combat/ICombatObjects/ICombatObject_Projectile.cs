@@ -27,9 +27,9 @@ public class ICombatObject_Projectile : ICombatObject
 
     public void CombatUpdate()
     {
-        prefab.moveProjectile();
+        bool hasMana = prefab.moveProjectile();
 
-        if (Vector3.Distance(prefab.transform.position, target) < 1f)
+        if (hasMana == false)
         {
             prefab.gameObject.SetActive(false);
             isActive = false;

@@ -1,38 +1,35 @@
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Projectile : MonoBehaviour
 {
 
     [SerializeField]
-    private float baseDamage = 1f;
+    private float baseDamage = 1f, manaDrainPerSec = 1f;
     [SerializeField]
     Vector3 pa_Tangent, pb_Tangent, pa_Tangent_Rand, pb_Tangent_Rand;
     [SerializeField, Range(0,1)]
-    private float manaDrainPerSec = 1f;
-    [SerializeField, Range(1, 2)]
     private float speed = 1f;
 
     private ICombatObject controller;
 
-    float test = 0f;
-
     private Vector3 p0, p1, p2, p3;
     private float startingMana;
-    private float currentMana;
+    private float progress;
     public void InitProjectile(ICombatObject c)
     {
         controller = c;
     }
-    public void moveProjectile() //TODO FINALIZE HOW I WANT TO SET SPEED OF PROJECTILE!!!
+    public bool moveProjectile()
     {
-        test += Time.deltaTime * 0.1f;
-
-        //currentMana *= manaDrainPerSec;
-        //currentMana *= speed;
-        float i = Mathf.InverseLerp(0,1, test);
+        startingMana -= Time.deltaTime * manaDrainPerSec;
+        progress += Time.deltaTime * speed;
+        float i = Mathf.InverseLerp(0,1, UniGameMaths.EasingFunctionMaths.EaseInSine(progress));
         transform.position = GetCubicBezierPosition(i);
-        
+
+        if (startingMana < 0.1f) return false;
+        if (Vector3.Distance(transform.position, p3) < 1) return false;
+
+        return true;
     }
     public void Fire(float mana, Vector3 pa, Vector3 pb)
     {
@@ -41,9 +38,7 @@ public class Projectile : MonoBehaviour
         p2 = pb - (pb_Tangent + RandomTangent(pb_Tangent_Rand)); 
         p3 = pb;
         startingMana = mana;
-        currentMana = startingMana;
-
-        test = 0f;
+        progress = 0f;
     }
 
     private Vector3 RandomTangent(Vector3 value) => new Vector3(Random.Range(-value.x, value.x), Random.Range(-value.y, value.y), Random.Range(-value.z, value.z));
@@ -55,6 +50,15 @@ public class Projectile : MonoBehaviour
                p1 * 3 * fOneMinusT * fOneMinusT * f +
                p2 * 3 * fOneMinusT * f * f +
                p3 * f * f * f;
+    }
+
+    //Clamps given float!
+    //Still needs some work! TODO!!!
+    public Vector3 GetPredictedPosition(float time, out float progressLeft)
+    {
+        progressLeft = progress;
+
+        return GetCubicBezierPosition(Mathf.Clamp01(time));
     }
 
     private void OnTriggerEnter(Collider other)

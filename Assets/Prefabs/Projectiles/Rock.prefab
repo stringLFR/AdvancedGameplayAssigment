@@ -154,8 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
   baseDamage: 1
   pa_Tangent: {x: 0, y: 10, z: 0}
-  pb_Tangent: {x: 0, y: 10, z: 0}
-  pa_Tangent_Rand: {x: 1, y: 1, z: 1}
-  pb_Tangent_Rand: {x: 1, y: 1, z: 1}
+  pb_Tangent: {x: 0, y: -10, z: 0}
+  pa_Tangent_Rand: {x: 10, y: 1, z: 10}
+  pb_Tangent_Rand: {x: 10, y: 1, z: 10}
   manaDrainPerSec: 0.869
   speed: 1.086

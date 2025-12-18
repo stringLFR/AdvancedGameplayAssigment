@@ -25,6 +25,8 @@ public sealed class DroneUnit
     private int level = 1;
     private int exp = 0;
 
+    private int memory;
+
     [SerializeField]
     private List<ActionNodeStats> myReactionNodes;
 
@@ -36,6 +38,7 @@ public sealed class DroneUnit
     public List<MainActionStats> MyMainActions => myMainActions;
 
     public int Level => level;
+    public int Memory => memory;
 
     public int CombatRating
     {

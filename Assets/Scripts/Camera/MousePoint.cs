@@ -18,15 +18,15 @@ public class MousePoint : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
+
+        instance = this;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (EventSystem.current == null) return;
+
         isOverUI = EventSystem.current.IsPointerOverGameObject();
 
         if (_camera == null) return;

@@ -9,6 +9,8 @@ public sealed class DroneUnitBody : MonoBehaviour
 {
     [SerializeField]
     private ProcedualCore procedualCore;
+    [SerializeField]
+    private DroneUIPanel myUI;
 
     private DroneUnit droneUnit;
     private bool hasInit = false;
@@ -68,6 +70,11 @@ public sealed class DroneUnitBody : MonoBehaviour
         HP = maxHP;
         mana = maxMana;
         sanity = maxSanity;
+
+        myUI.InitUIPanel(maxHP, maxMana, maxSanity,unit.DroneName);
+        myUI.SetHealthSlider(maxHP);
+        myUI.SetManaSlider(maxMana);
+        myUI.SetSanitySlider(maxSanity);
     }
 
     // Update is called once per frame
@@ -85,5 +92,6 @@ public sealed class DroneUnitBody : MonoBehaviour
         int defaultValue = (rand * (int)Mathf.Clamp(manaCost, 1,float.MaxValue)) / toughness;
         //defaultvalue -+ others 
         HP -= defaultValue;
+        myUI.SetHealthSlider(HP);
     }
 }

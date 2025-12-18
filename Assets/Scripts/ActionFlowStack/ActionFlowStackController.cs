@@ -115,7 +115,7 @@ public sealed class FlowAction_Exploration : IflowAction
 
     public void OnUpdate()
     {
-        ActionFlowStackHandler.PushActionToMainStack(new FlowAction_Combat { });
+        //ActionFlowStackHandler.PushActionToMainStack(new FlowAction_Combat { });
 
         //throw new System.NotImplementedException();
     }

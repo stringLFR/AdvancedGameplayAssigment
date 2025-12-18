@@ -39,6 +39,7 @@ namespace actions
         protected ActionType actionType;
         protected ActionType[] reactions;
         protected int manaCost;
+        protected int memoryCost;
 
 
         public virtual void Init(

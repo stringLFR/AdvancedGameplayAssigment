@@ -1,27 +1,55 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
+
+public struct BRT_item<T>
+{
+    public Vector3 position;
+
+    public T Value;
+
+    public BRT_item(T v, float x, float y, float z)
+    {
+        Value = v;
+        position.X = x;
+        position.Y = y;
+        position.Z = z;
+    }
+}
 
 public class BinaryRadianTree<T>
 {
-    private List<item<T>> allItems = new List<item<T>>();
+    private List<BRT_item<T>> allItems = new List<BRT_item<T>>();
     private float radius;
     private Vector3 center;
     private BinaryRadianBranch<T> root;
 
-    public BinaryRadianTree(List<item<T>> items, float newRadius, Vector3 newCenter)
+    public BinaryRadianTree(float newRadius, Vector3 newCenter)
     {
-        allItems = items;
         radius = newRadius;
         center = newCenter;
     }
 
-    public void CreateRadianTree()
+    public List<BRT_item<T>> FindClosesItems(int amount, Vector3 position)
+    {
+        List<BRT_item<T>> items = new List<BRT_item<T>>();
+
+        root.FindClosesItems(amount, position,ref items);
+
+        return items;
+    }
+
+    public void CreateRadianTree(int depth, List<BRT_item<T>> items = null)
     {
         root = null;
 
-        //allItems.Sort(); TODO: ADD COMPARER IN STRUCT!
+        if (items != null) allItems = items;
 
-        root = new BinaryRadianBranch<T>(allItems);
+        if (allItems == null) return;
+
+        allItems.Sort((x,y) => Vector3.Distance(x.position,center).CompareTo(Vector3.Distance(y.position, center))); 
+
+        root = new BinaryRadianBranch<T>(allItems, center, radius, radius * 2, false, true, depth);
     }
 
     class BinaryRadianBranch<T>
@@ -29,35 +57,84 @@ public class BinaryRadianTree<T>
         BinaryRadianBranch<T> leftBranch;
         BinaryRadianBranch<T> rightBranch;
 
-        private List<item<T>> myItems = new List<item<T>>();
-        private readonly Vector3 center;
-        private readonly float radius;
+        private readonly List<BRT_item<T>> myItems = new List<BRT_item<T>>();
+        private readonly Vector3 myCenter;
+        private readonly float myRadius;
         private readonly Plane direction;
 
-
-        //TODO: Figure out how to rotate the plane along radians!
-        //The plan: Split space into two parts using a plane.
-        //Then do so again for each branch, aligning it along the previously splited space!
-        //Image the plane looks up, then in the next branch is rotated 90 degres in one direction to split that branch space!
-        public BinaryRadianBranch(List<item<T>> items) 
+        public void FindClosesItems(int amount, Vector3 position, ref List<BRT_item<T>> items)
         {
+            if (leftBranch != null) if (Plane.DotNormal(direction, position) > 0) leftBranch.FindClosesItems(amount, position, ref items);
 
+            if (rightBranch != null) if (Plane.DotNormal(direction, position) < 0) rightBranch.FindClosesItems(amount, position, ref items);
+
+            if (items.Count >= amount) return;
+
+            for (int i = 0; i < myItems.Count; i++)
+            {
+                BRT_item<T> bestItem = myItems.LastOrDefault();
+
+                foreach (BRT_item<T> j in myItems)
+                {
+                    if (Vector3.Distance(position, j.position) <= Vector3.Distance(position, bestItem.position))
+                    {
+                        bestItem = j;
+                    }
+                }
+
+                if (items.Contains(bestItem)) continue;
+
+                items.Add(bestItem);
+            }
         }
-    }
 
-
-    public struct item<T>
-    {
-        public Vector3 position;
-
-        public T Value;
-
-        public item(T v, float x,float y, float z)
+        public BinaryRadianBranch(List<BRT_item<T>> items, Vector3 center, float baseRadius, float currentRadius, bool upAxis, bool clockvice, int maxDepth) 
         {
-            Value = v;
-            position.X = x; 
-            position.Y = y; 
-            position.Z = z;
+            myCenter = center;
+            myRadius = baseRadius;
+            Vector3 p1, p2, p3;
+            float newRadiusModifier = currentRadius / 2;
+
+            if (upAxis == true)
+            {
+                p1 = myCenter + new Vector3(newRadiusModifier, 0, 0);
+                p2 = myCenter + new Vector3(0, myRadius - newRadiusModifier, 0);
+                p3 = myCenter + new Vector3(0, 0, newRadiusModifier);
+            }
+            else
+            {
+                p1 = myCenter + new Vector3(newRadiusModifier, 0, 0);
+                p2 = myCenter + new Vector3(0, newRadiusModifier, 0);
+                p3 = myCenter + new Vector3(0, 0, myRadius - newRadiusModifier);
+            }
+
+            if (clockvice == true) direction = Plane.CreateFromVertices(p1, p2, p3);
+            else direction = Plane.CreateFromVertices(p3, p2, p1);
+
+            if (maxDepth <= 0) return;
+
+            List<BRT_item<T>> leftItems = new List<BRT_item<T>>();
+            List<BRT_item<T>> rightItems = new List<BRT_item<T>>();
+
+            foreach (BRT_item<T> i in items)
+            {
+                float test = Vector3.Distance(i.position, center);
+
+                if (test > baseRadius) continue;
+
+                myItems.Add(i);
+
+                float dotProduct = Plane.DotNormal(direction, i.position);
+
+                if (dotProduct > 0) leftItems.Add(i);
+                else rightItems.Add(i);
+            }
+
+            bool axis = upAxis == true ? false : true;
+
+            if (leftItems.Count > 0) leftBranch = new BinaryRadianBranch<T>(leftItems, myCenter, myRadius, newRadiusModifier, axis, true, maxDepth-1);
+
+            if (rightItems.Count > 0) rightBranch = new BinaryRadianBranch<T>(rightItems, myCenter, myRadius, newRadiusModifier, axis, false, maxDepth-1);
         }
     }
 }

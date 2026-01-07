@@ -78,7 +78,7 @@ public sealed class FlowAction_MainMenu : IflowAction
 
     public void OnUpdate()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     void CleanUp()

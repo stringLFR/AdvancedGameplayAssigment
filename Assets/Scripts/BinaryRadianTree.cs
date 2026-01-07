@@ -19,6 +19,8 @@ public class BinaryRadianTree<T>
     {
         root = null;
 
+        //allItems.Sort(); TODO: ADD COMPARER IN STRUCT!
+
         root = new BinaryRadianBranch<T>(allItems);
     }
 

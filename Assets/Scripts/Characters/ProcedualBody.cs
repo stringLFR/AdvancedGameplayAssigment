@@ -76,7 +76,6 @@ using UnityEngine;
             SetupBones(list, this.transform);
 
             bones = list.ToArray();
-
         }
 
         // Update is called once per frame

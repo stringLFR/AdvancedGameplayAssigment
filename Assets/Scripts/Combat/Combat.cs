@@ -96,7 +96,7 @@ public sealed class Combat : MonoBehaviour
         testTurnText.text = body.DroneUnit.DroneName;
         FlowAction_Turn t = new FlowAction_Turn();
         t.Init(this, body);
-        ActionFlowStackHandler.PushActionToMainStack(t);
+        ActionFlowStackHandler.PushActionToStack(t);
     }
 
     float time = 0;

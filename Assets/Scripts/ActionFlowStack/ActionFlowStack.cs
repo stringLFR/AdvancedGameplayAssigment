@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace ActionFlowStack
 {
@@ -11,6 +12,29 @@ namespace ActionFlowStack
         bool IsDone();
     }
 
+    public class ActionFlowStackObject
+    {
+        private IflowAction currentAction = null;
+        private Stack<IflowAction> actionFlowStack = new Stack<IflowAction>();
+        private HashSet<IflowAction> firstTimersHashSet = new HashSet<IflowAction>();
+        private HashSet<IflowAction> onStackHashSet = new HashSet<IflowAction>();
+
+        public IflowAction CurrentAction => currentAction;
+        public Stack<IflowAction> ActionFlowStack => actionFlowStack;
+        public HashSet<IflowAction> FirstTimersHashSet => firstTimersHashSet;
+        public HashSet<IflowAction> OnStackHashSet => onStackHashSet;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
+        public void UpdateThisActionStack() => ActionFlowStackHandler.UpdateNonStaticActionStack(this);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
+        public void PushActionToThisStack(IflowAction newAction) => ActionFlowStackHandler.PushActionToStack(newAction, this);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
+        public void ReplaceThisActionStack(IflowAction[] newStack) => ActionFlowStackHandler.ReplaceStack(newStack, this);
+
+    }
+
     public static class ActionFlowStackHandler
     {
         private static IflowAction currentAction = null;
@@ -18,54 +42,55 @@ namespace ActionFlowStack
         private static HashSet<IflowAction> firstTimersHashSet = new HashSet<IflowAction>();
         private static HashSet<IflowAction> onStackHashSet = new HashSet<IflowAction>();
         private static HashSet<string> callerHashSet = new HashSet<string>();
-        private static List<string> mainStackDebug = new List<string>();
 
         public static HashSet<string> Callers {
             [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
             get { return callerHashSet; } }
-        public static List<string> MainStackDebug {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-            get { return mainStackDebug; } }
+
         public static IflowAction CurrentFlowAction {
             [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
             get { return currentAction; } }
 
-        public static bool PushActionToMainStack(IflowAction newAction)
+        public static bool PushActionToStack(IflowAction newAction, ActionFlowStackObject nonStatic = null)
         {
             // Is the action null?
             if (newAction == null) return false;
 
+            HashSet<IflowAction> onHash = nonStatic == null ? onStackHashSet : nonStatic.OnStackHashSet;
+            Stack<IflowAction> theStack = nonStatic == null ? mainActionFlowStack : nonStatic.ActionFlowStack;
+            IflowAction action = nonStatic == null ? currentAction : nonStatic.CurrentAction;
+
             // Is it already on the stack?
-            if (onStackHashSet.Contains(newAction) == true) return false;
+            if (onHash.Contains(newAction) == true) return false;
 
             // Push new action!
-            mainActionFlowStack.Push(newAction);
+            theStack.Push(newAction);
 
             // Add to on stack hashSet!
-            onStackHashSet.Add(newAction);
-
-            mainStackDebug.Add(newAction.ToString());
+            onHash.Add(newAction);
 
             // Set current action to null!
-            currentAction = null;
+            action = null;
 
             return true;
         }
 
-        public static bool ReplaceMainStack(IflowAction[] newStack)
+        public static bool ReplaceStack(IflowAction[] newStack, ActionFlowStackObject nonStatic = null)
         {
             if (newStack == null) return false;
 
-            while (mainActionFlowStack.Count < 1)
+            HashSet<IflowAction> onHash = nonStatic == null ? onStackHashSet : nonStatic.OnStackHashSet;
+            Stack<IflowAction> theStack = nonStatic == null ? mainActionFlowStack : nonStatic.ActionFlowStack;
+
+            while (theStack.Count < 1)
             {
-                mainActionFlowStack.Peek().OnEnd();
-                mainActionFlowStack.Pop();
+                theStack.Peek().OnEnd();
+                theStack.Pop();
             }
 
-            onStackHashSet.Clear();
-            mainStackDebug.Clear();
+            onHash.Clear();
 
-            foreach (IflowAction newAction in newStack) PushActionToMainStack(newAction);
+            foreach (IflowAction newAction in newStack) PushActionToStack(newAction, nonStatic);
 
             return true;
         }
@@ -76,58 +101,69 @@ namespace ActionFlowStack
         {
             if (callerHashSet.Contains(caller) == false) return false;
 
-            UpdateMainActionFlowStack();
+            UpdateActionFlowStack();
 
             return true;
         }
 
-        private static void UpdateMainActionFlowStack()
+        public static void UpdateNonStaticActionStack(ActionFlowStackObject nonStatic)
         {
+            if (nonStatic == null) return;
+
+            UpdateActionFlowStack(nonStatic);
+        }
+
+        private static void UpdateActionFlowStack(ActionFlowStackObject nonStatic = null)
+        {
+            HashSet<IflowAction> onHash = nonStatic == null ? onStackHashSet : nonStatic.OnStackHashSet;
+            HashSet<IflowAction> firstTimer = nonStatic == null ? firstTimersHashSet : nonStatic.FirstTimersHashSet;
+            Stack<IflowAction> theStack = nonStatic == null ? mainActionFlowStack : nonStatic.ActionFlowStack;
+            IflowAction action = nonStatic == null ? currentAction : nonStatic.CurrentAction;
+
             // Do We have actions?
-            if (currentAction == null && mainActionFlowStack.Count == 0) return;
+            if (action == null && theStack.Count == 0) return;
 
             // New Action?
-            while (currentAction == null && mainActionFlowStack.Count > 0)
+            while (action == null && theStack.Count > 0)
             {
                 // Set the current action!
-                currentAction = mainActionFlowStack.Peek();
+                action = theStack.Peek();
 
                 // Call on begin!
-                bool firstTime = !firstTimersHashSet.Contains(currentAction);
-                firstTimersHashSet.Add(currentAction);
-                currentAction.OnBegin(firstTime);
+                bool firstTime = !firstTimer.Contains(action);
+                firstTimer.Add(action);
+                action.OnBegin(firstTime);
 
                 // did OnBegin push or remove another action?
-                if (currentAction == null) continue;
+                if (action == null) continue;
 
-                if (mainActionFlowStack.Count > 0 && currentAction != mainActionFlowStack.Peek())
+                if (theStack.Count > 0 && action != theStack.Peek())
                 {
-                    currentAction = null;
-                    UpdateMainActionFlowStack();
+                    action = null;
+                    UpdateActionFlowStack(nonStatic);
                     return;
                 }
             }
 
             // call OnUpdate 
-            if (currentAction == null) return;
+            if (action == null) return;
 
-            currentAction.OnUpdate();
+            action.OnUpdate();
 
             // are we still the current action?
-            if (mainActionFlowStack.Count > 0 && currentAction == mainActionFlowStack.Peek())
+            if (theStack.Count > 0 && action == theStack.Peek())
             {
                 // are we done?
-                if (currentAction.IsDone())
+                if (action.IsDone())
                 {
-                    mainActionFlowStack.Pop();
-                    currentAction.OnEnd();
-                    firstTimersHashSet.Remove(currentAction);
-                    onStackHashSet.Remove(currentAction);
-                    mainStackDebug.Remove(currentAction.ToString());
-                    currentAction = null;
+                    theStack.Pop();
+                    action.OnEnd();
+                    firstTimer.Remove(action);
+                    onHash.Remove(action);
+                    action = null;
                 }
             }
-            else currentAction = null;
+            else action = null;
         }
     }
 }

@@ -39,7 +39,7 @@ public sealed class ActionFlowStackController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        ActionFlowStackHandler.PushActionToMainStack(new FlowAction_MainMenu { });
+        ActionFlowStackHandler.PushActionToStack(new FlowAction_MainMenu { });
     }
 
     // Update is called once per frame
@@ -326,7 +326,7 @@ public sealed class FlowAction_PauseMenu : IflowAction
     {
         FlowAction_MainMenu menu = new FlowAction_MainMenu();
         IflowAction[] arr = { menu };
-        ActionFlowStackHandler.ReplaceMainStack(arr);
+        ActionFlowStackHandler.ReplaceStack(arr);
     }
 }
 

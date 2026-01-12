@@ -17,8 +17,7 @@ public class SceneRoot : MonoBehaviour
         {
             index++;
 
-            if (index != targetIndex) root.gameObject.SetActive(false);
-            else root.gameObject.SetActive(true);
+            root.gameObject.SetActive(index == targetIndex);
         }
     }
 }

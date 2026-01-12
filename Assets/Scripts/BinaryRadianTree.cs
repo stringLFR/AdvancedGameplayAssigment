@@ -49,7 +49,7 @@ public class BinaryRadianTree<T>
 
         allItems.Sort((x,y) => Vector3.Distance(x.position,center).CompareTo(Vector3.Distance(y.position, center))); 
 
-        root = new BinaryRadianBranch<T>(allItems, center, radius, radius * 2, false, true, depth);
+        root = new BinaryRadianBranch<T>(allItems, center, radius, radius, false,true, depth, 0);
     }
 
     class BinaryRadianBranch<T>
@@ -88,30 +88,48 @@ public class BinaryRadianTree<T>
             }
         }
 
-        public BinaryRadianBranch(List<BRT_item<T>> items, Vector3 center, float baseRadius, float currentRadius, bool upAxis, bool clockvice, int maxDepth) 
+        public BinaryRadianBranch(List<BRT_item<T>> items, Vector3 center, float baseRadius, float currentRadius, bool upAxis,bool isRight, int maxDepth, int currentDepth) 
         {
             myCenter = center;
             myRadius = baseRadius;
             Vector3 p1, p2, p3;
-            float newRadiusModifier = currentRadius / 2;
+            float newRadiusModifier = currentDepth > 1 ? currentRadius / 2 : currentRadius;
 
             if (upAxis == true)
             {
-                p1 = myCenter + new Vector3(newRadiusModifier, 0, 0);
-                p2 = myCenter + new Vector3(0, myRadius - newRadiusModifier, 0);
-                p3 = myCenter + new Vector3(0, 0, newRadiusModifier);
+                if (isRight)
+                {
+                    p1 = myCenter + new Vector3(newRadiusModifier, 0, 0);
+                    p2 = myCenter + new Vector3(0, myRadius - newRadiusModifier, 0);
+                    p3 = myCenter + new Vector3(0, 0, newRadiusModifier);
+                }
+                else
+                {
+                    p1 = myCenter + new Vector3(-newRadiusModifier, 0, 0);
+                    p2 = myCenter + new Vector3(0, myRadius - newRadiusModifier, 0);
+                    p3 = myCenter + new Vector3(0, 0, -newRadiusModifier);
+                }
             }
             else
             {
-                p1 = myCenter + new Vector3(newRadiusModifier, 0, 0);
-                p2 = myCenter + new Vector3(0, newRadiusModifier, 0);
-                p3 = myCenter + new Vector3(0, 0, myRadius - newRadiusModifier);
+                if (isRight)
+                {
+                    p1 = myCenter + new Vector3(newRadiusModifier, 0, 0);
+                    p2 = myCenter + new Vector3(0, newRadiusModifier, 0);
+                    p3 = myCenter + new Vector3(0, 0, myRadius - newRadiusModifier);
+                }
+                else
+                {
+                    p1 = myCenter + new Vector3(-newRadiusModifier, 0, 0);
+                    p2 = myCenter + new Vector3(0, -newRadiusModifier, 0);
+                    p3 = myCenter + new Vector3(0, 0, myRadius - newRadiusModifier);
+                }
+                
             }
 
-            if (clockvice == true) direction = Plane.CreateFromVertices(p1, p2, p3);
-            else direction = Plane.CreateFromVertices(p3, p2, p1);
+            direction = Plane.CreateFromVertices(p1, p2, p3);
 
-            if (maxDepth <= 0) return;
+            if (maxDepth <= currentDepth) return;
 
             List<BRT_item<T>> leftItems = new List<BRT_item<T>>();
             List<BRT_item<T>> rightItems = new List<BRT_item<T>>();
@@ -132,9 +150,9 @@ public class BinaryRadianTree<T>
 
             bool axis = upAxis == true ? false : true;
 
-            if (leftItems.Count > 0) leftBranch = new BinaryRadianBranch<T>(leftItems, myCenter, myRadius, newRadiusModifier, axis, true, maxDepth-1);
+            if (leftItems.Count > 0) leftBranch = new BinaryRadianBranch<T>(leftItems, myCenter, myRadius, newRadiusModifier, axis,false, maxDepth, currentDepth + 1);
 
-            if (rightItems.Count > 0) rightBranch = new BinaryRadianBranch<T>(rightItems, myCenter, myRadius, newRadiusModifier, axis, false, maxDepth-1);
+            if (rightItems.Count > 0) rightBranch = new BinaryRadianBranch<T>(rightItems, myCenter, myRadius, newRadiusModifier, axis, true, maxDepth, currentDepth + 1);
         }
     }
 }

@@ -30,13 +30,13 @@ public class Exploration : MonoBehaviour
 
         t.Add(new BRT_item<DroneUnitBody>(explorer, explorer.transform.position.x, explorer.transform.position.y, explorer.transform.position.z));
 
-        testTree.CreateRadianTree(4, t);
+        testTree.CreateRadianTree(10, t);
 
         List<BRT_item<DroneUnitBody>> t2 = testTree.FindClosesItems(1, new System.Numerics.Vector3(transform.position.x, transform.position.y, transform.position.z));
 
 
 
-        print(t2[0].position.X);
+        //print(t2[0].position.X);
 
         
 

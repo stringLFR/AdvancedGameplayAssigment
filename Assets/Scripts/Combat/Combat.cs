@@ -112,7 +112,10 @@ public sealed class Combat : MonoBehaviour
             GetNextTurnHolder();
         }
 
-        for(int i = 0; i < actionEffectObjects.Count; i++)
+
+        //TODO: CHANGE TO NativeArray and use multithreading (Job system?)!
+        //https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Unity.Collections.NativeArray_1.html
+        for (int i = 0; i < actionEffectObjects.Count; i++)
         {
             if (actionEffectObjects[i].IsActive == false)
             {

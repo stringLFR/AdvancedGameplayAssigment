@@ -13,6 +13,7 @@ using actions;
 using System.Linq;
 
 
+
 public sealed class ActionFlowStackController : MonoBehaviour
 {
     [SerializeField] private PlayerTeam team;
@@ -92,9 +93,25 @@ public sealed class FlowAction_Exploration : IflowAction
 {
     private AsyncOperationHandle<SceneInstance> explorationScene;
 
+    private Exploration expo = null;
+    private List<Exploration_Caravan> caravans;
+    private List<Exploration_Hostile> hostiles;
+    private List<Exploration_Node> nodes;
+
     public bool IsDone()
     {
-        throw new System.NotImplementedException();
+        return false;
+    }
+
+    public void Init(Exploration e)
+    {
+        expo = e;
+
+        hostiles = new List<Exploration_Hostile>();
+
+        hostiles.Add(new Exploration_Hostile());
+
+        hostiles[0].SpawnHostile(expo);
     }
 
     public void OnBegin(bool bFirstTime)
@@ -115,6 +132,10 @@ public sealed class FlowAction_Exploration : IflowAction
 
     public void OnUpdate()
     {
+        if (expo == null) return;
+
+        expo.Tick(caravans, hostiles, nodes);
+
         //ActionFlowStackHandler.PushActionToMainStack(new FlowAction_Combat { });
 
         //throw new System.NotImplementedException();
@@ -173,7 +194,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             {
                 foreach(MainActionStats m in unit.MyMainActions)
                 {
-                    droneUnitBody.MainActions.Add(ActionCreator.CreateMainAction(m));
+                    droneUnitBody.MainActions.Add(ActionCreator.CreateMainAction(m, droneUnitBody.DroneUnit.DroneName));
                 }
             }
 
@@ -181,7 +202,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             {
                 foreach (ActionNodeStats n in unit.MyReactionNodes)
                 {
-                    droneUnitBody.Reactions.Add(ActionCreator.CreateReactionAction(n));
+                    droneUnitBody.Reactions.Add(ActionCreator.CreateReactionAction(n, droneUnitBody.DroneUnit.DroneName));
                 }
 
                 foreach (ActionNodeBase node in droneUnitBody.Reactions)
@@ -213,7 +234,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             {
                 foreach (MainActionStats m in unit.MyMainActions)
                 {
-                    droneUnitBodyEnemy.MainActions.Add(ActionCreator.CreateMainAction(m));
+                    droneUnitBodyEnemy.MainActions.Add(ActionCreator.CreateMainAction(m, droneUnitBodyEnemy.DroneUnit.DroneName));
                 }
             }
 
@@ -221,7 +242,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             {
                 foreach (ActionNodeStats n in unit.MyReactionNodes)
                 {
-                    droneUnitBodyEnemy.Reactions.Add(ActionCreator.CreateReactionAction(n));
+                    droneUnitBodyEnemy.Reactions.Add(ActionCreator.CreateReactionAction(n, droneUnitBodyEnemy.DroneUnit.DroneName));
                 }
 
                 foreach (ActionNodeBase node in droneUnitBodyEnemy.Reactions)
@@ -414,5 +435,54 @@ public sealed class FlowAction_Turn : IflowAction
                     EasingFunctionMaths.EaseInSine(time)
                     );
         }
+    }
+}
+
+public sealed class FlowAction_Management : IflowAction
+{
+    private bool isDone = false;
+
+    private AsyncOperationHandle<GameObject> managementPrefab;
+    private Exploration_Management management;
+
+    public void Init(Exploration_Management m)
+    {
+        management = m;
+    }
+
+    public void GoExploring()
+    {
+        isDone = true;
+    }
+
+    public bool IsDone()
+    {
+        return isDone;
+    }
+
+    public void OnBegin(bool bFirstTime)
+    {
+        if (bFirstTime)
+        {
+            managementPrefab = Addressables.LoadAssetAsync<GameObject>("Assets/Prefabs/Management.prefab");
+            managementPrefab.WaitForCompletion();
+            Object.Instantiate(managementPrefab.Result);
+        }
+    }
+
+    public void OnEnd()
+    {
+        CleanUp();
+    }
+
+    public void OnUpdate()
+    {
+        if (management == null) return;
+    }
+
+    void CleanUp()
+    {
+        managementPrefab.Release();
+        Object.Destroy(management.gameObject);
     }
 }

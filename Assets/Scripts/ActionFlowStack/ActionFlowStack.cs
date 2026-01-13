@@ -19,7 +19,7 @@ namespace ActionFlowStack
         private HashSet<IflowAction> firstTimersHashSet = new HashSet<IflowAction>();
         private HashSet<IflowAction> onStackHashSet = new HashSet<IflowAction>();
 
-        public IflowAction CurrentAction => currentAction;
+        public IflowAction CurrentAction { get { return currentAction; }  set { currentAction = value; } }
         public Stack<IflowAction> ActionFlowStack => actionFlowStack;
         public HashSet<IflowAction> FirstTimersHashSet => firstTimersHashSet;
         public HashSet<IflowAction> OnStackHashSet => onStackHashSet;
@@ -58,7 +58,6 @@ namespace ActionFlowStack
 
             HashSet<IflowAction> onHash = nonStatic == null ? onStackHashSet : nonStatic.OnStackHashSet;
             Stack<IflowAction> theStack = nonStatic == null ? mainActionFlowStack : nonStatic.ActionFlowStack;
-            IflowAction action = nonStatic == null ? currentAction : nonStatic.CurrentAction;
 
             // Is it already on the stack?
             if (onHash.Contains(newAction) == true) return false;
@@ -70,7 +69,7 @@ namespace ActionFlowStack
             onHash.Add(newAction);
 
             // Set current action to null!
-            action = null;
+            IflowAction action = nonStatic == null ? currentAction = null: nonStatic.CurrentAction = null;
 
             return true;
         }
@@ -127,7 +126,7 @@ namespace ActionFlowStack
             while (action == null && theStack.Count > 0)
             {
                 // Set the current action!
-                action = theStack.Peek();
+                action = nonStatic == null ? currentAction = theStack.Peek() : nonStatic.CurrentAction = theStack.Peek();
 
                 // Call on begin!
                 bool firstTime = !firstTimer.Contains(action);
@@ -139,7 +138,7 @@ namespace ActionFlowStack
 
                 if (theStack.Count > 0 && action != theStack.Peek())
                 {
-                    action = null;
+                    action = nonStatic == null ? currentAction = null : nonStatic.CurrentAction = null;
                     UpdateActionFlowStack(nonStatic);
                     return;
                 }
@@ -160,10 +159,10 @@ namespace ActionFlowStack
                     action.OnEnd();
                     firstTimer.Remove(action);
                     onHash.Remove(action);
-                    action = null;
+                    action = nonStatic == null ? currentAction = null : nonStatic.CurrentAction = null;
                 }
             }
-            else action = null;
+            else action = nonStatic == null ? currentAction = null : nonStatic.CurrentAction = null;
         }
     }
 }

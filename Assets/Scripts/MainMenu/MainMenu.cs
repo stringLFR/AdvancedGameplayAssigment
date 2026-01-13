@@ -9,7 +9,7 @@ public sealed class MainMenu : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        menuFlowAction = ActionFlowStack.ActionFlowStackHandler.CurrentFlowAction as FlowAction_MainMenu;
+        menuFlowAction = ActionFlowStackHandler.CurrentFlowAction as FlowAction_MainMenu;
 
         if (menuFlowAction != null) print("Menu Found!");
     }
@@ -21,5 +21,5 @@ public sealed class MainMenu : MonoBehaviour
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public void StartExploring() => ActionFlowStack.ActionFlowStackHandler.PushActionToStack(new FlowAction_Exploration { });
+    public void StartExploring() => ActionFlowStackHandler.PushActionToStack(new FlowAction_Exploration { });
 }

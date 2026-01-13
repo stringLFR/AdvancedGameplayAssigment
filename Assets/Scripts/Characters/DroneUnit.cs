@@ -2,7 +2,6 @@ using UnityEngine;
 using ADSNameSpace;
 using System.Runtime.CompilerServices;
 using System;
-using NUnit.Framework;
 using actions;
 using System.Collections.Generic;
 
@@ -28,14 +27,34 @@ public sealed class DroneUnit
     private int memory;
 
     [SerializeField]
-    private List<ActionNodeStats> myReactionNodes;
+    private List<ReactionSO> myReactionNodes;
 
-    public List<ActionNodeStats> MyReactionNodes => myReactionNodes;
+    public List<ActionNodeStats> MyReactionNodes
+    {
+        get
+        {
+            List<ActionNodeStats> actionNodeStats = new List<ActionNodeStats>();
+
+            foreach (var node in myReactionNodes) actionNodeStats.Add(node.reactionStats);
+
+            return actionNodeStats;
+        }
+    }
 
     [SerializeField]
-    private List<MainActionStats> myMainActions;
+    private List<MainActionSO> myMainActions;
 
-    public List<MainActionStats> MyMainActions => myMainActions;
+    public List<MainActionStats> MyMainActions
+    {
+        get
+        {
+            List<MainActionStats> mainActionStats = new List<MainActionStats>();
+
+            foreach (var node in myMainActions) mainActionStats.Add(node.mainActionStats);
+
+            return mainActionStats;
+        }
+    }
 
     public int Level => level;
     public int Memory => memory;

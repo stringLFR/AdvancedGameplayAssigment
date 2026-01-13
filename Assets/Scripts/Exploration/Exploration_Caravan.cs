@@ -1,16 +1,7 @@
 using UnityEngine;
 
-public class Exploration_Caravan : MonoBehaviour
+public class Exploration_Caravan
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private DroneUnitBody body;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

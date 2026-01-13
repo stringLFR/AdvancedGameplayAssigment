@@ -905,6 +905,14 @@ PrefabInstance:
       propertyPath: RPGCamera
       value: 
       objectReference: {fileID: 1197979488}
+    - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
+      propertyPath: caravanPrefab
+      value: 
+      objectReference: {fileID: 672325117890024527, guid: 4351aafbed6bfd2418582411bb05033b, type: 3}
+    - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
+      propertyPath: hostilePrefab
+      value: 
+      objectReference: {fileID: 672325117890024527, guid: 4351aafbed6bfd2418582411bb05033b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -23,14 +23,7 @@ MonoBehaviour:
       CHA: 4
       level: 13
       myReactionNodes:
-      - NodeName: TestEnemy 1 quickThrow
-        MinScore: 50
-        ManaCost: 0
-        IsRoot: 1
-        Effect: 1
-        Node: 1
-        ActionType: 1
-        Reactions: 0400000001000000
+      - {fileID: 11400000, guid: cdc55000094b66f44a5b14ccca9956bd, type: 2}
       myMainActions: []
     - droneName: TestEnemy 2
       STR: 4
@@ -41,14 +34,7 @@ MonoBehaviour:
       CHA: 4
       level: 13
       myReactionNodes:
-      - NodeName: TestEnemy 2 quickThrow
-        MinScore: 50
-        ManaCost: 0
-        IsRoot: 1
-        Effect: 1
-        Node: 1
-        ActionType: 1
-        Reactions: 0400000001000000
+      - {fileID: 0}
       myMainActions: []
     - droneName: TestEnemy 3
       STR: 4
@@ -59,14 +45,7 @@ MonoBehaviour:
       CHA: 4
       level: 13
       myReactionNodes:
-      - NodeName: TestEnemy 3 quickThrow
-        MinScore: 50
-        ManaCost: 0
-        IsRoot: 1
-        Effect: 1
-        Node: 1
-        ActionType: 1
-        Reactions: 0400000001000000
+      - {fileID: 0}
       myMainActions: []
     - droneName: TestEnemy 4
       STR: 4
@@ -77,12 +56,5 @@ MonoBehaviour:
       CHA: 4
       level: 13
       myReactionNodes:
-      - NodeName: TestEnemy 4 quickThrow
-        MinScore: 50
-        ManaCost: 0
-        IsRoot: 1
-        Effect: 1
-        Node: 1
-        ActionType: 1
-        Reactions: 0400000001000000
+      - {fileID: 0}
       myMainActions: []

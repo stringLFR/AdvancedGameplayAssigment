@@ -16,7 +16,7 @@ MonoBehaviour:
     NodeName: TestQuickThrow
     MinScore: 50
     ManaCost: 0
-    IsRoot: 0
+    IsRoot: 1
     Effect: 1
     Node: 1
     ActionType: 1

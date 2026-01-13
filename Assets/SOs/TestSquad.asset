@@ -34,7 +34,7 @@ MonoBehaviour:
       CHA: 4
       level: 13
       myReactionNodes:
-      - {fileID: 0}
+      - {fileID: 11400000, guid: cdc55000094b66f44a5b14ccca9956bd, type: 2}
       myMainActions: []
     - droneName: TestEnemy 3
       STR: 4
@@ -45,7 +45,7 @@ MonoBehaviour:
       CHA: 4
       level: 13
       myReactionNodes:
-      - {fileID: 0}
+      - {fileID: 11400000, guid: cdc55000094b66f44a5b14ccca9956bd, type: 2}
       myMainActions: []
     - droneName: TestEnemy 4
       STR: 4
@@ -56,5 +56,5 @@ MonoBehaviour:
       CHA: 4
       level: 13
       myReactionNodes:
-      - {fileID: 0}
+      - {fileID: 11400000, guid: cdc55000094b66f44a5b14ccca9956bd, type: 2}
       myMainActions: []

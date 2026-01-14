@@ -425,6 +425,7 @@ GameObject:
   - component: {fileID: 872927718}
   - component: {fileID: 872927717}
   - component: {fileID: 872927719}
+  - component: {fileID: 872927720}
   m_Layer: 8
   m_Name: Terrain
   m_TagString: Untagged
@@ -539,6 +540,25 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: d1b0b0afbfecc8a469339cd2b057d012, type: 2}
   m_BuildHeightMesh: 0
+--- !u!114 &872927720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872927715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93b3a702e11edb4409f898638ddb7687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerrainNoiseTool
+  terrain: {fileID: 872927718}
+  depth: 81
+  width: 1000
+  height: 1000
+  scale: 10.86
+  offsetX: 5894.4893
+  offsetY: 320.14267
 --- !u!1001 &1197979485
 PrefabInstance:
   m_ObjectHideFlags: 0

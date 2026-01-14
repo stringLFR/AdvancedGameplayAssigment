@@ -553,12 +553,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainNoiseTool
   terrain: {fileID: 872927718}
-  depth: 81
+  depth: 100
   width: 1000
   height: 1000
-  scale: 10.86
-  offsetX: 5894.4893
-  offsetY: 320.14267
+  scale: 5
+  offsetX: 3355.1765
+  offsetY: 8044.095
 --- !u!1001 &1197979485
 PrefabInstance:
   m_ObjectHideFlags: 0

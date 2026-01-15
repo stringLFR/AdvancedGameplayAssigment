@@ -2,6 +2,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using ActionFlowStack;
+using Unity.Jobs;
+using Unity.Collections;
+using System;
+
+public struct NodeJob_RandomPos : IJobFor
+{
+    public NativeArray<Vector3> positions;
+    public Vector3 center;
+
+    public void Execute(int index)
+    {
+        Unity.Mathematics.Random rand = Unity.Mathematics.Random.CreateFromIndex((uint)index);
+
+        Vector3 randValue = new Vector3()
+        {
+            x = rand.NextFloat(center.x - 200f, center.x + 200f),
+            y = center.y,
+            z = rand.NextFloat(center.z - 200f, center.z + 200f),
+        };
+
+        positions[index] = randValue;
+    }
+}
 
 public class Exploration : MonoBehaviour
 {
@@ -19,7 +42,13 @@ public class Exploration : MonoBehaviour
     [SerializeField]
     private float managementDistance = 10f;
 
-    //private BinaryRadianTree<DroneUnitBody> testTree;
+    [SerializeField]
+    private GameObject nodeResours, nodeSpecial, nodeHazard;
+
+    [SerializeField]
+    int nodeResourseAmounts = 10, nodeSpecialAmounts = 10, nodeHazardAmounts = 10, batchAmount = 10;
+
+    private BinaryRadianTree<Exploration_Node> nodetree;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -29,6 +58,64 @@ public class Exploration : MonoBehaviour
         if (explorationFlowAction == null) return;
 
         explorationFlowAction.Init(this);
+    }
+
+    public void MapSetup()
+    {
+        int size = nodeResourseAmounts + nodeSpecialAmounts + nodeHazardAmounts;
+
+        NativeArray<Vector3> positions = new NativeArray<Vector3>(size, Allocator.Persistent);
+
+
+        NodeJob_RandomPos jobData = new NodeJob_RandomPos()
+        {
+            positions = positions,
+            center = transform.position,
+        };
+
+        JobHandle handle = default;
+        JobHandle mainHandle = default;
+
+        handle = jobData.ScheduleParallel(size, batchAmount, mainHandle);
+
+        List<Exploration_Node> nodes = new List<Exploration_Node>();
+
+        for (int i = 0; i < nodeResourseAmounts; i++)
+        {
+            GameObject obj = Instantiate(nodeResours);
+
+            Exploration_Node_Resours r = obj.GetComponent<Exploration_Node_Resours>();
+
+            nodes.Add(r);
+        }
+        for (int i = 0; i < nodeSpecialAmounts; i++)
+        {
+            GameObject obj = Instantiate(nodeSpecial);
+
+            Exploration_Node_Special s = obj.GetComponent<Exploration_Node_Special>();
+
+            nodes.Add(s);
+        }
+        for (int i = 0; i < nodeHazardAmounts; i++)
+        {
+            GameObject obj = Instantiate(nodeHazard);
+
+            Exploration_Node_Hazard h = obj.GetComponent<Exploration_Node_Hazard>();
+
+            nodes.Add(h);
+        }
+
+        handle.Complete();
+
+        for (int i = 0; i < size; i++)
+        {
+            NavMesh.SamplePosition(positions[i], out NavMeshHit hit, Mathf.Infinity, NavMesh.AllAreas);
+
+            nodes[i].transform.position = hit.position;
+            nodes[i].transform.rotation = transform.rotation = Quaternion.FromToRotation(nodes[i].transform.up, hit.normal) * nodes[i].transform.rotation;
+        }
+
+        positions.Dispose();
     }
 
 

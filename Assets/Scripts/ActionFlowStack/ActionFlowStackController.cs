@@ -107,6 +107,8 @@ public sealed class FlowAction_Exploration : IflowAction
     {
         expo = e;
 
+        e.MapSetup();
+
         hostiles = new List<Exploration_Hostile>();
 
         hostiles.Add(new Exploration_Hostile());

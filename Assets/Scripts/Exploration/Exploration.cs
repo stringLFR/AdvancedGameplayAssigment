@@ -10,16 +10,17 @@ public struct NodeJob_RandomPos : IJobFor
 {
     public NativeArray<Vector3> positions;
     public Vector3 center;
+    public int extraRandom;
 
     public void Execute(int index)
     {
-        Unity.Mathematics.Random rand = Unity.Mathematics.Random.CreateFromIndex((uint)index);
+        Unity.Mathematics.Random rand = Unity.Mathematics.Random.CreateFromIndex((uint)(index + extraRandom));
 
         Vector3 randValue = new Vector3()
         {
-            x = rand.NextFloat(center.x - 200f, center.x + 200f),
+            x = rand.NextFloat(center.x - 250f, center.x + 250f),
             y = center.y,
-            z = rand.NextFloat(center.z - 200f, center.z + 200f),
+            z = rand.NextFloat(center.z - 250f, center.z + 250f),
         };
 
         positions[index] = randValue;
@@ -57,6 +58,8 @@ public class Exploration : MonoBehaviour
 
         if (explorationFlowAction == null) return;
 
+        nodetree = new BinaryRadianTree<Exploration_Node>(500f, new System.Numerics.Vector3(transform.position.x, transform.position.y, transform.position.z));
+
         explorationFlowAction.Init(this);
     }
 
@@ -71,6 +74,7 @@ public class Exploration : MonoBehaviour
         {
             positions = positions,
             center = transform.position,
+            extraRandom = UnityEngine.Random.Range(1, 9999),
         };
 
         JobHandle handle = default;
@@ -107,13 +111,20 @@ public class Exploration : MonoBehaviour
 
         handle.Complete();
 
+        
+        List<BRT_item<Exploration_Node>> list = new List<BRT_item<Exploration_Node>>();
+
         for (int i = 0; i < size; i++)
         {
             NavMesh.SamplePosition(positions[i], out NavMeshHit hit, Mathf.Infinity, NavMesh.AllAreas);
 
             nodes[i].transform.position = hit.position;
-            nodes[i].transform.rotation = transform.rotation = Quaternion.FromToRotation(nodes[i].transform.up, hit.normal) * nodes[i].transform.rotation;
+            //nodes[i].transform.localRotation = Quaternion.FromToRotation(nodes[i].transform.up, hit.normal);
+
+            list.Add(new BRT_item<Exploration_Node>(nodes[i], nodes[i].transform.position.x, nodes[i].transform.position.y, nodes[i].transform.position.z));
         }
+
+        nodetree.CreateRadianTree(10, list);
 
         positions.Dispose();
     }
@@ -141,30 +152,9 @@ public class Exploration : MonoBehaviour
         {
             hostiles[0].EnterCombat();
         }
+
+        //List<BRT_item<Exploration_Node>> t2 = nodetree.FindClosesItems(5, new System.Numerics.Vector3(explorer.transform.position.x, explorer.transform.position.y, explorer.transform.position.z));
+        //print(t2.Count);
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-
-        /*
-        testTree = new BinaryRadianTree<DroneUnitBody>(100f, new System.Numerics.Vector3(transform.position.x, transform.position.y, transform.position.z));
-
-        List<BRT_item<DroneUnitBody>> t = new List<BRT_item<DroneUnitBody>>();
-
-        t.Add(new BRT_item<DroneUnitBody>(explorer, explorer.transform.position.x, explorer.transform.position.y, explorer.transform.position.z));
-
-        testTree.CreateRadianTree(10, t);
-
-        List<BRT_item<DroneUnitBody>> t2 = testTree.FindClosesItems(1, new System.Numerics.Vector3(transform.position.x, transform.position.y, transform.position.z));
-
-
-
-        //print(t2[0].position.X);
-
-        */
-
-        
-    }
 }

@@ -966,8 +966,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 672325117890024527, guid: 4351aafbed6bfd2418582411bb05033b, type: 3}
     - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
+      propertyPath: nodeHazardAmounts
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
       propertyPath: managementDistance
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
+      propertyPath: nodeSpecialAmounts
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
+      propertyPath: nodeResourseAmounts
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

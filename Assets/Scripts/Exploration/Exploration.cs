@@ -4,7 +4,6 @@ using UnityEngine.AI;
 using ActionFlowStack;
 using Unity.Jobs;
 using Unity.Collections;
-using System;
 
 public struct NodeJob_RandomPos : IJobFor
 {
@@ -49,7 +48,9 @@ public class Exploration : MonoBehaviour
     [SerializeField]
     int nodeResourseAmounts = 10, nodeSpecialAmounts = 10, nodeHazardAmounts = 10, batchAmount = 10;
 
-    private BinaryRadianTree<Exploration_Node> nodetree;
+    //private BinaryRadianTree<Exploration_Node> nodetree;
+
+    public List<Exploration_Node> nodeList { get; private set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -58,7 +59,9 @@ public class Exploration : MonoBehaviour
 
         if (explorationFlowAction == null) return;
 
-        nodetree = new BinaryRadianTree<Exploration_Node>(500f, new System.Numerics.Vector3(transform.position.x, transform.position.y, transform.position.z));
+        nodeList = new List<Exploration_Node>();
+
+        //nodetree = new BinaryRadianTree<Exploration_Node>(500f, new System.Numerics.Vector3(transform.position.x, transform.position.y, transform.position.z));
 
         explorationFlowAction.Init(this);
     }
@@ -112,7 +115,7 @@ public class Exploration : MonoBehaviour
         handle.Complete();
 
         
-        List<BRT_item<Exploration_Node>> list = new List<BRT_item<Exploration_Node>>();
+        //List<BRT_item<Exploration_Node>> list = new List<BRT_item<Exploration_Node>>();
 
         for (int i = 0; i < size; i++)
         {
@@ -121,10 +124,13 @@ public class Exploration : MonoBehaviour
             nodes[i].transform.position = hit.position;
             //nodes[i].transform.localRotation = Quaternion.FromToRotation(nodes[i].transform.up, hit.normal);
 
-            list.Add(new BRT_item<Exploration_Node>(nodes[i], nodes[i].transform.position.x, nodes[i].transform.position.y, nodes[i].transform.position.z));
+            nodeList.Add(nodes[i]);
+            //list.Add(new BRT_item<Exploration_Node>(nodes[i], nodes[i].transform.position.x, nodes[i].transform.position.y, nodes[i].transform.position.z));
         }
 
-        nodetree.CreateRadianTree(10, list);
+        nodeList.Sort((x, y) => Vector3.Distance(x.transform.position, transform.position).CompareTo(Vector3.Distance(y.transform.position, transform.position)));
+
+        //nodetree.CreateRadianTree(10, list);
 
         positions.Dispose();
     }
@@ -153,8 +159,13 @@ public class Exploration : MonoBehaviour
             hostiles[0].EnterCombat();
         }
 
-        //List<BRT_item<Exploration_Node>> t2 = nodetree.FindClosesItems(5, new System.Numerics.Vector3(explorer.transform.position.x, explorer.transform.position.y, explorer.transform.position.z));
+        //List<BRT_item<Exploration_Node>> t2 = nodetree.FindClosesItems(2, new System.Numerics.Vector3(explorer.transform.position.x, explorer.transform.position.y, explorer.transform.position.z));
         //print(t2.Count);
+
+        //Debug.DrawLine(explorer.transform.position, new Vector3(t2[0].position.X, t2[0].position.Y, t2[0].position.Z));
+        //Debug.DrawLine(explorer.transform.position, new Vector3(t2[1].position.X, t2[1].position.Y, t2[1].position.Z));
+
+
     }
 
 }

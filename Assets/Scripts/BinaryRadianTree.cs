@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 
 public struct BRT_item<T>
@@ -34,7 +33,7 @@ public class BinaryRadianTree<T>
     {
         List<BRT_item<T>> items = new List<BRT_item<T>>();
 
-        root.FindClosesItems(amount, position,ref items);
+        root.FindClosesItems(amount, position,ref items, Plane.DotNormal(root.direction, position));
 
         return items;
     }
@@ -57,61 +56,93 @@ public class BinaryRadianTree<T>
         BinaryRadianBranch<T> leftBranch;
         BinaryRadianBranch<T> rightBranch;
 
-        private readonly List<BRT_item<T>> myItems = new List<BRT_item<T>>();
-        private readonly Vector3 myCenter;
-        private readonly float myRadius;
-        private readonly Plane direction;
+        public readonly List<BRT_item<T>> myItems = new List<BRT_item<T>>();
+        public readonly Vector3 myCenter;
+        public readonly float myRadius;
+        public readonly Plane direction;
+        public readonly bool upAxis;
+        public readonly bool isRight;
+        public readonly int MaxDepth;
 
-        //TODO: FIX BRANCH SEARCHING BUG!!!
-        //IT CAUSES SO THAT IT SEARCHES THE FULL LIST INSTEAD OF THE SMALL PART!!!
-        //IT MAY BE SOMETHING WITH HOW I AM DOING THE PLANE NORMALS!
-        public void FindClosesItems(int amount, Vector3 position, ref List<BRT_item<T>> items)
+        //TODO: It's not consistent!!!!!!!!!!!!!!
+        public void FindClosesItems(int amount, Vector3 position, ref List<BRT_item<T>> items, float lastDotProduct)
         {
+            if (myItems.Count == 0) return;
+
             float dot = Plane.DotNormal(direction, position);
 
-            if (leftBranch != null && rightBranch != null)
+            if (isRight)
             {
-                if (dot < 0)
+                if (lastDotProduct > 0)
                 {
-                    leftBranch.FindClosesItems(amount, position, ref items);
+                    rightBranch.FindClosesItems(amount, position, ref items, dot);
+                    CheckItems(amount, ref items, position);
+                    leftBranch.FindClosesItems(amount, position, ref items, dot);
                 }
                 else
                 {
-                    rightBranch.FindClosesItems(amount, position, ref items);
+                    leftBranch.FindClosesItems(amount, position, ref items, dot);
+                    CheckItems(amount, ref items, position);
+                    rightBranch.FindClosesItems(amount, position, ref items, dot);
+                }
+            }
+            else
+            {
+                if (lastDotProduct > 0)
+                {
+                    leftBranch.FindClosesItems(amount, position, ref items, dot);
+                    CheckItems(amount, ref items,position);
+                    rightBranch.FindClosesItems(amount, position, ref items, dot);
+
+                }
+                else
+                {
+                    rightBranch.FindClosesItems(amount, position, ref items, dot);
+                    CheckItems(amount, ref items, position);
+                    leftBranch.FindClosesItems(amount, position, ref items, dot);
                 }
             }
 
-            if (items.Count >= amount || myItems.Count == 0) return;
+            return;
 
-            for (int i = 0; i < amount; i++)
+            void CheckItems(int amount, ref List<BRT_item<T>> items, Vector3 position)
             {
+                if (items.Count >= amount) return;
 
-                if (myItems.Count < i) break;
-
-                BRT_item<T> bestItem = myItems.LastOrDefault();
-
-                foreach (BRT_item<T> j in myItems)
+                for (int i = 0; i < amount; i++)
                 {
-                    if (Vector3.Distance(position, j.position) <= Vector3.Distance(position, bestItem.position))
+                    BRT_item<T> best = myItems[0];
+
+                    for (int j = 0; j < myItems.Count; j++)
                     {
-                        bestItem = j;
+                        if (items.Contains(myItems[j])) continue;
+
+                        if (Vector3.Distance(position, best.position) > Vector3.Distance(position, myItems[j].position))
+                        {
+                            best = myItems[j];
+                        }
                     }
+
+                    if (items.Contains(best)) continue;
+
+                    items.Add(best);
                 }
-
-                if (items.Contains(bestItem)) continue;
-
-                items.Add(bestItem);
             }
         }
 
-        public BinaryRadianBranch(List<BRT_item<T>> items, Vector3 center, float baseRadius, float currentRadius, bool upAxis,bool isRight, int maxDepth, int currentDepth) 
+        //TODO: Figure out if the creation process causes search inconsistens!!!!
+        public BinaryRadianBranch(List<BRT_item<T>> items, Vector3 center, float baseRadius, float currentRadius, bool Axis,bool Right, int maxDepth, int currentDepth) 
         {
             if (items.Count == 0) return;
 
             myCenter = center;
             myRadius = baseRadius;
+            MaxDepth = maxDepth;
             Vector3 p1, p2, p3;
-            float newRadiusModifier = currentDepth > 1 ? currentRadius / 2 : currentRadius;
+            float newRadiusModifier = currentDepth > 0 ? currentRadius / 2 : currentRadius;
+
+            upAxis = Axis;
+            isRight = Right;
 
             if (upAxis == true)
             {
@@ -147,6 +178,11 @@ public class BinaryRadianTree<T>
 
             direction = Plane.CreateFromVertices(p1, p2, p3);
 
+
+            UnityEngine.Debug.DrawRay(new UnityEngine.Vector3(center.X, center.Y, center.Z), new UnityEngine.Vector3(direction.Normal.X, direction.Normal.Y, direction.Normal.Z), UnityEngine.Color.red, 1000f);
+            UnityEngine.Debug.DrawRay(new UnityEngine.Vector3(center.X, center.Y, center.Z), new UnityEngine.Vector3(-direction.Normal.X, -direction.Normal.Y, -direction.Normal.Z), UnityEngine.Color.green, 1000f);
+
+
             if (maxDepth <= currentDepth) return;
 
             List<BRT_item<T>> leftItems = new List<BRT_item<T>>();
@@ -162,8 +198,17 @@ public class BinaryRadianTree<T>
 
                 float dotProduct = Plane.DotNormal(direction, i.position);
 
-                if (dotProduct < 0) leftItems.Add(i);
-                else rightItems.Add(i);
+
+                if (isRight)
+                {
+                    if (dotProduct > 0) rightItems.Add(i);
+                    else leftItems.Add(i);
+                }
+                else
+                {
+                    if (dotProduct > 0) leftItems.Add(i);
+                    else rightItems.Add(i);
+                }
             }
 
             bool axis = upAxis == true ? false : true;

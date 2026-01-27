@@ -190,6 +190,14 @@ public class Exploration : MonoBehaviour
 
         foreach (Exploration_Node n in nodes)
         {
+            if (Vector3.Distance(Camera.main.transform.position, n.transform.position) >= 100)
+            {
+                n.Canvas.gameObject.SetActive(false);
+                continue;
+            }
+
+            n.Canvas.gameObject.SetActive(true);
+
             n.Canvas.transform.rotation = Quaternion.LookRotation(Camera.main.transform.position - n.Canvas.transform.position, Vector3.up);
 
             if (Vector3.Distance(explorer.transform.position, n.transform.position) <= n.intereactDistance)

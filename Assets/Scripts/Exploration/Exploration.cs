@@ -4,6 +4,8 @@ using UnityEngine.AI;
 using ActionFlowStack;
 using Unity.Jobs;
 using Unity.Collections;
+using System;
+using UnityEngine.UIElements;
 
 public struct NodeJob_RandomPos : IJobFor
 {
@@ -26,12 +28,26 @@ public struct NodeJob_RandomPos : IJobFor
     }
 }
 
+public struct NodeJob_RotateCanvas : IJobFor
+{
+    public NativeArray<Vector3> positions;
+    public NativeArray<Quaternion> rotations;
+    public Vector3 target;
+
+    public void Execute(int index)
+    {
+        rotations[index] = Quaternion.LookRotation(target - positions[index], Vector3.up);
+    }
+}
+
 public class Exploration : MonoBehaviour
 {
     [SerializeField]
     private CRPGCamera RPGCamera;
     [SerializeField]
     private DroneUnitBody explorer;
+
+    public DroneUnitBody Explorer => explorer;
 
     [SerializeField]
     public DroneUnitBody hostilePrefab;
@@ -43,14 +59,21 @@ public class Exploration : MonoBehaviour
     private float managementDistance = 10f;
 
     [SerializeField]
-    private GameObject nodeResours, nodeSpecial, nodeHazard;
+    private GameObject[] nodeResours, nodeSpecial, nodeHazard;
 
     [SerializeField]
     int nodeResourseAmounts = 10, nodeSpecialAmounts = 10, nodeHazardAmounts = 10, batchAmount = 10;
+    public NativeArray<Vector3> positions { get; private set; }
+    public NativeArray<Quaternion> rotations { get; private set; }
+
+    JobHandle handle = default;
+    JobHandle mainHandle = default;
+
+    int size;
+
+    NodeJob_RotateCanvas rotationJob;
 
     //private BinaryRadianTree<Exploration_Node> nodetree;
-
-    public List<Exploration_Node> nodeList { get; private set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -59,19 +82,18 @@ public class Exploration : MonoBehaviour
 
         if (explorationFlowAction == null) return;
 
-        nodeList = new List<Exploration_Node>();
-
         //nodetree = new BinaryRadianTree<Exploration_Node>(500f, new System.Numerics.Vector3(transform.position.x, transform.position.y, transform.position.z));
+
+        size = nodeResourseAmounts + nodeSpecialAmounts + nodeHazardAmounts;
+
+        positions = new NativeArray<Vector3>(size, Allocator.Persistent);
+        rotations = new NativeArray<Quaternion>(size, Allocator.Persistent);
 
         explorationFlowAction.Init(this);
     }
 
-    public void MapSetup()
+    public void MapSetup(List<Exploration_Node> nodeList)
     {
-        int size = nodeResourseAmounts + nodeSpecialAmounts + nodeHazardAmounts;
-
-        NativeArray<Vector3> positions = new NativeArray<Vector3>(size, Allocator.Persistent);
-
 
         NodeJob_RandomPos jobData = new NodeJob_RandomPos()
         {
@@ -80,16 +102,15 @@ public class Exploration : MonoBehaviour
             extraRandom = UnityEngine.Random.Range(1, 9999),
         };
 
-        JobHandle handle = default;
-        JobHandle mainHandle = default;
-
         handle = jobData.ScheduleParallel(size, batchAmount, mainHandle);
 
         List<Exploration_Node> nodes = new List<Exploration_Node>();
 
         for (int i = 0; i < nodeResourseAmounts; i++)
         {
-            GameObject obj = Instantiate(nodeResours);
+            GameObject obj = Instantiate(nodeResours[UnityEngine.Random.Range(0, nodeResours.Length - 1)]);
+
+            obj.transform.parent = transform;
 
             Exploration_Node_Resours r = obj.GetComponent<Exploration_Node_Resours>();
 
@@ -97,7 +118,9 @@ public class Exploration : MonoBehaviour
         }
         for (int i = 0; i < nodeSpecialAmounts; i++)
         {
-            GameObject obj = Instantiate(nodeSpecial);
+            GameObject obj = Instantiate(nodeSpecial[UnityEngine.Random.Range(0, nodeSpecial.Length - 1)]);
+
+            obj.transform.parent = transform;
 
             Exploration_Node_Special s = obj.GetComponent<Exploration_Node_Special>();
 
@@ -105,7 +128,9 @@ public class Exploration : MonoBehaviour
         }
         for (int i = 0; i < nodeHazardAmounts; i++)
         {
-            GameObject obj = Instantiate(nodeHazard);
+            GameObject obj = Instantiate(nodeHazard[UnityEngine.Random.Range(0, nodeHazard.Length - 1)]);
+
+            obj.transform.parent = transform;
 
             Exploration_Node_Hazard h = obj.GetComponent<Exploration_Node_Hazard>();
 
@@ -131,13 +156,12 @@ public class Exploration : MonoBehaviour
         nodeList.Sort((x, y) => Vector3.Distance(x.transform.position, transform.position).CompareTo(Vector3.Distance(y.transform.position, transform.position)));
 
         //nodetree.CreateRadianTree(10, list);
-
-        positions.Dispose();
     }
 
 
     public void Tick(List<Exploration_Caravan> caravans, List<Exploration_Hostile> hostiles, List<Exploration_Node> nodes)
     {
+
         if (MousePoint.instance.IsOverUI == true) return;
 
         if (Input.GetMouseButtonDown(0))
@@ -150,14 +174,30 @@ public class Exploration : MonoBehaviour
             if (Vector3.Distance(explorer.transform.position, transform.position) <= managementDistance && 
                 Vector3.Distance(transform.position, MousePoint.instance.transform.position) <= managementDistance)
             {
+                handle.Complete();
                 ActionFlowStackHandler.PushActionToStack(new FlowAction_Management { });
             }
         }
 
-        if (Vector3.Distance(explorer.transform.position, hostiles[0].GetPosition()) <= 10f)
+        foreach (Exploration_Hostile h in hostiles)
         {
-            hostiles[0].EnterCombat();
+            if (Vector3.Distance(explorer.transform.position, h.GetPosition()) <= 5f)
+            {
+                handle.Complete();
+                h.EnterCombat(hostiles);
+            }
         }
+
+        foreach (Exploration_Node n in nodes)
+        {
+            n.Canvas.transform.rotation = Quaternion.LookRotation(Camera.main.transform.position - n.Canvas.transform.position, Vector3.up);
+
+            if (Vector3.Distance(explorer.transform.position, n.transform.position) <= n.intereactDistance)
+            {
+
+            }
+        }
+
 
         //List<BRT_item<Exploration_Node>> t2 = nodetree.FindClosesItems(2, new System.Numerics.Vector3(explorer.transform.position.x, explorer.transform.position.y, explorer.transform.position.z));
         //print(t2.Count);

@@ -21,9 +21,14 @@ public abstract class Exploration_Node : MonoBehaviour
     protected int[] supplyAmmounts;
 
     [SerializeField]
+    protected NodeCanvas canvas;
+
+    public NodeCanvas Canvas => canvas;
+
+    [SerializeField]
     protected DecalProjector projector;
 
-    protected float intereactDistance;
+    public float intereactDistance {  get; protected set; }
 
     public abstract void NodeInteract(Exploration_Caravan caravan);
 

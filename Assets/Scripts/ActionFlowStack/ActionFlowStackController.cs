@@ -107,21 +107,51 @@ public sealed class FlowAction_Exploration : IflowAction
     {
         expo = e;
 
-        e.MapSetup();
+        e.MapSetup(nodes);
 
-        hostiles = new List<Exploration_Hostile>();
+        SpawnHostiles(10);
+    }
 
-        hostiles.Add(new Exploration_Hostile());
+    public void SpawnCaravan(Exploration_Node target)
+    {
+        caravans.Add(new Exploration_Caravan().SpawnCaravan(expo, target));
+    }
 
-        hostiles[0].SpawnHostile(expo);
+    public void SpawnHostiles(int amount)
+    {
+
+        for (int i = 0; i < amount; i++)
+        {
+            hostiles.Add(new Exploration_Hostile(expo.Explorer));
+        }
+
+        foreach (Exploration_Hostile h in hostiles)
+        {
+            if (h.body != null) continue;
+
+            h.SpawnHostile(expo);
+        }
     }
 
     public void OnBegin(bool bFirstTime)
     {
         if (bFirstTime)
         {
+            hostiles = new List<Exploration_Hostile>();
+            caravans = new List<Exploration_Caravan>();
+            nodes = new List<Exploration_Node>();
             //Load info before switching scenes!
             explorationScene = Addressables.LoadSceneAsync("Assets/Scenes/Exploration.unity", LoadSceneMode.Additive);
+        }
+
+        foreach (Exploration_Hostile h in hostiles)
+        {
+            h.body.gameObject.SetActive(true);
+        }
+
+        foreach(Exploration_Caravan c in caravans)
+        {
+            c.body.gameObject.SetActive(true);
         }
 
         SceneRoot.SetRoot(1);
@@ -145,6 +175,8 @@ public sealed class FlowAction_Exploration : IflowAction
 
     void CleanUp()
     {
+        expo.positions.Dispose();
+        expo.rotations.Dispose();
         Addressables.UnloadSceneAsync(explorationScene);
         explorationScene.Release();
     }

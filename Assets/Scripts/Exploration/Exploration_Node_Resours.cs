@@ -4,12 +4,12 @@ public class Exploration_Node_Resours : Exploration_Node
 {
     public override void NodeInteract(Exploration_Caravan caravan)
     {
-        throw new System.NotImplementedException();
+        base.NodeInteract(caravan);
     }
 
     public override void NodeInteract()
     {
-        throw new System.NotImplementedException();
+        base.NodeInteract();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

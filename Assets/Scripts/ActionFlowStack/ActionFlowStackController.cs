@@ -175,6 +175,11 @@ public sealed class FlowAction_Exploration : IflowAction
 
     void CleanUp()
     {
+        foreach(Exploration_Node n in nodes)
+        {
+            n.CleanUpNode();
+        }
+
         expo.positions.Dispose();
         expo.rotations.Dispose();
         Addressables.UnloadSceneAsync(explorationScene);

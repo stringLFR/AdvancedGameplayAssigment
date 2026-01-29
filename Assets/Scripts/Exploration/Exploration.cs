@@ -6,6 +6,7 @@ using Unity.Jobs;
 using Unity.Collections;
 using System;
 using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 public struct NodeJob_RandomPos : IJobFor
 {
@@ -56,7 +57,7 @@ public class Exploration : MonoBehaviour
     public DroneUnitBody caravanPrefab;
 
     [SerializeField]
-    private float managementDistance = 10f;
+    private float managementDistance = 10f, resourceUpkeepTickRate = 1f;
 
     [SerializeField]
     private GameObject[] nodeResours, nodeSpecial, nodeHazard;
@@ -68,6 +69,10 @@ public class Exploration : MonoBehaviour
 
     JobHandle handle = default;
     JobHandle mainHandle = default;
+
+    float time = 0f;
+
+    public SupplyData[] SupplyData { get; private set; }
 
     int size;
 
@@ -88,6 +93,17 @@ public class Exploration : MonoBehaviour
 
         positions = new NativeArray<Vector3>(size, Allocator.Persistent);
         rotations = new NativeArray<Quaternion>(size, Allocator.Persistent);
+
+        SupplyData = new SupplyData[5];
+
+        for (int i = 0; i < SupplyData.Length; i++)
+        {
+            SupplyData[i].Type = (SupplyType)i;
+
+            SupplyData[i].MaxAmount = 1000;
+
+            SupplyData[i].currentAmount = 0;
+        }
 
         explorationFlowAction.Init(this);
     }
@@ -161,30 +177,42 @@ public class Exploration : MonoBehaviour
 
     public void Tick(List<Exploration_Caravan> caravans, List<Exploration_Hostile> hostiles, List<Exploration_Node> nodes)
     {
+        time += Time.deltaTime;
 
-        if (MousePoint.instance.IsOverUI == true) return;
-
-        if (Input.GetMouseButtonDown(0))
+        if (time >= resourceUpkeepTickRate)
         {
-            NavMesh.SamplePosition(MousePoint.instance.transform.position, out NavMeshHit hit, Mathf.Infinity, NavMesh.AllAreas);
+            time = 0f;
 
-            explorer.ProcedualCore.Agent.SetDestination(hit.position);
-            explorer.ProcedualCore.ManualNavRotTarget = hit.position;
-
-            if (Vector3.Distance(explorer.transform.position, transform.position) <= managementDistance && 
-                Vector3.Distance(transform.position, MousePoint.instance.transform.position) <= managementDistance)
+            for (int i = 0; i < SupplyData.Length; i++)
             {
-                handle.Complete();
-                ActionFlowStackHandler.PushActionToStack(new FlowAction_Management { });
+                SupplyData[i].currentAmount = Mathf.Clamp(SupplyData[i].currentAmount - (1 + 1 * caravans.Count) , 0, SupplyData[i].MaxAmount);
             }
         }
+
 
         foreach (Exploration_Hostile h in hostiles)
         {
             if (Vector3.Distance(explorer.transform.position, h.GetPosition()) <= 5f)
             {
-                handle.Complete();
                 h.EnterCombat(hostiles);
+            }
+        }
+
+        foreach (Exploration_Caravan c in caravans)
+        {
+            if (c.goingHome == false)
+            {
+                if (Vector3.Distance(c.node.transform.position, c.GetPosition()) <= c.node.intereactDistance)
+                {
+                    c.TransfferSupplies(c.node.GivesResources,null, c.node);
+                }
+            }
+            else
+            {
+                if (Vector3.Distance(transform.position, c.GetPosition()) <= managementDistance)
+                {
+                    c.TransfferSupplies(c.node.GivesResources, this, null);
+                }
             }
         }
 
@@ -202,7 +230,35 @@ public class Exploration : MonoBehaviour
 
             if (Vector3.Distance(explorer.transform.position, n.transform.position) <= n.intereactDistance)
             {
+                if (n.assignedCaravan == false)
+                {
+                    n.Canvas.Button.gameObject.SetActive(true);
+                }
+                else
+                {
+                    n.Canvas.Button.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                n.Canvas.Button.gameObject.SetActive(false);
+            }
+        }
 
+        if (MousePoint.instance.IsOverUI == true) return;
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            NavMesh.SamplePosition(MousePoint.instance.transform.position, out NavMeshHit hit, Mathf.Infinity, NavMesh.AllAreas);
+
+            explorer.ProcedualCore.Agent.SetDestination(hit.position);
+            explorer.ProcedualCore.ManualNavRotTarget = hit.position;
+
+            if (Vector3.Distance(explorer.transform.position, transform.position) <= managementDistance &&
+                Vector3.Distance(transform.position, MousePoint.instance.transform.position) <= managementDistance)
+            {
+                handle.Complete();
+                ActionFlowStackHandler.PushActionToStack(new FlowAction_Management { });
             }
         }
 

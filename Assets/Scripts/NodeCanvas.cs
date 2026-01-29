@@ -13,7 +13,11 @@ public class NodeCanvas : MonoBehaviour
     [SerializeField]
     private Image background;
 
-    
+    [SerializeField]
+    private Button button;
+
+    public Button Button => button;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

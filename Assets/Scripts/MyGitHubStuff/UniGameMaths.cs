@@ -3,6 +3,22 @@ using System.Numerics;
 
 namespace UniGameMaths
 {
+    public static class UnityMaths
+    {
+
+        #region NumericsConversions
+        public static System.Numerics.Vector3 GetNumericsVecFromUnityVec(UnityEngine.Vector3 unityVec)
+        {
+            return new System.Numerics.Vector3(unityVec.x, unityVec.y, unityVec.z);
+        }
+
+        public static UnityEngine.Vector3 GetUnityVecFromNumericsVec(System.Numerics.Vector3 NumericVec)
+        {
+            return new UnityEngine.Vector3(NumericVec.X, NumericVec.Y, NumericVec.Z);
+        }
+        #endregion
+    }
+
     public static class SegmentMaths
     {
         public static Vector3 ClosestPointOnSegment(Vector3 point, Vector3 VecA, Vector3 vecB)
@@ -51,6 +67,16 @@ namespace UniGameMaths
     public static class BaryCentricCoordMaths
     {
 
+    }
+
+    public static class BezierCurvesMaths
+    {
+
+    }
+
+    public static class GraphsMaths
+    {
+        
     }
 
     //Easing funcs returns a value which can be used in lerps.

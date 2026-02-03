@@ -15,6 +15,7 @@ public class Projectile : MonoBehaviour
     private Vector3 p0, p1, p2, p3;
     private float startingMana;
     private float progress;
+    private bool hasHit = false;
     public void InitProjectile(ICombatObject c)
     {
         controller = c;
@@ -28,6 +29,7 @@ public class Projectile : MonoBehaviour
 
         if (startingMana < 0.1f) return false;
         if (Vector3.Distance(transform.position, p3) < 1) return false;
+        if (hasHit == true) return false;
 
         return true;
     }
@@ -39,6 +41,7 @@ public class Projectile : MonoBehaviour
         p3 = pb;
         startingMana = mana;
         progress = 0f;
+        hasHit = false;
     }
 
     private Vector3 RandomTangent(Vector3 value) => new Vector3(Random.Range(-value.x, value.x), Random.Range(-value.y, value.y), Random.Range(-value.z, value.z));
@@ -63,7 +66,14 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
+        if (other.TryGetComponent<DroneUnitBody>(out DroneUnitBody hit) == true)
+        {
+            if (hit != controller.Caster)
+            {
+                hasHit = true;
+                hit.TakeDamage(controller.Caster.MyRanged_P_HitRate, startingMana);
+            }
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

@@ -30,11 +30,16 @@ public class Exploration_Hostile
 
 
     //TODO: Add it so that this can also decide what enemies from the scriptable that will be spawned!
-    public void EnterCombat(List<Exploration_Hostile> hostiles)
+    public void EnterCombat(List<Exploration_Hostile> hostiles, List<Exploration_Caravan> caravans)
     {
         foreach(Exploration_Hostile h in hostiles)
         {
             h.body.gameObject.SetActive(false);
+        }
+
+        foreach (Exploration_Caravan c in caravans)
+        {
+            c.body.gameObject.SetActive(false);
         }
         ActionFlowStackHandler.PushActionToStack(new FlowAction_Combat { });
     }

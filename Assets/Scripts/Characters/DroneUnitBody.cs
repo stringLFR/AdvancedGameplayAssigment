@@ -26,6 +26,13 @@ public sealed class DroneUnitBody : MonoBehaviour
     public ControllerBase Controller => controller;
     public ProcedualCore ProcedualCore => procedualCore;
 
+    public bool IsEnemy {  get; private set; }
+
+    public void SetEnemyBool(bool bollean)
+    {
+        IsEnemy = bollean;
+    }
+
     public int MyHP => HP;
     public int MyMana => mana;
     public int MySanity => sanity;

@@ -147,11 +147,13 @@ public sealed class FlowAction_Exploration : IflowAction
         foreach (Exploration_Hostile h in hostiles)
         {
             h.body.gameObject.SetActive(true);
+            h.body.ProcedualCore.Agent.isStopped = false;
         }
 
         foreach(Exploration_Caravan c in caravans)
         {
             c.body.gameObject.SetActive(true);
+            c.body.ProcedualCore.Agent.isStopped = false;
         }
 
         SceneRoot.SetRoot(1);
@@ -216,6 +218,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
     {
         SceneRoot.SetRoot(2);
         monoCOmbat = c;
+        CombatListener.Init(c);
         Object.Instantiate(mapPrefab.Result, monoCOmbat.transform);
 
         List<ADSSetupStats> tempList = new List<ADSSetupStats>();
@@ -228,6 +231,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             DroneUnitBody droneUnitBody = obj.GetComponent<DroneUnitBody>();
             droneUnitBody.Init(unit, monoCOmbat.PlayerController);
             monoCOmbat.Playerteam.Add(droneUnitBody);
+            droneUnitBody.SetEnemyBool(false);
 
             if (unit.MyMainActions != null)
             {
@@ -268,6 +272,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             DroneUnitBody droneUnitBodyEnemy = objEnemy.GetComponent<DroneUnitBody>();
             droneUnitBodyEnemy.Init(unit, monoCOmbat.AIController);
             monoCOmbat.EnemyTeam.Add(droneUnitBodyEnemy);
+            droneUnitBodyEnemy.SetEnemyBool(true);
 
             if (unit.MyMainActions != null)
             {
@@ -318,7 +323,6 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             int randomIndex = Random.Range(0, combatMaps.Length - 1);
             string index = combatMaps[randomIndex];
             //Load info before switching scenes!
-            CombatListener.Init();
             adsInstance = CreateADS(10, 100);
             mapPrefab = Addressables.LoadAssetAsync<GameObject>(index);
             baseCharacterPrefab = Addressables.LoadAssetAsync<GameObject>("Assets/Prefabs/Characters/ProcedualBody.prefab");

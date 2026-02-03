@@ -41,6 +41,8 @@ public class Exploration_Caravan
 
                     expo.SupplyData[j].currentAmount = newAmount;
 
+                    expo.UpdateSlider(expo.SupplyData[j]);
+
                     caravanData[i].currentAmount = transfferAmount;
                 }
             }
@@ -72,6 +74,8 @@ public class Exploration_Caravan
                     int transfferAmount = isTaking == true ? caravanData[i].currentAmount - caravanData[i].currentAmount : initialAmount - newAmount;
 
                     leNode.Supplies[j].currentAmount = newAmount;
+
+                    leNode.NodeInteract(this, leNode.Supplies[j]);
 
                     caravanData[i].currentAmount = transfferAmount;
                 }

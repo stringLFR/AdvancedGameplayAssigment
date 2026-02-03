@@ -34,9 +34,9 @@ public abstract class Exploration_Node : MonoBehaviour
     protected float nodeOuterRadius, nodeInnerRadius;
 
     [SerializeField]
-    protected bool givesResources = true;
+    protected bool isTaking = true;
 
-    public bool GivesResources => givesResources;
+    public bool IsTaking => isTaking;
 
     [SerializeField]
     protected SupplyData[] supplies;
@@ -55,16 +55,9 @@ public abstract class Exploration_Node : MonoBehaviour
 
     public float intereactDistance {  get; protected set; }
 
-    public virtual void NodeInteract(Exploration_Caravan caravan)
+    public virtual void NodeInteract(Exploration_Caravan caravan, SupplyData data)
     {
-        if (givesResources == true)
-        {
-
-        }
-        else
-        {
-
-        }
+        canvas.UpdateSlider(data);
     }
 
     public virtual void NodeInteract()
@@ -96,6 +89,11 @@ public abstract class Exploration_Node : MonoBehaviour
         assignedCaravan = false;
 
         canvas.Button.onClick.AddListener(() => NodeInteract());
+
+        foreach(SupplyData d in supplies)
+        {
+            canvas.SetUpSliders(d);
+        }
 
         return size;
     }

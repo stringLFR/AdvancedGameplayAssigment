@@ -33,9 +33,17 @@ public class ReactionNode_QuickThrow : ActionNodeBase
 
     public override ActionEffectBase Output => effect;
 
+    private bool hasTriggered = false;
+
     public override ActionEffectBase GetADSOutput()
     {
-        return Output;
+        if (hasTriggered == false)
+        {
+            hasTriggered = true;
+            return Output;
+        }
+
+        return null;
     }
 
     public override float GetInputScore(CombatListener input)
@@ -57,8 +65,10 @@ public class ReactionNode_QuickThrow : ActionNodeBase
             AE_ShotProjectile aE_ShotProjectile = (AE_ShotProjectile)func();
 
             if (aE_ShotProjectile != null)
-            { 
-                aE_ShotProjectile.TriggerActionEffect(caster, new Vector3(0,10,0));
+            {
+                DroneUnitBody target = CombatListener.GetClosesTarget(caster.IsEnemy, caster.transform.position);
+
+                aE_ShotProjectile.TriggerActionEffect(caster, target.transform.position);
             }
         }
     }
@@ -66,5 +76,7 @@ public class ReactionNode_QuickThrow : ActionNodeBase
     public override void WhenPutOnADSStack(CombatListener input, ActionEffectBase output)
     {
         Debug.Log($"Reaction {nameKey} is on stack!");
+
+        hasTriggered = false;
     }
 }

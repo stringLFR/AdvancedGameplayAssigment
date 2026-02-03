@@ -5,7 +5,7 @@ using ActionFlowStack;
 using Unity.Jobs;
 using Unity.Collections;
 using System;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using static UnityEditor.Progress;
 
 public struct NodeJob_RandomPos : IJobFor
@@ -64,6 +64,10 @@ public class Exploration : MonoBehaviour
 
     [SerializeField]
     int nodeResourseAmounts = 10, nodeSpecialAmounts = 10, nodeHazardAmounts = 10, batchAmount = 10;
+
+    [SerializeField]
+    private Slider food, intel, mana, medicine, metalics;
+
     public NativeArray<Vector3> positions { get; private set; }
     public NativeArray<Quaternion> rotations { get; private set; }
 
@@ -75,6 +79,9 @@ public class Exploration : MonoBehaviour
     public SupplyData[] SupplyData { get; private set; }
 
     int size;
+
+    const int maxSupply = 1000;
+    const int startingSupply = 500;
 
     NodeJob_RotateCanvas rotationJob;
 
@@ -100,12 +107,40 @@ public class Exploration : MonoBehaviour
         {
             SupplyData[i].Type = (SupplyType)i;
 
-            SupplyData[i].MaxAmount = 1000;
+            SupplyData[i].MaxAmount = maxSupply;
 
-            SupplyData[i].currentAmount = 0;
+            SupplyData[i].currentAmount = startingSupply;
         }
 
+        food.maxValue = maxSupply;
+        intel.maxValue = maxSupply;
+        mana.maxValue = maxSupply;
+        medicine.maxValue = maxSupply;
+        metalics.maxValue = maxSupply;
+
         explorationFlowAction.Init(this);
+    }
+
+    public void UpdateSlider(SupplyData data)
+    {
+        switch (data.Type)
+        {
+            case SupplyType.FOOD:
+                food.value = data.currentAmount;
+                break;
+            case SupplyType.MANA_STORAGE:
+                mana.value = data.currentAmount;
+                break;
+            case SupplyType.INTEL:
+                intel.value = data.currentAmount;
+                break;
+            case SupplyType.MEDICINE:
+                medicine.value = data.currentAmount;
+                break;
+            case SupplyType.METALLICS:
+                metalics.value = data.currentAmount;
+                break;
+        }
     }
 
     public void MapSetup(List<Exploration_Node> nodeList)
@@ -186,6 +221,8 @@ public class Exploration : MonoBehaviour
             for (int i = 0; i < SupplyData.Length; i++)
             {
                 SupplyData[i].currentAmount = Mathf.Clamp(SupplyData[i].currentAmount - (1 + 1 * caravans.Count) , 0, SupplyData[i].MaxAmount);
+
+                UpdateSlider(SupplyData[i]);
             }
         }
 
@@ -194,7 +231,7 @@ public class Exploration : MonoBehaviour
         {
             if (Vector3.Distance(explorer.transform.position, h.GetPosition()) <= 5f)
             {
-                h.EnterCombat(hostiles);
+                h.EnterCombat(hostiles,caravans);
             }
         }
 
@@ -204,14 +241,14 @@ public class Exploration : MonoBehaviour
             {
                 if (Vector3.Distance(c.node.transform.position, c.GetPosition()) <= c.node.intereactDistance)
                 {
-                    c.TransfferSupplies(c.node.GivesResources,null, c.node);
+                    c.TransfferSupplies(c.node.IsTaking,null, c.node);
                 }
             }
             else
             {
                 if (Vector3.Distance(transform.position, c.GetPosition()) <= managementDistance)
                 {
-                    c.TransfferSupplies(c.node.GivesResources, this, null);
+                    c.TransfferSupplies(c.node.IsTaking, this, null);
                 }
             }
         }
@@ -257,7 +294,16 @@ public class Exploration : MonoBehaviour
             if (Vector3.Distance(explorer.transform.position, transform.position) <= managementDistance &&
                 Vector3.Distance(transform.position, MousePoint.instance.transform.position) <= managementDistance)
             {
-                handle.Complete();
+                foreach(Exploration_Caravan c in caravans)
+                {
+                    c.body.ProcedualCore.Agent.isStopped = true;
+                }
+
+                foreach(Exploration_Hostile h in hostiles)
+                {
+                    h.body.ProcedualCore.Agent.isStopped = true;
+                }
+
                 ActionFlowStackHandler.PushActionToStack(new FlowAction_Management { });
             }
         }

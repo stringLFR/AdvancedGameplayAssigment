@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Exploration_Node_Special : Exploration_Node
 {
-    public override void NodeInteract(Exploration_Caravan caravan)
+    public override void NodeInteract(Exploration_Caravan caravan, SupplyData d)
     {
-        base.NodeInteract(caravan);
+        base.NodeInteract(caravan, d);
     }
 
     public override void NodeInteract()

@@ -6,9 +6,9 @@ public class Exploration_Node_Hazard : Exploration_Node
     [SerializeField]
     protected NavMeshObstacle NavMeshObstacle;
 
-    public override void NodeInteract(Exploration_Caravan caravan)
+    public override void NodeInteract(Exploration_Caravan caravan, SupplyData d)
     {
-        base.NodeInteract(caravan);
+        base.NodeInteract(caravan, d);
     }
 
     public override void NodeInteract()

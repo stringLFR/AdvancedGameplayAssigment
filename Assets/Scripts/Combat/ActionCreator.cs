@@ -9,7 +9,7 @@ public static class ActionCreator
         {
             case MainActionTypes.RunToPoint:
 
-                MainAction_RunToPoint runToPoint = new MainAction_RunToPoint(CreateActionEffect(stats.Effect),stats.MainActionName + userName, stats.manaCost, stats.actionType, stats.Effect);
+                MainAction_RunToPoint runToPoint = new MainAction_RunToPoint(CreateActionEffect(stats.Effect),stats.MainActionName + " " + userName, stats.manaCost, stats.actionType, stats.Effect);
 
                 return runToPoint;
         }
@@ -23,7 +23,7 @@ public static class ActionCreator
             case NodeType.QuickThrow:
 
                 ReactionNode_QuickThrow quickThrow = new ReactionNode_QuickThrow();
-                quickThrow.Init(stats.NodeName + userName, stats.IsRoot, CreateActionEffect(stats.Effect),stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
+                quickThrow.Init(stats.NodeName + " " + userName, stats.IsRoot, CreateActionEffect(stats.Effect),stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
                 quickThrow.SetProjectilesPath("Assets/Prefabs/Projectiles/Rock.prefab");
                 return quickThrow;
         }

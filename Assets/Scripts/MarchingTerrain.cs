@@ -4,7 +4,8 @@ using static UnityEditor.Searcher.SearcherWindow.Alignment;
 using UnityEngine.Rendering;
 using UniGameMaths;
 using Unity.VisualScripting;
-
+using System.Collections.Generic;
+using System.Numerics;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -13,15 +14,38 @@ public class MarchingTerrain : MonoBehaviour
     private Mesh m_mesh;
 
     [SerializeField]
-    float iso = 0.5f;
+    float iso = 0.5f, randomModifier = 3f;
 
     [SerializeField]
-    Vector3 sizeVec = Vector3.one;
+    UnityEngine.Vector3 sizeVec = UnityEngine.Vector3.one;
+
+    public static float[,,] CreateWeightByRandom(System.Numerics.Vector3 size, float modifier = 3f)
+    {
+        float[,,] w = new float[(int)size.X, (int)size.Y, (int)size.Z];
+
+        for (int z = 0; z < size.Z; ++z)
+        {
+            float fZ = (z / (float)size.Z) * modifier;
+
+            for (int y = 0; y < size.Y; ++y)
+            {
+                float fY = (y / (float)size.Y) * modifier;
+
+                for (int x = 0; x < size.X; ++x)
+                {
+                    float fX = (x / (float)size.X) * modifier;
+
+                    w[x, y, z] = UnityEngine.Mathf.PerlinNoise(fX, fY) * UnityEngine.Mathf.PerlinNoise(fY, fZ);
+                }
+            }
+        }
+        return w;
+    }
 
     public void Create()
     {
         MarchingMaths.MarchingCube cube = MarchingMaths.CreateMarchingCube(iso, UnityMaths.GetNumericsVecFromUnityVec(sizeVec),
-            MarchingMaths.CreateWeightByRandom(UnityMaths.GetNumericsVecFromUnityVec(sizeVec)));
+            CreateWeightByRandom(UnityMaths.GetNumericsVecFromUnityVec(sizeVec), randomModifier));
 
         // create mesh
         if (m_mesh == null)
@@ -36,12 +60,7 @@ public class MarchingTerrain : MonoBehaviour
         m_mesh.indexFormat = cube.Vertices.Count > ushort.MaxValue ? IndexFormat.UInt32 : IndexFormat.UInt16;
         if (cube.Vertices.Count > 0 && cube.Triangles.Count > 0)
         {
-            foreach (var t in cube.Vertices)
-            {
-                m_mesh.vertices.AddRange(new Vector3[] { UnityMaths.GetUnityVecFromNumericsVec(t) });
-
-                m_mesh.colors.AddRange(new Color[] { Color.red, Color.red, Color.red });
-            }
+            m_mesh.vertices = UnityMaths.NumericsVectorArrayToUnity(cube.Vertices.ToArray());
             m_mesh.triangles = cube.Triangles.ToArray();
             m_mesh.RecalculateBounds();
             m_mesh.RecalculateNormals();

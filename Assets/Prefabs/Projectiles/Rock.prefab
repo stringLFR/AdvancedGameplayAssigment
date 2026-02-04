@@ -156,6 +156,6 @@ MonoBehaviour:
   manaDrainPerSec: 0.15
   pa_Tangent: {x: 0, y: 10, z: 0}
   pb_Tangent: {x: 0, y: -10, z: 0}
-  pa_Tangent_Rand: {x: 10, y: 1, z: 10}
-  pb_Tangent_Rand: {x: 10, y: 1, z: 10}
+  pa_Tangent_Rand: {x: 0, y: 0, z: 0}
+  pb_Tangent_Rand: {x: 0, y: 0, z: 0}
   speed: 0.291

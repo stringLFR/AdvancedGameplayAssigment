@@ -3418,6 +3418,18 @@ MonoBehaviour:
   - {fileID: 1103131100}
   - {fileID: 1535360706}
   - {fileID: 1645185357}
+  texts:
+  - {fileID: 1733542049}
+  - {fileID: 2081110120}
+  - {fileID: 89897426}
+  - {fileID: 611879185}
+  - {fileID: 2029666427}
+  - {fileID: 204483642}
+  - {fileID: 378297428}
+  - {fileID: 1355876145}
+  - {fileID: 1604054709}
+  - {fileID: 447833653}
+  - {fileID: 925263686}
 --- !u!1 &1862782500
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Linq;
 using System.Numerics;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 
 namespace UniGameMaths
@@ -20,6 +21,17 @@ namespace UniGameMaths
         public static UnityEngine.Vector3 GetUnityVecFromNumericsVec(System.Numerics.Vector3 NumericVec)
         {
             return new UnityEngine.Vector3(NumericVec.X, NumericVec.Y, NumericVec.Z);
+        }
+
+        public static UnityEngine.Vector3[] NumericsVectorArrayToUnity(System.Numerics.Vector3[] NumericVec)
+        {
+            UnityEngine.Vector3[] list = new UnityEngine.Vector3[NumericVec.Length];
+            int index = 0;
+            foreach (System.Numerics.Vector3 vec in NumericVec)
+            {
+                list[index++] = new UnityEngine.Vector3(vec.X, vec.Y, vec.Z);
+            }
+            return list;
         }
         #endregion
     }
@@ -421,33 +433,6 @@ namespace UniGameMaths
             return vCube + MarchingCube_CornerOffsets[iCorner];
         }
 
-        public static float[,,] CreateWeightByRandom(Vector3 size, float modifier = 3f)
-        {
-            float[,,] w = new float[(int)size.X, (int)size.Y, (int)size.Z];
-
-            Random rand = new Random();
-
-            for (int z = 0; z < size.Z; ++z)
-            {
-                //float fZ = (z / (float)size.Z) * modifier;
-
-                for (int y = 0; y < size.Y; ++y)
-                {
-                    //float fY = (y / (float)size.Y) * modifier;
-
-                    for (int x = 0; x < size.X; ++x)
-                    {
-                        //float fX = (x / (float)size.X) * modifier;
-
-                        w[x, y, z] = rand.Next() * modifier;
-
-                        //w[x, y, z] = Mathf.PerlinNoise(fX, fY) * Mathf.PerlinNoise(fY, fZ);
-                    }
-                }
-            }
-            return w;
-        }
-
         public static MarchingCube CreateMarchingCube(float iso, Vector3 size, float[,,] newWeight)
         {
             MarchingCube marchingCube = new MarchingCube();
@@ -471,6 +456,8 @@ namespace UniGameMaths
                     }
                 }
             }
+
+            Dictionary<Vector3, int> vertexLookUp = new Dictionary<Vector3, int>();
 
             for (int z = 0; z < marchingCube.Size.Z - 1; ++z)
             {
@@ -506,8 +493,42 @@ namespace UniGameMaths
                                                         GetCornerPosition(vCube, e21), cubeWeights[e21], marchingCube.ISO);
 
                             int iStart = marchingCube.Vertices.Count;
-                            marchingCube.Vertices.AddRange(new Vector3[] { vIso1, vIso2, vIso3 });
-                            marchingCube.Triangles.AddRange(new int[] { iStart + 0, iStart + 2, iStart + 1 });
+                            
+                            if (vertexLookUp.TryGetValue(vIso1, out int value1) == false)
+                            {
+                                vertexLookUp.Add(vIso1, iStart);
+                                marchingCube.Vertices.Add(vIso1);
+                                marchingCube.Triangles.Add(iStart);
+                                iStart++;
+                            }
+                            else
+                            {
+                                marchingCube.Triangles.Add(value1);
+                            }
+
+                            if (vertexLookUp.TryGetValue(vIso3, out int value3) == false)
+                            {
+                                vertexLookUp.Add(vIso3, iStart);
+                                marchingCube.Vertices.Add(vIso3);
+                                marchingCube.Triangles.Add(iStart);
+                                iStart++;
+                            }
+                            else
+                            {
+                                marchingCube.Triangles.Add(value3);
+                            }
+
+                            if (vertexLookUp.TryGetValue(vIso2, out int value2) == false)
+                            {
+                                vertexLookUp.Add(vIso2, iStart);
+                                marchingCube.Vertices.Add(vIso2);
+                                marchingCube.Triangles.Add(iStart);
+                                iStart++;
+                            }
+                            else
+                            {
+                                marchingCube.Triangles.Add(value2);
+                            }
                         }
 
                     }

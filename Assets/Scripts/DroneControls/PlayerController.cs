@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,6 +30,8 @@ public class PlayerController : ControllerBase
 
         foreach (Button b in playerHudPrototype.buttons) b.onClick.RemoveAllListeners();
 
+        foreach (TextMeshProUGUI t in playerHudPrototype.texts) t.text = "Empty";
+
         if (user.MainActions.Count >= 1)
         {
             foreach (var a in user.MainActions)
@@ -36,6 +39,7 @@ public class PlayerController : ControllerBase
                 if (index > playerHudPrototype.buttons.Count - 1) break;
 
                 playerHudPrototype.buttons[index].onClick.AddListener(() => { a.Activate(this, user); });
+                playerHudPrototype.texts[index].text = a.MainActionName;
                 index++;
             }
         }

@@ -22,4 +22,6 @@ public sealed class MainMenu : MonoBehaviour
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void StartExploring() => ActionFlowStackHandler.PushActionToStack(new FlowAction_Exploration { });
+
+    public void EndGame() => Application.Quit();
 }

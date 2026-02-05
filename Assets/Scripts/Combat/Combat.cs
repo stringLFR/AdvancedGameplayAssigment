@@ -28,7 +28,14 @@ public sealed class Combat : MonoBehaviour
     private GameObject PlayerHud;
 
     [SerializeField]
-    private TextMeshProUGUI testTurnText;
+    private TextMeshProUGUI combatText;
+
+    [SerializeField]
+    private int combatTextLineCountMax = 5;
+
+    public int CombatTextLineCountMax => combatTextLineCountMax;
+
+    public TextMeshProUGUI CombatText => combatText;
 
     private Queue<DroneUnitBody> turnOrder;
 
@@ -66,23 +73,30 @@ public sealed class Combat : MonoBehaviour
         print("Combat Found!");
         combatFlowAction.Init(this);
 
-        int biggestTeamSize = playerTeam.Count >= enemyTeam.Count ? playerTeam.Count : enemyTeam.Count;
+        int combatants = playerTeam.Count + enemyTeam.Count;
 
-        for (int i = 0; i < biggestTeamSize; i++)
+        DroneUnitBody[] arr = new DroneUnitBody[combatants];
+
+        playerTeam.CopyTo(arr, 0);
+        enemyTeam.CopyTo(arr, playerTeam.Count);
+
+        for (int i = 0; i < combatants; i++)
         {
-            if (playerTeam[i] == null && enemyTeam[i] == null) break;
-            else if (playerTeam[i] == null && enemyTeam[i] != null) turnOrder.Enqueue(enemyTeam[i]);
-            else if (playerTeam[i] != null && enemyTeam[i] == null) turnOrder.Enqueue(playerTeam[i]);
-            else if (playerTeam[i].MySpeed >= enemyTeam[i].MySpeed)
+            float best = 0;
+            int index = i; 
+            for(int j = 0; j < arr.Length; j++)
             {
-                turnOrder.Enqueue(playerTeam[i]);
-                turnOrder.Enqueue(enemyTeam[i]);
+                if (arr[j] == null) continue;
+
+                if (arr[j].MySpeed >= best)
+                {
+                    best = arr[j].MySpeed;
+                    index = j;
+                }
             }
-            else if (playerTeam[i].MySpeed < enemyTeam[i].MySpeed)
-            {
-                turnOrder.Enqueue(enemyTeam[i]);
-                turnOrder.Enqueue(playerTeam[i]);
-            }
+
+            turnOrder.Enqueue(arr[index]);
+            arr[index] = null;
         }
 
         //Stack array! No HEap alloc!
@@ -93,7 +107,8 @@ public sealed class Combat : MonoBehaviour
     {
         DroneUnitBody body = turnOrder.Dequeue();
         turnOrder.Enqueue(body);
-        testTurnText.text = body.DroneUnit.DroneName;
+        CombatListener.AddLineToCombatText(body.DroneUnit.DroneName + " Takes their turn!");
+        CombatListener.AddLineToCombatText($"With {turnOrder.Peek().DroneUnit.DroneName} going after them!");
         FlowAction_Turn t = new FlowAction_Turn();
         t.Init(this, body);
         ActionFlowStackHandler.PushActionToStack(t);

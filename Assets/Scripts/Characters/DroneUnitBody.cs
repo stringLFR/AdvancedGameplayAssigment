@@ -96,7 +96,19 @@ public sealed class DroneUnitBody : MonoBehaviour
         //rand -+ others 
         int defaultValue = (rand * (int)Mathf.Clamp(manaCost, 1,float.MaxValue)) / toughness;
         //defaultvalue -+ others 
+
+        if (defaultValue <= 0)
+        {
+            CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} took no damage!");
+            return;
+        }
+
         HP -= defaultValue;
+
+        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} was dealt {defaultValue} Damage!");
+
         myUI.SetHealthSlider(HP);
+
+        
     }
 }

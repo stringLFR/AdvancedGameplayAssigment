@@ -25,6 +25,8 @@ public sealed class CombatListener
 
     private static Combat Combat = null;
 
+    private static List<string> pastLines = new List<string>();
+
     public static void Init(Combat c)
     {
         if (instance == null) instance = new CombatListener();
@@ -58,6 +60,27 @@ public sealed class CombatListener
         if (instance != null) instance = null;
         if (currentCasterChain != null) currentCasterChain = null;
         Combat = null;
+    }
+
+    public static void AddLineToCombatText(string info)
+    {
+        if (Combat == null) return;
+
+        Combat.CombatText.text = "";
+
+        pastLines.Add(info);
+
+        int linesToRemove = pastLines.Count - Combat.CombatTextLineCountMax;
+
+        for (int i = 0; i < linesToRemove; i++)
+        {
+            pastLines.RemoveAt(0);
+        }
+
+        foreach (string line in pastLines)
+        {
+            Combat.CombatText.text += $"<br>{line}";
+        }
     }
 
     public static void Tick(Combat listenTarget)

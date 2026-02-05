@@ -31,6 +31,8 @@ public abstract class MainActionBase
     {
         CombatListener.currentMainAction = trigger;
 
+        CombatListener.AddLineToCombatText("Triggering Reactions!");
+
         FlowAction_Combat.adsInstance.CreateAncestryStack();
 
         FlowAction_Combat.adsInstance.ActivateAncestryChain();

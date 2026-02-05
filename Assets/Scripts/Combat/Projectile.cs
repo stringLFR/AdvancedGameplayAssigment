@@ -27,8 +27,16 @@ public class Projectile : MonoBehaviour
         float i = Mathf.InverseLerp(0,1, UniGameMaths.EasingFunctionMaths.EaseInSine(progress));
         transform.position = GetCubicBezierPosition(i);
 
-        if (startingMana < 0.1f) return false;
-        if (Vector3.Distance(transform.position, p3) < 1) return false;
+        if (startingMana < 0.1f)
+        {
+            CombatListener.AddLineToCombatText($"Projectile ran out of mana!");
+            return false;
+        }
+        if (Vector3.Distance(transform.position, p3) < 1)
+        {
+            CombatListener.AddLineToCombatText($"Projectile missed!");
+            return false;
+        }
         if (hasHit == true) return false;
 
         return true;
@@ -71,6 +79,9 @@ public class Projectile : MonoBehaviour
             if (hit != controller.Caster)
             {
                 hasHit = true;
+
+                CombatListener.AddLineToCombatText($"Projectile hit {hit.DroneUnit.DroneName} with {(int)startingMana} mana left!");
+
                 hit.TakeDamage(controller.Caster.MyRanged_P_HitRate, startingMana);
             }
         }

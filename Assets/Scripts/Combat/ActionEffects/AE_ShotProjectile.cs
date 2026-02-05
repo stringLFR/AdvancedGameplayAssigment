@@ -50,11 +50,15 @@ public class AE_ShotProjectile : ActionEffectBase
 
     public override void TriggerActionEffect(DroneUnitBody caster, Vector3 targetPos)
     {
+        CombatListener.AddLineToCombatText($"{caster.DroneUnit.DroneName} Shoots one projectile!");
+
         SetUpProjectile(caster, targetPos);
     }
 
     public override void TriggerActionEffect(DroneUnitBody caster, Vector3[] targetPositions)
     {
+        CombatListener.AddLineToCombatText($"{caster.DroneUnit.DroneName} Shoots {targetPositions.Length} projectiles!");
+
         for (int i = 0; i < targetPositions.Length; i++)
         {
             SetUpProjectile(caster, targetPositions[i]);

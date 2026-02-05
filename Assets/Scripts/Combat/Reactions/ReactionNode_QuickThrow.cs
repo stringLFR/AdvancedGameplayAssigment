@@ -49,8 +49,6 @@ public class ReactionNode_QuickThrow : ActionNodeBase
     public override float GetInputScore(CombatListener input)
     {
         float score = UnityEngine.Random.Range(20, 80);
-
-        Debug.Log($"Reaction {nameKey} input was {score}");
         
         return score;
         
@@ -58,8 +56,6 @@ public class ReactionNode_QuickThrow : ActionNodeBase
 
     public override void HandleADSOutputChain(Func<ActionEffectBase> ancestralOutputChain, int maxChainIndex, int chainIndex)
     {
-        Debug.Log($"Chain lenght at {chainIndex} out of {maxChainIndex}");
-
         foreach (Func<ActionEffectBase> func in ancestralOutputChain.GetInvocationList())
         {
             AE_ShotProjectile aE_ShotProjectile = (AE_ShotProjectile)func();
@@ -75,7 +71,7 @@ public class ReactionNode_QuickThrow : ActionNodeBase
 
     public override void WhenPutOnADSStack(CombatListener input, ActionEffectBase output)
     {
-        Debug.Log($"Reaction {nameKey} is on stack!");
+        CombatListener.AddLineToCombatText($"{caster.DroneUnit.DroneName} will react with QuickThrow!");
 
         hasTriggered = false;
     }

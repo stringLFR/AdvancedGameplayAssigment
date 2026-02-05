@@ -58,6 +58,8 @@ public class MainAction_RunToPoint : MainActionBase
                 {
                     effect.TriggerActionEffect(d, MousePoint.instance.transform.position);
 
+                    CombatListener.AddLineToCombatText(d.DroneUnit.DroneName + " Used MainAction_RunToPoint!");
+
                     ActivateADS(this);
 
                     break;

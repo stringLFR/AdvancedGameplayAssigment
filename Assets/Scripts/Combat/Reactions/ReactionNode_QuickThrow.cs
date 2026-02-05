@@ -48,7 +48,7 @@ public class ReactionNode_QuickThrow : ActionNodeBase
 
     public override float GetInputScore(CombatListener input)
     {
-        float score = UnityEngine.Random.Range(20, 80);
+        float score = caster.MyHP <= 0 ? 0f : UnityEngine.Random.Range(20, 80);
         
         return score;
         
@@ -63,6 +63,8 @@ public class ReactionNode_QuickThrow : ActionNodeBase
             if (aE_ShotProjectile != null)
             {
                 DroneUnitBody target = CombatListener.GetClosesTarget(caster.IsEnemy, caster.transform.position);
+
+                if (target == null) continue;
 
                 aE_ShotProjectile.TriggerActionEffect(caster, target.transform.position);
             }

@@ -1,11 +1,7 @@
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 using UnityEngine.Rendering;
 using UniGameMaths;
-using Unity.VisualScripting;
-using System.Collections.Generic;
-using System.Numerics;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -71,6 +67,8 @@ public class MarchingTerrain : MonoBehaviour
     }
 }
 
+/*
+
 [CustomEditor(typeof(MarchingTerrain))]
 public class MarchingTerrainTool : Editor
 {
@@ -85,4 +83,4 @@ public class MarchingTerrainTool : Editor
             Tool.Create();
         }
     }
-}
+}*/

@@ -106,6 +106,13 @@ public sealed class Combat : MonoBehaviour
     public void GetNextTurnHolder()
     {
         DroneUnitBody body = turnOrder.Dequeue();
+
+        if (body.MyHP <= 0)
+        {
+            GetNextTurnHolder();
+            return;
+        }
+
         turnOrder.Enqueue(body);
         CombatListener.AddLineToCombatText(body.DroneUnit.DroneName + " Takes their turn!");
         CombatListener.AddLineToCombatText($"With {turnOrder.Peek().DroneUnit.DroneName} going after them!");

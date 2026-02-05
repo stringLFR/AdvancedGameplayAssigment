@@ -4,9 +4,7 @@ using UnityEngine.AI;
 using ActionFlowStack;
 using Unity.Jobs;
 using Unity.Collections;
-using System;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public struct NodeJob_RandomPos : IJobFor
 {
@@ -67,6 +65,9 @@ public class Exploration : MonoBehaviour
 
     [SerializeField]
     private Slider food, intel, mana, medicine, metalics;
+
+    [SerializeField]
+    private GameObject startScreen;
 
     public NativeArray<Vector3> positions { get; private set; }
     public NativeArray<Quaternion> rotations { get; private set; }
@@ -212,6 +213,8 @@ public class Exploration : MonoBehaviour
 
     public void Tick(List<Exploration_Caravan> caravans, List<Exploration_Hostile> hostiles, List<Exploration_Node> nodes)
     {
+        if (startScreen != null) return;
+
         time += Time.deltaTime;
 
         if (time >= resourceUpkeepTickRate)

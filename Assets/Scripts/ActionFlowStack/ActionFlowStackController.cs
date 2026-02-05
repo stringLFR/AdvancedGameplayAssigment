@@ -214,6 +214,8 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
     public ADS<CombatListener, ActionEffectBase> CreateADS(int maxStackCount, int maxADSNodeCappacity) => new ADS<CombatListener, ActionEffectBase>(maxStackCount, maxADSNodeCappacity);
 
+    private bool combatDone = false;
+
     public void Init(Combat c)
     {
         SceneRoot.SetRoot(2);
@@ -311,7 +313,12 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
     public bool IsDone()
     {
-        return false;
+        return combatDone;
+    }
+
+    public void CombatOver(List<DroneUnitBody> winningTeam = null)
+    {
+        combatDone = true;
     }
 
     public void OnBegin(bool bFirstTime) 

@@ -15,6 +15,8 @@ public class TerrainNoiseTool : MonoBehaviour
     public float offsetX = 100f, offsetY = 100f;
 }
 
+/*
+
 [CustomEditor(typeof(TerrainNoiseTool))]
 public class TerrainNoise : Editor
 {
@@ -67,3 +69,4 @@ public class TerrainNoise : Editor
         return Mathf.PerlinNoise(xCood, yCood);
     }
 }
+*/

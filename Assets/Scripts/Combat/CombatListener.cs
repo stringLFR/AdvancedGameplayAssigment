@@ -1,3 +1,4 @@
+using ActionFlowStack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,5 +87,46 @@ public sealed class CombatListener
     public static void Tick(Combat listenTarget)
     {
         //Update listen Data!!!
+    }
+
+    public static void CombatantDied(DroneUnitBody unit)
+    {
+        if (Combat == null) return;
+
+        if (Combat.EnemyTeam.Contains(unit) == true)
+        {
+            Combat.EnemyTeam.Remove(unit);
+
+            AddLineToCombatText($"Confirmed death of hostile unit {unit.DroneUnit.DroneName}!");
+
+            if (Combat.EnemyTeam.Count <= 0)
+            {
+                FlowAction_Combat combatFlowAction = ActionFlowStackHandler.CurrentFlowAction as FlowAction_Combat;
+
+                if (combatFlowAction == null) return;
+
+                combatFlowAction.CombatOver(Combat.Playerteam);
+            }
+
+            return;
+        }
+
+        if (Combat.Playerteam.Contains(unit) == true)
+        {
+            Combat.Playerteam.Remove(unit);
+
+            AddLineToCombatText($"Confirmed death of friendly unit {unit.DroneUnit.DroneName}...");
+
+            if (Combat.Playerteam.Count <= 0)
+            {
+                FlowAction_Combat combatFlowAction = ActionFlowStackHandler.CurrentFlowAction as FlowAction_Combat;
+
+                if (combatFlowAction == null) return;
+
+                combatFlowAction.CombatOver();
+            }
+
+            return;
+        }
     }
 }

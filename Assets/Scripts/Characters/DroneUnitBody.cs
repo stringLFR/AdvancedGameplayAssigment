@@ -109,6 +109,11 @@ public sealed class DroneUnitBody : MonoBehaviour
 
         myUI.SetHealthSlider(HP);
 
+        if (HP <= 0)
+        {
+            CombatListener.CombatantDied(this);
+        }
+
         
     }
 }

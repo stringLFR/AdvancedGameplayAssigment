@@ -57,6 +57,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d48f520e9abb0d74c8b6c3c11a0e6031
+    m_Address: Assets/Prefabs/StartGameScreen.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fd1a7bcd1921a484fa9f7854bd520ec4
     m_Address: Assets/Prefabs/Management.prefab
     m_ReadOnly: 0

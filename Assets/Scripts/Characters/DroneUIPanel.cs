@@ -65,7 +65,24 @@ public class DroneUIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
         hoverText.text = $"Level: {body.DroneUnit.Level}";
         hoverText.text += $"<br>";
-        hoverText.text += $"<br>Core stats: <br>-STR: {body.DroneUnit.GetSTR} <br>-DEX: {body.DroneUnit.GetDEX} <br>-CON: {body.DroneUnit.GetCON} <br>-INT: {body.DroneUnit.GetINT} <br>-WIS: {body.DroneUnit.GetWIS} <br>-CHA: {body.DroneUnit.GetCHA}";
+        hoverText.text += $"<br>Core stats: " +
+            $"<br>-STR: {body.DroneUnit.GetSTR} " +
+            $"<br>-DEX: {body.DroneUnit.GetDEX} " +
+            $"<br>-CON: {body.DroneUnit.GetCON} " +
+            $"<br>-INT: {body.DroneUnit.GetINT} " +
+            $"<br>-WIS: {body.DroneUnit.GetWIS} " +
+            $"<br>-CHA: {body.DroneUnit.GetCHA}";
+        hoverText.text += $"<br>";
+        hoverText.text += $"<br> Sub stats: " +
+            $"<br>-Max HP {body.MyHP} " +
+            $"<br>-Max Mana {body.MyMana} " +
+            $"<br>-Max Sanity {body.MySanity} " +
+            $"<br>-Toughness {body.MyToughness} " +
+            $"<br>-Ranged physical hitRate {body.MyRanged_P_HitRate} " +
+            $"<br>-Ranged Magical hitRate {body.MyRanged_M_HitRate} " +
+            $"<br>-Melee physical hitRate {body.MyMelee_P_HitRate} " +
+            $"<br>-Melee magical hitRate {body.MyMelee_M_HitRate} " +
+            $"<br>-Speed {body.MySpeed}";
         hoverText.text += $"<br>";
         hoverText.text += $"<br>MainActions:";
         foreach (MainActionStats main in body.DroneUnit.MyMainActions)

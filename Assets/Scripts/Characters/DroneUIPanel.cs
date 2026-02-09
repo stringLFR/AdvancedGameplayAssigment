@@ -1,16 +1,23 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DroneUIPanel : MonoBehaviour
+public class DroneUIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private DroneUnitBody _unitBody;
 
 
     [SerializeField]
-    private TextMeshProUGUI healthValueText, manaValueText, sanityValueText, droneName;
+    private TextMeshProUGUI healthValueText, manaValueText, sanityValueText, droneName, hoverText;
     [SerializeField]
     private Slider healthSlider, manaSlider, sanitySlider;
+
+    [SerializeField]
+    private Canvas canvas;
+
+    [SerializeField]
+    private GameObject hoverPanel;
 
     private int maxHealth, maxMana, maxSanity;
 
@@ -18,6 +25,9 @@ public class DroneUIPanel : MonoBehaviour
     void Start()
     {
         _unitBody = GetComponent<DroneUnitBody>();
+        canvas.worldCamera = Camera.main;
+
+
     }
 
     // Update is called once per frame
@@ -42,14 +52,30 @@ public class DroneUIPanel : MonoBehaviour
         sanityValueText.text = $"{sanitySlider.value} / {maxSanity}";
     }
 
-    public void InitUIPanel(int hp, int mana, int sanity, string name)
+    public void InitUIPanel(DroneUnitBody body)
     {
-        maxHealth = hp;
-        maxMana = mana;
-        maxSanity = sanity;
+        maxHealth = body.MyHP;
+        maxMana = body.MyMana;
+        maxSanity = body.MySanity;
         healthSlider.maxValue = maxHealth;
         manaSlider.maxValue = maxMana;
         sanitySlider.maxValue = maxSanity;
         droneName.text = name;
+
+        hoverText.text = $"Level: {body.DroneUnit.Level}";
+        hoverText.text += $"<br>Core stats: <br>STR: {body.DroneUnit.GetSTR} <br>DEX: {body.DroneUnit.GetDEX} <br>CON: {body.DroneUnit.GetCON} <br>INT: {body.DroneUnit.GetINT} <br>WIS: {body.DroneUnit.GetWIS} <br>CHA: {body.DroneUnit.GetCHA}";
+        hoverText.text += $"<br>ETC";
+
+        hoverPanel.SetActive(false);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        hoverPanel.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        hoverPanel.SetActive(false);
     }
 }

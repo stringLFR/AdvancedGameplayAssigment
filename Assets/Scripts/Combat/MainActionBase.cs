@@ -25,6 +25,8 @@ public abstract class MainActionBase
     public abstract effectType EffectType { get; }
     public abstract int ManaCost { get; }
 
+    public abstract string MainActionInfo { get; }
+
     public abstract void Activate(ControllerBase controller, DroneUnitBody user);
 
     protected void ActivateADS(MainActionBase trigger)

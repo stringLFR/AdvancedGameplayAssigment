@@ -150,6 +150,8 @@ public sealed class CRPGCamera : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void ScrollWhell(InputAction.CallbackContext context)
     {
+        if (MousePoint.instance.IsOverUI == true) return;
+
         currentZCamDist -= context.ReadValue<Vector2>().y;
 
         currentZCamDist = Mathf.Clamp(currentZCamDist, 0, zMaxDistanceFromHolder);

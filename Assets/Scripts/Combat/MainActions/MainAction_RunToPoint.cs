@@ -18,6 +18,8 @@ public class MainAction_RunToPoint : MainActionBase
 
     public override effectType EffectType => effectType;
 
+    public override string MainActionInfo => "Walks towards traversable position. No range limit" + "<br> " + "<br>TODO: Add lore dump here!";
+
     public MainAction_RunToPoint(ActionEffectBase ae, string n, int m, ActionType a, effectType e)
     {
         effect = ae;

@@ -76,7 +76,7 @@ public sealed class DroneUnitBody : MonoBehaviour
         mana = maxMana;
         sanity = maxSanity;
 
-        myUI.InitUIPanel(maxHP, maxMana, maxSanity,unit.DroneName);
+        myUI.InitUIPanel(this);
         myUI.SetHealthSlider(maxHP);
         myUI.SetManaSlider(maxMana);
         myUI.SetSanitySlider(maxSanity);

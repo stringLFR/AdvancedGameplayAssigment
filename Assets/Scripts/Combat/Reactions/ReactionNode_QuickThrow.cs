@@ -49,6 +49,8 @@ public class ReactionNode_QuickThrow : ActionNodeBase
     public override float GetInputScore(CombatListener input)
     {
         float score = caster.MyHP <= 0 ? 0f : UnityEngine.Random.Range(20, 80);
+
+        if (caster.MyHP <= 0) score = -1;
         
         return score;
         

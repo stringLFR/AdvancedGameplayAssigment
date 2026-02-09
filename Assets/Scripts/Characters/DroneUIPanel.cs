@@ -1,3 +1,4 @@
+using actions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -63,9 +64,20 @@ public class DroneUIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         droneName.text = name;
 
         hoverText.text = $"Level: {body.DroneUnit.Level}";
-        hoverText.text += $"<br>Core stats: <br>STR: {body.DroneUnit.GetSTR} <br>DEX: {body.DroneUnit.GetDEX} <br>CON: {body.DroneUnit.GetCON} <br>INT: {body.DroneUnit.GetINT} <br>WIS: {body.DroneUnit.GetWIS} <br>CHA: {body.DroneUnit.GetCHA}";
-        hoverText.text += $"<br>ETC";
-
+        hoverText.text += $"<br>";
+        hoverText.text += $"<br>Core stats: <br>-STR: {body.DroneUnit.GetSTR} <br>-DEX: {body.DroneUnit.GetDEX} <br>-CON: {body.DroneUnit.GetCON} <br>-INT: {body.DroneUnit.GetINT} <br>-WIS: {body.DroneUnit.GetWIS} <br>-CHA: {body.DroneUnit.GetCHA}";
+        hoverText.text += $"<br>";
+        hoverText.text += $"<br>MainActions:";
+        foreach (MainActionStats main in body.DroneUnit.MyMainActions)
+        {
+            hoverText.text += $"<br>-{main.MainActionName}";
+        }
+        hoverText.text += $"<br>";
+        hoverText.text += $"<br>Reactions:";
+        foreach (ActionNodeStats re in body.DroneUnit.MyReactionNodes)
+        {
+            hoverText.text += $"<br>-{re.NodeName}";
+        }
         hoverPanel.SetActive(false);
     }
 

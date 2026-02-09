@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: TestQuickThrow
   m_EditorClassIdentifier: Assembly-CSharp::ReactionSO
   reactionStats:
-    NodeName: TestQuickThrow
+    NodeName: Quick Throw
+    NodeInfo: Throws mana infuced rock at closes target
     MinScore: 50
     ManaCost: 0
     IsRoot: 1

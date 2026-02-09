@@ -18,6 +18,7 @@ namespace actions
     public struct ActionNodeStats
     {
         public string NodeName;
+        public string NodeInfo;
         public float MinScore;
         public int ManaCost;
         public bool IsRoot;
@@ -30,6 +31,7 @@ namespace actions
     public abstract class ActionNodeBase : IADSNode<CombatListener, ActionEffectBase>
     {
         protected string nameKey;
+        protected string NodeInfo;
         protected ActionEffectBase effect;
         protected bool root = false;
         protected float minimumInputActivationScore;
@@ -44,6 +46,7 @@ namespace actions
 
         public virtual void Init(
             string name, 
+            string info,
             bool isRoot, 
             ActionEffectBase myEffect, 
             float minScore,
@@ -54,6 +57,7 @@ namespace actions
         {
             root = isRoot;
             nameKey = name;
+            NodeInfo = info;
             effect = myEffect;
             minimumInputActivationScore = minScore;
             manaCost = mana;

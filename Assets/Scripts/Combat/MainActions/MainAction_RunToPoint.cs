@@ -5,6 +5,7 @@ using UnityEngine;
 public class MainAction_RunToPoint : MainActionBase
 {
     private string mainActionName;
+    private string mainActionInfo;
     private ActionType actionType;
     private int manaCost;
     private effectType effectType;
@@ -18,12 +19,13 @@ public class MainAction_RunToPoint : MainActionBase
 
     public override effectType EffectType => effectType;
 
-    public override string MainActionInfo => "Walks towards traversable position. No range limit" + "<br> " + "<br>TODO: Add lore dump here!";
+    public override string MainActionInfo => mainActionInfo;
 
-    public MainAction_RunToPoint(ActionEffectBase ae, string n, int m, ActionType a, effectType e)
+    public MainAction_RunToPoint(ActionEffectBase ae, string n, string i, int m, ActionType a, effectType e)
     {
         effect = ae;
         mainActionName = n;
+        mainActionInfo = i;
         actionType = a;
         manaCost = m;
         effectType = e;

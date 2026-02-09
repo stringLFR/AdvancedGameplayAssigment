@@ -61,7 +61,7 @@ public class DroneUIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         healthSlider.maxValue = maxHealth;
         manaSlider.maxValue = maxMana;
         sanitySlider.maxValue = maxSanity;
-        droneName.text = name;
+        droneName.text = body.DroneUnit.DroneName;
 
         hoverText.text = $"Level: {body.DroneUnit.Level}";
         hoverText.text += $"<br>";
@@ -71,12 +71,14 @@ public class DroneUIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         foreach (MainActionStats main in body.DroneUnit.MyMainActions)
         {
             hoverText.text += $"<br>-{main.MainActionName}";
+            hoverText.text += $"<br>--{main.MainActionDescription}";
         }
         hoverText.text += $"<br>";
         hoverText.text += $"<br>Reactions:";
         foreach (ActionNodeStats re in body.DroneUnit.MyReactionNodes)
         {
             hoverText.text += $"<br>-{re.NodeName}";
+            hoverText.text += $"<br>--{re.NodeInfo}";
         }
         hoverPanel.SetActive(false);
     }

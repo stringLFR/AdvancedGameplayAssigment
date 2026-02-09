@@ -45,7 +45,7 @@ public class PlayerController : ControllerBase
                 playerHudPrototype.buttons[index].gameObject.SetActive(true);
                 playerHudPrototype.buttons[index].onClick.AddListener(() => { a.Activate(this, user); });
                 playerHudPrototype.texts[index].text = a.MainActionName;
-                playerHudPrototype.hoverTriggers[index].SetInfo(a.MainActionName, a.MainActionInfo);
+                playerHudPrototype.hoverTriggers[index].SetInfo(a.MainActionName,a.MainActionInfo);
                 index++;
             }
         }

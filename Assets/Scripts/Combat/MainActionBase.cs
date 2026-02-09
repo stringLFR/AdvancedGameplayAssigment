@@ -12,6 +12,7 @@ public enum MainActionTypes//This is used to chose what child class of MainActio
 public struct MainActionStats
 {
     public string MainActionName;
+    public string MainActionDescription;
     public int manaCost;
     public effectType Effect;
     public MainActionTypes mainActionType;

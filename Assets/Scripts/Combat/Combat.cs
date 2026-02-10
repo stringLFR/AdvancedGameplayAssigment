@@ -45,6 +45,8 @@ public sealed class Combat : MonoBehaviour
     public PlayerController PlayerController => playerController;
     public AIController AIController => aiController;   
 
+    public static Combat instance { get; private set; }
+
 
     private List<DroneUnitBody> playerTeam;
     private List<DroneUnitBody> enemyTeam;
@@ -61,6 +63,10 @@ public sealed class Combat : MonoBehaviour
         FlowAction_Combat combatFlowAction = ActionFlowStackHandler.CurrentFlowAction as FlowAction_Combat;
 
         if (combatFlowAction == null) return;
+
+        instance = null;
+
+        instance = this;
 
         playerTeam = new List<DroneUnitBody>();
         enemyTeam = new List<DroneUnitBody>();

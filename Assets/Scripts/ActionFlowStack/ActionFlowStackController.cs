@@ -12,7 +12,10 @@ using static EnemySquadDataBaseSO;
 using actions;
 using System.Linq;
 
-
+public enum CombatState
+{
+    NOT_IN_COMBAT, IN_COMBAT, WON, LOST, FLEED,
+}
 
 public sealed class ActionFlowStackController : MonoBehaviour
 {
@@ -25,6 +28,8 @@ public sealed class ActionFlowStackController : MonoBehaviour
     public static ActionFlowStackController Instance {  get { return instance; } }
     public PlayerTeam Team { get { return team; } }
 
+    public CombatState CombatState { get; private set; }
+
     private void Awake()
     {
         if (instance == null)
@@ -36,6 +41,12 @@ public sealed class ActionFlowStackController : MonoBehaviour
 
         
     }
+
+    public void SetCombatState(CombatState newState)
+    {
+        CombatState = newState;
+    }
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -319,6 +330,19 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
     public void CombatOver(List<DroneUnitBody> winningTeam = null)
     {
         combatDone = true;
+
+        for(int i = 0; i < ActionFlowStackController.Instance.Team.PlayerMembers.droneUnits.Length; i++)
+        {
+
+        }
+
+        if (winningTeam != null) //Player won!
+        {
+            ActionFlowStackController.Instance.SetCombatState(CombatState.WON);
+            return;
+        }
+
+        ActionFlowStackController.Instance.SetCombatState(CombatState.LOST);
     }
 
     public void OnBegin(bool bFirstTime) 
@@ -340,10 +364,13 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             combatScene = Addressables.LoadSceneAsync("Assets/Scenes/Combat.unity", LoadSceneMode.Additive);
             
         }
+
+        ActionFlowStackController.Instance.SetCombatState(CombatState.IN_COMBAT);
     }
 
     public void OnEnd()
-    { 
+    {
+       
         cleanUp();
     }
 

@@ -84,6 +84,9 @@ public class Exploration : MonoBehaviour
     const int maxSupply = 1000;
     const int startingSupply = 500;
 
+    private HashSet<Exploration_Hostile> combatingHostiles = new HashSet<Exploration_Hostile>();
+    private List<Exploration_Hostile> defeatedHostiles = new List<Exploration_Hostile>();
+
     NodeJob_RotateCanvas rotationJob;
 
     //private BinaryRadianTree<Exploration_Node> nodetree;
@@ -234,8 +237,52 @@ public class Exploration : MonoBehaviour
         {
             if (Vector3.Distance(explorer.transform.position, h.GetPosition()) <= 5f)
             {
-                h.EnterCombat(hostiles,caravans);
+                if (combatingHostiles.TryGetValue(h,out Exploration_Hostile actualValue) == false)
+                {
+                    combatingHostiles.Add(h);
+
+                    h.EnterCombat(hostiles, caravans);
+
+                    return;
+                }
+
+                switch (ActionFlowStackController.Instance.CombatState)
+                {
+                    case CombatState.WON:
+
+                        defeatedHostiles.Add(h);
+
+                        ActionFlowStackController.Instance.SetCombatState(CombatState.NOT_IN_COMBAT);
+                        break;
+                    case CombatState.LOST:
+
+                        combatingHostiles.Remove(h);
+
+                        ActionFlowStackController.Instance.SetCombatState(CombatState.NOT_IN_COMBAT);
+                        break;
+                    case CombatState.FLEED:
+
+                        combatingHostiles.Remove(h);
+
+                        ActionFlowStackController.Instance.SetCombatState(CombatState.NOT_IN_COMBAT);
+                        break;
+                }
             }
+        }
+
+        if (defeatedHostiles.Count > 0)
+        {
+            for (int i = 0; i < defeatedHostiles.Count; i++)
+            {
+                if (combatingHostiles.TryGetValue(defeatedHostiles[i], out Exploration_Hostile actualValue) == true)
+                {
+                    combatingHostiles.Remove(actualValue);
+                    hostiles.Remove(actualValue);
+                    Destroy(defeatedHostiles[i].body);
+                }
+            }
+
+            defeatedHostiles.Clear();
         }
 
         foreach (Exploration_Caravan c in caravans)

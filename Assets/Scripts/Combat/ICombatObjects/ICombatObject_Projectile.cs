@@ -11,10 +11,11 @@ public class ICombatObject_Projectile : ICombatObject
 
     protected Vector3 target;
 
-    public ICombatObject_Projectile(GameObject path)
+    public ICombatObject_Projectile(GameObject path, Vector3 pos)
     {
-        GameObject obj = Object.Instantiate(path);
+        GameObject obj = Object.Instantiate(path, pos, Quaternion.identity);
         obj.SetActive(false);
+        obj.transform.parent = Combat.instance.transform;
         prefab = obj.GetComponent<Projectile>();
         prefab.InitProjectile(this);
     }

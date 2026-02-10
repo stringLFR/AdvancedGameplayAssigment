@@ -34,7 +34,7 @@ public class AE_ShotProjectile : ActionEffectBase
             return;
         }
 
-        ICombatObject_Projectile pNew = new ICombatObject_Projectile(projectile.Result);
+        ICombatObject_Projectile pNew = new ICombatObject_Projectile(projectile.Result, caster.transform.position);
         projectiles.Add(pNew);
 
         pNew.OnSpawn(caster, this);

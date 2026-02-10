@@ -16,7 +16,7 @@ public class MousePoint : MonoBehaviour
     public Camera MyCamera => _camera;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void OnEnable()
     {
 
         instance = this;

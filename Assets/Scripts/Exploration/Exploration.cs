@@ -87,6 +87,8 @@ public class Exploration : MonoBehaviour
 
     int size;
 
+    const float UIImageHeight = 3f;
+
     const int maxSupply = 1000;
     const int startingSupply = 500;
 
@@ -266,7 +268,15 @@ public class Exploration : MonoBehaviour
     {
         if (startScreen != null) return;
 
-        explorerImage.transform.position = Camera.main.WorldToScreenPoint(explorer.transform.position);
+        if (Vector3.Dot(Camera.main.transform.forward, explorer.transform.position - Camera.main.transform.position) < 0)
+        {
+            explorerImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            explorerImage.gameObject.SetActive(true);
+            explorerImage.transform.position = Camera.main.WorldToScreenPoint(explorer.transform.position + new Vector3(0, UIImageHeight, 0));
+        }
 
         time += Time.deltaTime;
 
@@ -285,7 +295,16 @@ public class Exploration : MonoBehaviour
         int hIndex = 0;
         foreach (Exploration_Hostile h in hostiles)
         {
-            hostileImages[hIndex].transform.position = Camera.main.WorldToScreenPoint(h.body.transform.position);
+
+            if (Vector3.Dot(Camera.main.transform.forward, h.body.transform.position - Camera.main.transform.position) < 0)
+            {
+                hostileImages[hIndex].gameObject.SetActive(false);
+            }
+            else
+            {
+                hostileImages[hIndex].gameObject.SetActive(true);
+                hostileImages[hIndex].transform.position = Camera.main.WorldToScreenPoint(h.body.transform.position + new Vector3(0, UIImageHeight, 0));
+            }
 
             hIndex++;
 
@@ -344,7 +363,15 @@ public class Exploration : MonoBehaviour
 
         foreach (Exploration_Caravan c in caravans)
         {
-            carvanImages[cIndex].transform.position = Camera.main.WorldToScreenPoint(c.body.transform.position);
+            if (Vector3.Dot(Camera.main.transform.forward, c.body.transform.position - Camera.main.transform.position) < 0)
+            {
+                carvanImages[cIndex].gameObject.SetActive(false);
+            }
+            else
+            {
+                carvanImages[cIndex].gameObject.SetActive(true);
+                carvanImages[cIndex].transform.position = Camera.main.WorldToScreenPoint(c.body.transform.position + new Vector3(0, UIImageHeight, 0));
+            }
 
             cIndex++;
 

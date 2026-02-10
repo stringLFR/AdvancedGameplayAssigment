@@ -45,7 +45,7 @@ public sealed class Combat : MonoBehaviour
     public PlayerController PlayerController => playerController;
     public AIController AIController => aiController;   
 
-    public static Combat instance { get; private set; }
+    public static Transform instanceTransfrom { get; private set; }
 
 
     private List<DroneUnitBody> playerTeam;
@@ -64,9 +64,9 @@ public sealed class Combat : MonoBehaviour
 
         if (combatFlowAction == null) return;
 
-        instance = null;
+        instanceTransfrom = null;
 
-        instance = this;
+        instanceTransfrom = this.transform;
 
         playerTeam = new List<DroneUnitBody>();
         enemyTeam = new List<DroneUnitBody>();

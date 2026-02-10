@@ -15,7 +15,7 @@ public class ICombatObject_Projectile : ICombatObject
     {
         GameObject obj = Object.Instantiate(path, pos, Quaternion.identity);
         obj.SetActive(false);
-        obj.transform.parent = Combat.instance.transform;
+        obj.transform.parent = Combat.instanceTransfrom;
         prefab = obj.GetComponent<Projectile>();
         prefab.InitProjectile(this);
     }

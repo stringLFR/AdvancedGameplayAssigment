@@ -34,12 +34,12 @@ public class Exploration_Hostile
     {
         foreach(Exploration_Hostile h in hostiles)
         {
-            h.body.gameObject.SetActive(false);
+            h.body.ProcedualCore.Root.tr.gameObject.SetActive(false);
         }
 
         foreach (Exploration_Caravan c in caravans)
         {
-            c.body.gameObject.SetActive(false);
+            c.body.ProcedualCore.Root.tr.gameObject.SetActive(false);
         }
         ActionFlowStackHandler.PushActionToStack(new FlowAction_Combat { });
     }

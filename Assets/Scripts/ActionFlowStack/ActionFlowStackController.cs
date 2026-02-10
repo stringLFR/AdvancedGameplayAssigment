@@ -126,6 +126,8 @@ public sealed class FlowAction_Exploration : IflowAction
     public void SpawnCaravan(Exploration_Node target)
     {
         caravans.Add(new Exploration_Caravan().SpawnCaravan(expo, target));
+
+        expo.SetImagesCaravan(caravans.Count);
     }
 
     public void SpawnHostiles(int amount)
@@ -142,6 +144,8 @@ public sealed class FlowAction_Exploration : IflowAction
 
             h.SpawnHostile(expo);
         }
+
+        expo.SetImagesHostile(hostiles.Count);
     }
 
     public void OnBegin(bool bFirstTime)
@@ -157,13 +161,13 @@ public sealed class FlowAction_Exploration : IflowAction
 
         foreach (Exploration_Hostile h in hostiles)
         {
-            h.body.gameObject.SetActive(true);
+            h.body.ProcedualCore.Root.tr.gameObject.SetActive(true);
             h.body.ProcedualCore.Agent.isStopped = false;
         }
 
         foreach(Exploration_Caravan c in caravans)
         {
-            c.body.gameObject.SetActive(true);
+            c.body.ProcedualCore.Root.tr.gameObject.SetActive(true);
             c.body.ProcedualCore.Agent.isStopped = false;
         }
 

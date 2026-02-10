@@ -46,6 +46,12 @@ public class Exploration : MonoBehaviour
     [SerializeField]
     private DroneUnitBody explorer;
 
+    [SerializeField]
+    private Image explorerImage, caravanImage,HostileImage;
+
+    [SerializeField]
+    private Canvas canvas;
+
     public DroneUnitBody Explorer => explorer;
 
     [SerializeField]
@@ -87,7 +93,49 @@ public class Exploration : MonoBehaviour
     private HashSet<Exploration_Hostile> combatingHostiles = new HashSet<Exploration_Hostile>();
     private List<Exploration_Hostile> defeatedHostiles = new List<Exploration_Hostile>();
 
+    private List<Image> carvanImages = new List<Image>();
+    private List<Image> hostileImages = new List<Image>();
+
     NodeJob_RotateCanvas rotationJob;
+
+
+    public void SetImagesCaravan(int listSize)
+    {
+        int size = listSize - carvanImages.Count;
+
+        while (size != 0)
+        {
+            if (size > 0)
+            {
+                carvanImages.Add(Instantiate(caravanImage, canvas.transform));
+            }
+            else if (size < 0)
+            {
+                carvanImages.RemoveAt(0);
+            }
+
+            size = listSize - carvanImages.Count;
+        }
+    }
+
+    public void SetImagesHostile(int listSize)
+    {
+        int size = listSize - hostileImages.Count;
+
+        while(size != 0)
+        {
+            if (size > 0)
+            {
+                hostileImages.Add(Instantiate(HostileImage, canvas.transform));
+            }
+            else if (size < 0)
+            {
+                hostileImages.RemoveAt(0);
+            }
+
+            size = listSize - hostileImages.Count;
+        }
+    }
 
     //private BinaryRadianTree<Exploration_Node> nodetree;
 
@@ -218,6 +266,8 @@ public class Exploration : MonoBehaviour
     {
         if (startScreen != null) return;
 
+        explorerImage.transform.position = Camera.main.WorldToScreenPoint(explorer.transform.position);
+
         time += Time.deltaTime;
 
         if (time >= resourceUpkeepTickRate)
@@ -232,9 +282,13 @@ public class Exploration : MonoBehaviour
             }
         }
 
-
+        int hIndex = 0;
         foreach (Exploration_Hostile h in hostiles)
         {
+            hostileImages[hIndex].transform.position = Camera.main.WorldToScreenPoint(h.body.transform.position);
+
+            hIndex++;
+
             if (Vector3.Distance(explorer.transform.position, h.GetPosition()) <= 5f)
             {
                 if (combatingHostiles.TryGetValue(h,out Exploration_Hostile actualValue) == false)
@@ -276,17 +330,24 @@ public class Exploration : MonoBehaviour
             {
                 if (combatingHostiles.TryGetValue(defeatedHostiles[i], out Exploration_Hostile actualValue) == true)
                 {
-                    combatingHostiles.Remove(actualValue);
-                    hostiles.Remove(actualValue);
-                    Destroy(defeatedHostiles[i].body);
+                    combatingHostiles.Remove(defeatedHostiles[i]);
+                    hostiles.Remove(defeatedHostiles[i]);
+                    Destroy(defeatedHostiles[i].body.gameObject);
+                    SetImagesHostile(hostiles.Count);
                 }
             }
 
             defeatedHostiles.Clear();
         }
 
+        int cIndex = 0;
+
         foreach (Exploration_Caravan c in caravans)
         {
+            carvanImages[cIndex].transform.position = Camera.main.WorldToScreenPoint(c.body.transform.position);
+
+            cIndex++;
+
             if (c.goingHome == false)
             {
                 if (Vector3.Distance(c.node.transform.position, c.GetPosition()) <= c.node.intereactDistance)

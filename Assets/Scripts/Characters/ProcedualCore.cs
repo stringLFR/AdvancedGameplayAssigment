@@ -22,6 +22,8 @@ public sealed class ProcedualCore : MonoBehaviour
     [SerializeField]
     private procedual.bone core, root, body, hip, shoulders, neck, head;
 
+    public procedual.bone Root => root;
+
     [Header("TargetPoint")]
     [SerializeField]
     Vector3 r_P_arm_default, l_P_arm_default, r_P_leg_default, l_P_leg_default;

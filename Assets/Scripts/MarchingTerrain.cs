@@ -15,23 +15,53 @@ public class MarchingTerrain : MonoBehaviour
     [SerializeField]
     UnityEngine.Vector3 sizeVec = UnityEngine.Vector3.one;
 
-    public static float[,,] CreateWeightByRandom(System.Numerics.Vector3 size, float modifier = 3f)
+    [SerializeField]
+    public float groundLevel, aboveGroundLevel, firstAirLevel, secondAirLevel, finalAirLevel;
+
+    public static float[,,] CreateWeightByRandom(System.Numerics.Vector3 size, MarchingTerrain t, float modifier = 3f)
     {
         float[,,] w = new float[(int)size.X, (int)size.Y, (int)size.Z];
 
+        float rand = UnityEngine.Random.Range(1f, 10f) + UnityEngine.Random.Range(1f, 10f);
+
         for (int z = 0; z < size.Z; ++z)
         {
-            float fZ = (z / (float)size.Z) * modifier;
+            float fZ = ((z * rand) / (float)size.Z - 1) * modifier;
 
             for (int y = 0; y < size.Y; ++y)
             {
-                float fY = (y / (float)size.Y) * modifier;
+                float fY = ((y * rand) / (float)size.Y - 1) * modifier;
 
                 for (int x = 0; x < size.X; ++x)
                 {
-                    float fX = (x / (float)size.X) * modifier;
+                    float fX = ((x * rand) / (float)size.X - 1) * modifier;
 
-                    w[x, y, z] = UnityEngine.Mathf.PerlinNoise(fX, fY) * UnityEngine.Mathf.PerlinNoise(fY, fZ);
+                    float perlin = UnityEngine.Mathf.PerlinNoise(fX, fY) * UnityEngine.Mathf.PerlinNoise(fY, fZ);
+                    
+                    float final = 0;
+
+                    if (y < t.groundLevel)
+                    {
+                        final = perlin * 1f;
+                    }
+                    else if (y > t.groundLevel && y < t.aboveGroundLevel)
+                    {
+                        final = perlin * 0.75f;
+                    }
+                    else if (y > t.groundLevel && y > t.aboveGroundLevel && y < t.firstAirLevel)
+                    {
+                        final = perlin * 0.5f;
+                    }
+                    else if (y > t.groundLevel && y > t.aboveGroundLevel && y > t.firstAirLevel && y < t.secondAirLevel)
+                    {
+                        final = perlin * 0.25f;
+                    }
+                    else if (y > t.groundLevel && y > t.aboveGroundLevel && y > t.firstAirLevel && y > t.secondAirLevel && y < t.finalAirLevel)
+                    {
+                        final = perlin * 0.125f;
+                    }
+
+                    w[x, y, z] = perlin;
                 }
             }
         }
@@ -41,7 +71,7 @@ public class MarchingTerrain : MonoBehaviour
     public void Create()
     {
         MarchingMaths.MarchingCube cube = MarchingMaths.CreateMarchingCube(iso, UnityMaths.GetNumericsVecFromUnityVec(sizeVec),
-            CreateWeightByRandom(UnityMaths.GetNumericsVecFromUnityVec(sizeVec), randomModifier));
+            CreateWeightByRandom(UnityMaths.GetNumericsVecFromUnityVec(sizeVec), this,randomModifier));
 
         // create mesh
         if (m_mesh == null)
@@ -83,4 +113,6 @@ public class MarchingTerrainTool : Editor
             Tool.Create();
         }
     }
-}*/
+}
+
+*/

@@ -126,11 +126,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0369bfc49b6a3e4a99fb069a1805663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Exploration_Node_Special
-  nodeOuterRadius: 0
-  nodeInnerRadius: 0
-  givesResources: 1
-  supplies: 
-  supplyAmmounts: 
+  nodeOuterRadius: 20
+  nodeInnerRadius: 10
+  isTaking: 1
+  supplies: []
   canvas: {fileID: 4976863549550560386}
   projector: {fileID: 4951991445751408813}
 --- !u!1 &4030235399992736746
@@ -177,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
-  m_Material: {fileID: 2100000, guid: 5e227b88328ae13408c9dd94370c8426, type: 2}
+  m_Material: {fileID: 2100000, guid: 8271366d7f7cfbe42b7883cac52e716f, type: 2}
   m_DrawDistance: 1000
   m_FadeScale: 0.9
   m_StartAngleFade: 180
@@ -186,10 +185,10 @@ MonoBehaviour:
   m_UVBias: {x: 0, y: 0}
   m_RenderingLayerMask:
     serializedVersion: 0
-    m_Bits: 1
+    m_Bits: 256
   m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0.5}
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Offset: {x: 0, y: 0, z: 0.45}
+  m_Size: {x: 0.9, y: 0.9, z: 0.9}
   m_FadeFactor: 1
   version: 1
   m_DecalLayerMask: 1

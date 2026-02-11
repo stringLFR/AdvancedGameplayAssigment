@@ -256,6 +256,8 @@ public class Exploration : MonoBehaviour
 
             nodeList.Add(nodes[i]);
             //list.Add(new BRT_item<Exploration_Node>(nodes[i], nodes[i].transform.position.x, nodes[i].transform.position.y, nodes[i].transform.position.z));
+
+
         }
 
         nodeList.Sort((x, y) => Vector3.Distance(x.transform.position, transform.position).CompareTo(Vector3.Distance(y.transform.position, transform.position)));

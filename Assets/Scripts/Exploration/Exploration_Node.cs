@@ -84,7 +84,7 @@ public abstract class Exploration_Node : MonoBehaviour
 
         projector.size *= size;
 
-        intereactDistance = (1 * size) + 1;
+        intereactDistance = (size / 2) + 1f;
 
         assignedCaravan = false;
 

@@ -2,6 +2,7 @@ using ActionFlowStack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public sealed class CombatListener
@@ -27,7 +28,7 @@ public sealed class CombatListener
     private static Combat Combat = null;
 
     private static List<string> pastLines = new List<string>();
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public static void Init(Combat c)
     {
         if (instance == null) instance = new CombatListener();
@@ -55,7 +56,7 @@ public sealed class CombatListener
 
         return best;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public static void CleanUp()
     {
         if (instance != null) instance = null;

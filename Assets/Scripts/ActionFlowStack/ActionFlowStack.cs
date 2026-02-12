@@ -105,6 +105,7 @@ namespace ActionFlowStack
             return true;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
         public static void UpdateNonStaticActionStack(ActionFlowStackObject nonStatic)
         {
             if (nonStatic == null) return;

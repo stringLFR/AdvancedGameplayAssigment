@@ -1,4 +1,5 @@
 using ActionFlowStack;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Exploration_Management : MonoBehaviour
@@ -13,7 +14,7 @@ public class Exploration_Management : MonoBehaviour
 
         managementFlowAction.Init(this);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void CloseManagement()
     {
         if (managementFlowAction == null) return;

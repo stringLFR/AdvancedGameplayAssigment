@@ -1,4 +1,5 @@
 using actions;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -36,17 +37,19 @@ public class DroneUIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         transform.rotation = Quaternion.LookRotation(Camera.main.transform.position - transform.position, Vector3.up);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void SetHealthSlider(int value)
     {
         healthSlider.value = value;
         healthValueText.text = $"{healthSlider.value} / {maxHealth}";
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void SetManaSlider(int value)
     {
         manaSlider.value = value;
         manaValueText.text = $"{manaSlider.value} / {maxMana}";
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void SetSanitySlider(int value)
     {
         sanitySlider.value = value;
@@ -99,12 +102,12 @@ public class DroneUIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
         hoverPanel.SetActive(false);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnPointerEnter(PointerEventData eventData)
     {
         hoverPanel.SetActive(true);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnPointerExit(PointerEventData eventData)
     {
         hoverPanel.SetActive(false);

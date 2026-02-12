@@ -1,5 +1,6 @@
 using ActionFlowStack;
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -58,17 +59,17 @@ public abstract class Exploration_Node : MonoBehaviour
     public bool assignedCaravan { get; private set; }
 
     public float intereactDistance {  get; protected set; }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void NodeInteract(Exploration_Caravan caravan, SupplyData data)
     {
         canvas.UpdateSlider(data);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void AddOccupier(Exploration_Hostile h)
     {
         occupier = h;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void RemoveOccupier()
     {
         occupier = null;
@@ -86,7 +87,7 @@ public abstract class Exploration_Node : MonoBehaviour
 
         assignedCaravan = true;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void RemoveCaravan()
     {
         assignedCaravan = false;
@@ -111,7 +112,7 @@ public abstract class Exploration_Node : MonoBehaviour
 
         return size;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void CleanUpNode()
     {
         canvas.Button.onClick.RemoveAllListeners();

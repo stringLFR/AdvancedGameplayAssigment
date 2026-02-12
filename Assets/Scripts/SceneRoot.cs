@@ -9,7 +9,7 @@ public class SceneRoot : MonoBehaviour
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     private void Awake() => roots.Add(this);
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public static void SetRoot(int targetIndex)
     {
         int index = -1;

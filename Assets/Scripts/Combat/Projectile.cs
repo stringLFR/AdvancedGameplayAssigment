@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -16,6 +17,7 @@ public class Projectile : MonoBehaviour
     private float startingMana;
     private float progress;
     private bool hasHit = false;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void InitProjectile(ICombatObject c)
     {
         controller = c;
@@ -41,6 +43,7 @@ public class Projectile : MonoBehaviour
 
         return true;
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void Fire(float mana, Vector3 pa, Vector3 pb)
     {
         p0 = pa;
@@ -51,7 +54,7 @@ public class Projectile : MonoBehaviour
         progress = 0f;
         hasHit = false;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     private Vector3 RandomTangent(Vector3 value) => new Vector3(Random.Range(-value.x, value.x), Random.Range(-value.y, value.y), Random.Range(-value.z, value.z));
 
     private Vector3 GetCubicBezierPosition(float f)
@@ -65,6 +68,7 @@ public class Projectile : MonoBehaviour
 
     //Clamps given float!
     //Still needs some work! TODO!!!
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public Vector3 GetPredictedPosition(float time, out float progressLeft)
     {
         progressLeft = progress;

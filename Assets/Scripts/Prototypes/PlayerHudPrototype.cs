@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,13 +21,13 @@ public class PlayerHudPrototype : MonoBehaviour
             button.GetComponent<UIHoverOverTrigger>().Init(this);
         }
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnHover(string name, string info)
     {
         infoPopUp.gameObject.SetActive(true);
         infoPopUp.SetPopUp(name, info);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnLeaving()
     {
         infoPopUp.ClearPopUp();

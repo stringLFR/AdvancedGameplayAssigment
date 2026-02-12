@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,12 +6,12 @@ public class Exploration_Node_Hazard : Exploration_Node
 {
     [SerializeField]
     protected NavMeshObstacle NavMeshObstacle;
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void NodeInteract(Exploration_Caravan caravan, SupplyData d)
     {
         base.NodeInteract(caravan, d);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void NodeInteract()
     {
         base.NodeInteract();

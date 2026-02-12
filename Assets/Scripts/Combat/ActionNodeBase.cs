@@ -64,7 +64,6 @@ namespace actions
             actionType = action;
             reactions = reaction;
         }
-
         public virtual void SetupNode(DroneUnitBody myCaster, string[] parents)
         {
             caster = myCaster;

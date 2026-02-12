@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,7 +16,7 @@ public class Exploration_Caravan
     public bool goingHome { get; private set; }
 
     private Vector3 nodeTargetPos = Vector3.zero;
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public Vector3 GetPosition() => body.transform.position;
 
     //Currently it is possible to lose resources if the current amount is equal to max!

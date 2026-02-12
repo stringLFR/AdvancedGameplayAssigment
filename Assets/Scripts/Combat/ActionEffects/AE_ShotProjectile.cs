@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering;
@@ -11,7 +12,7 @@ public class AE_ShotProjectile : ActionEffectBase
     protected List<ICombatObject_Projectile> projectiles = new List<ICombatObject_Projectile>();
 
     protected AsyncOperationHandle<GameObject> projectile;
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void SetAssetPath(string path)
     {
         projectile = Addressables.LoadAssetAsync<GameObject>(path);
@@ -47,14 +48,14 @@ public class AE_ShotProjectile : ActionEffectBase
     {
         throw new System.NotImplementedException();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void TriggerActionEffect(DroneUnitBody caster, Vector3 targetPos)
     {
         CombatListener.AddLineToCombatText($"{caster.DroneUnit.DroneName} Shoots one projectile!");
 
         SetUpProjectile(caster, targetPos);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void TriggerActionEffect(DroneUnitBody caster, Vector3[] targetPositions)
     {
         CombatListener.AddLineToCombatText($"{caster.DroneUnit.DroneName} Shoots {targetPositions.Length} projectiles!");

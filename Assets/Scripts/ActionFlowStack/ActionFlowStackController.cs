@@ -11,6 +11,7 @@ using UniGameMaths;
 using static EnemySquadDataBaseSO;
 using actions;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 public enum CombatState
 {
@@ -41,7 +42,7 @@ public sealed class ActionFlowStackController : MonoBehaviour
 
         
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void SetCombatState(CombatState newState)
     {
         CombatState = newState;
@@ -66,12 +67,12 @@ public sealed class ActionFlowStackController : MonoBehaviour
 public sealed class FlowAction_MainMenu : IflowAction
 {
     private AsyncOperationHandle<SceneInstance> menuScene;
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public bool IsDone()
     {
         return false;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnBegin(bool bFirstTime)
     {
         if (bFirstTime)
@@ -82,7 +83,7 @@ public sealed class FlowAction_MainMenu : IflowAction
 
         SceneRoot.SetRoot(0);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnEnd()
     {
         CleanUp();
@@ -92,7 +93,7 @@ public sealed class FlowAction_MainMenu : IflowAction
     {
         //throw new System.NotImplementedException();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     void CleanUp()
     {
         Addressables.UnloadSceneAsync(menuScene);
@@ -109,6 +110,10 @@ public sealed class FlowAction_Exploration : IflowAction
     private List<Exploration_Hostile> hostiles;
     private List<Exploration_Node> nodes;
 
+    float time = 0f;
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public bool IsDone()
     {
         return false;
@@ -119,15 +124,8 @@ public sealed class FlowAction_Exploration : IflowAction
         expo = e;
 
         e.MapSetup(nodes);
-
-        SpawnHostiles(10);
-
-        foreach(Exploration_Hostile h in hostiles)
-        {
-            h.SetHostileDestination(expo, nodes);
-        }
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void SpawnCaravan(Exploration_Node target)
     {
         caravans.Add(new Exploration_Caravan().SpawnCaravan(expo, target));
@@ -135,19 +133,11 @@ public sealed class FlowAction_Exploration : IflowAction
         expo.SetImagesCaravan(caravans.Count);
     }
 
-    public void SpawnHostiles(int amount)
+    public void SpawnHostiles(int amount, Vector3 pos, float radius)
     {
-
         for (int i = 0; i < amount; i++)
         {
-            hostiles.Add(new Exploration_Hostile(expo.Explorer));
-        }
-
-        foreach (Exploration_Hostile h in hostiles)
-        {
-            if (h.body != null) continue;
-
-            h.SpawnHostile(expo);
+            hostiles.Add(new Exploration_Hostile(expo.Explorer).SpawnHostile(expo, pos + Random.insideUnitSphere * radius));
         }
 
         expo.SetImagesHostile(hostiles.Count);
@@ -163,6 +153,7 @@ public sealed class FlowAction_Exploration : IflowAction
             //Load info before switching scenes!
             explorationScene = Addressables.LoadSceneAsync("Assets/Scenes/Exploration.unity", LoadSceneMode.Additive);
         }
+        SceneRoot.SetRoot(1);
 
         foreach (Exploration_Hostile h in hostiles)
         {
@@ -170,23 +161,35 @@ public sealed class FlowAction_Exploration : IflowAction
             h.body.ProcedualCore.Agent.isStopped = false;
         }
 
-        foreach(Exploration_Caravan c in caravans)
+        foreach (Exploration_Caravan c in caravans)
         {
             c.body.ProcedualCore.Root.tr.gameObject.SetActive(true);
             c.body.ProcedualCore.Agent.isStopped = false;
         }
-
-        SceneRoot.SetRoot(1);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnEnd()
     {
         CleanUp();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnUpdate()
     {
         if (expo == null) return;
+
+        time += Time.deltaTime;
+
+        if (time >= hostiles.Count * 2)
+        {
+            time = 0f;
+
+            SpawnHostiles(UnityEngine.Random.Range(1, hostiles.Count + 1), expo.transform.position + Random.insideUnitSphere * 500f, UnityEngine.Random.Range(1f,100f));
+
+            foreach (Exploration_Hostile h in hostiles)
+            {
+                h.SetHostileDestination(expo, nodes);
+            }
+        }
 
         expo.Tick(caravans, hostiles, nodes);
 
@@ -330,7 +333,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             nodeStats.node.SetupNode(nodeStats.caster, names);
         }
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public bool IsDone()
     {
         return combatDone;
@@ -388,13 +391,13 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
         ActionFlowStackController.Instance.SetCombatState(CombatState.IN_COMBAT);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnEnd()
     {
        
         cleanUp();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnUpdate()
     {
         if (monoCOmbat == null) return;
@@ -418,11 +421,12 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
 public sealed class FlowAction_PauseMenu : IflowAction
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public bool IsDone()
     {
         throw new System.NotImplementedException();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnBegin(bool bFirstTime)
     {
         if (bFirstTime)
@@ -430,17 +434,17 @@ public sealed class FlowAction_PauseMenu : IflowAction
             //Load info before switching scenes!
         }
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnEnd()
     {
         throw new System.NotImplementedException();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnUpdate()
     {
         throw new System.NotImplementedException();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void GoToMainMenu()
     {
         FlowAction_MainMenu menu = new FlowAction_MainMenu();
@@ -481,18 +485,18 @@ public sealed class FlowAction_Turn : IflowAction
     private DroneUnitBody turnHolder;
     private bool isDone = false;
     private Vector3 userPos;
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void Init(Combat c, DroneUnitBody d)
     {
         monoCombat = c;
         turnHolder = d;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public bool IsDone()
     {
         return isDone;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnBegin(bool bFirstTime)
     {
         if (bFirstTime)
@@ -503,7 +507,7 @@ public sealed class FlowAction_Turn : IflowAction
         }
         
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnEnd()
     {
         turnHolder.Controller.ControllerDisable(turnHolder);
@@ -542,22 +546,22 @@ public sealed class FlowAction_Management : IflowAction
 
     private AsyncOperationHandle<GameObject> managementPrefab;
     private Exploration_Management management;
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void Init(Exploration_Management m)
     {
         management = m;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void GoExploring()
     {
         isDone = true;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public bool IsDone()
     {
         return isDone;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnBegin(bool bFirstTime)
     {
         if (bFirstTime)
@@ -567,17 +571,17 @@ public sealed class FlowAction_Management : IflowAction
             Object.Instantiate(managementPrefab.Result);
         }
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnEnd()
     {
         CleanUp();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnUpdate()
     {
         if (management == null) return;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     void CleanUp()
     {
         managementPrefab.Release();

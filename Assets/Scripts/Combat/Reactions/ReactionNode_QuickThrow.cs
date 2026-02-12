@@ -1,6 +1,7 @@
 using UnityEngine;
 using actions;
 using System;
+using System.Runtime.CompilerServices;
 
 public class ReactionNode_QuickThrow : ActionNodeBase
 {
@@ -34,7 +35,7 @@ public class ReactionNode_QuickThrow : ActionNodeBase
     public override ActionEffectBase Output => effect;
 
     private bool hasTriggered = false;
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override ActionEffectBase GetADSOutput()
     {
         if (hasTriggered == false)
@@ -45,7 +46,7 @@ public class ReactionNode_QuickThrow : ActionNodeBase
 
         return null;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override float GetInputScore(CombatListener input)
     {
         float score = caster.MyHP <= 0 ? 0f : UnityEngine.Random.Range(20, 80);
@@ -72,7 +73,7 @@ public class ReactionNode_QuickThrow : ActionNodeBase
             }
         }
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void WhenPutOnADSStack(CombatListener input, ActionEffectBase output)
     {
         CombatListener.AddLineToCombatText($"{caster.DroneUnit.DroneName} will react with QuickThrow!");

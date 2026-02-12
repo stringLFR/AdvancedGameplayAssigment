@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,7 +19,7 @@ public class ICombatObject_Step : ICombatObject
     public DroneUnitBody Caster => myCaster;
 
     public ActionEffectBase Origin => myOrigin;
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void CombatUpdate()
     {
         LerpAlongPath();
@@ -54,7 +55,7 @@ public class ICombatObject_Step : ICombatObject
 
         lerpTime += Time.deltaTime;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnSpawn(DroneUnitBody caster, ActionEffectBase origin)
     {
         myCaster = caster;
@@ -74,17 +75,17 @@ public class ICombatObject_Step : ICombatObject
         points = path.corners.Length;
         pointIndex = 0;
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void Reactivate(float mana, DroneUnitBody otherCaster)
     {
         throw new System.NotImplementedException();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void Reactivate(float mana, GameObject targetObj)
     {
         throw new System.NotImplementedException();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void Reactivate(float mana)
     {
         throw new System.NotImplementedException();

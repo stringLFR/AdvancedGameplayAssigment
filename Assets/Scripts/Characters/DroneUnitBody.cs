@@ -27,7 +27,7 @@ public sealed class DroneUnitBody : MonoBehaviour
     public ProcedualCore ProcedualCore => procedualCore;
 
     public bool IsEnemy {  get; private set; }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void SetEnemyBool(bool bollean)
     {
         IsEnemy = bollean;

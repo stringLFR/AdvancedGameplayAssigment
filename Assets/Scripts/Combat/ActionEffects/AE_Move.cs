@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class AE_Move : ActionEffectBase
@@ -8,6 +9,7 @@ public class AE_Move : ActionEffectBase
     }
 
     protected ICombatObject_Step step;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void TriggerActionEffect(DroneUnitBody caster)
     {
         Init();
@@ -21,32 +23,32 @@ public class AE_Move : ActionEffectBase
 
         step.Reactivate(caster.MyMana, targetPos);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void TriggerActionEffect(DroneUnitBody caster, Vector3[] targetPositions)
     {
         Init();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void TriggerActionEffect(DroneUnitBody caster, DroneUnitBody otherCaster)
     {
         Init();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void TriggerActionEffect(DroneUnitBody caster, DroneUnitBody[] otherCasters)
     {
         Init();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void TriggerActionEffect(DroneUnitBody caster, GameObject targetObj)
     {
         Init();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void TriggerActionEffect(DroneUnitBody caster, GameObject[] targetObjs)
     {
         Init();
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     protected void Init()
     {
         if (step.IsActive == true) return;

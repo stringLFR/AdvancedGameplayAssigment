@@ -71,7 +71,7 @@ public class Exploration : MonoBehaviour
     int nodeResourseAmounts = 10, nodeSpecialAmounts = 10, nodeHazardAmounts = 10, batchAmount = 10;
 
     [SerializeField]
-    private Slider food, intel, mana, medicine, metalics;
+    private Slider food, intel, mana, medicine, metalics, average;
 
     [SerializeField]
     private GameObject startScreen;
@@ -175,6 +175,12 @@ public class Exploration : MonoBehaviour
         mana.maxValue = maxSupply;
         medicine.maxValue = maxSupply;
         metalics.maxValue = maxSupply;
+        average.maxValue = maxSupply;
+
+        for (int i = 0; i < SupplyData.Length; i++)
+        {
+            UpdateSlider(SupplyData[i]);
+        }
 
         explorationFlowAction.Init(this);
     }
@@ -199,6 +205,8 @@ public class Exploration : MonoBehaviour
                 metalics.value = data.currentAmount;
                 break;
         }
+
+        average.value = (food.value + mana.value + intel.value + medicine.value + metalics.value) / 5;
     }
 
     public void MapSetup(List<Exploration_Node> nodeList)
@@ -290,13 +298,45 @@ public class Exploration : MonoBehaviour
         {
             time = 0f;
 
+            int enemyAttackers = 0;
+
+            foreach(Exploration_Hostile h in hostiles)
+            {
+                if (Vector3.Distance(h.body.transform.position, transform.position) <= managementDistance)
+                {
+                    enemyAttackers++;
+                }
+            }
+
             for (int i = 0; i < SupplyData.Length; i++)
             {
-                SupplyData[i].currentAmount = Mathf.Clamp(SupplyData[i].currentAmount - (1 + 1 * caravans.Count) , 0, SupplyData[i].MaxAmount);
+                SupplyData[i].currentAmount = Mathf.Clamp(SupplyData[i].currentAmount - ((1 + 1 * caravans.Count) + enemyAttackers * enemyAttackers), 0, SupplyData[i].MaxAmount);
 
                 UpdateSlider(SupplyData[i]);
             }
         }
+
+
+        HostilesTick(hostiles, caravans);
+
+        CaravansTick(caravans);
+
+        NodesTick(nodes);
+
+        MousePointerTick(caravans, hostiles);
+
+
+        //List<BRT_item<Exploration_Node>> t2 = nodetree.FindClosesItems(2, new System.Numerics.Vector3(explorer.transform.position.x, explorer.transform.position.y, explorer.transform.position.z));
+        //print(t2.Count);
+
+        //Debug.DrawLine(explorer.transform.position, new Vector3(t2[0].position.X, t2[0].position.Y, t2[0].position.Z));
+        //Debug.DrawLine(explorer.transform.position, new Vector3(t2[1].position.X, t2[1].position.Y, t2[1].position.Z));
+
+
+    }
+
+    private void HostilesTick(List<Exploration_Hostile> hostiles, List<Exploration_Caravan> caravans)
+    {
 
         int hIndex = 0;
         foreach (Exploration_Hostile h in hostiles)
@@ -316,7 +356,7 @@ public class Exploration : MonoBehaviour
 
             if (Vector3.Distance(explorer.transform.position, h.GetPosition()) <= 5f)
             {
-                if (combatingHostiles.TryGetValue(h,out Exploration_Hostile actualValue) == false)
+                if (combatingHostiles.TryGetValue(h, out Exploration_Hostile actualValue) == false)
                 {
                     combatingHostiles.Add(h);
 
@@ -359,7 +399,7 @@ public class Exploration : MonoBehaviour
                     hostiles.Remove(defeatedHostiles[i]);
                     Destroy(defeatedHostiles[i].body.gameObject);
                     SetImagesHostile(hostiles.Count);
-                    
+
                     if (defeatedHostiles[i].node != null)
                     {
                         defeatedHostiles[i].node.RemoveOccupier();
@@ -369,7 +409,10 @@ public class Exploration : MonoBehaviour
 
             defeatedHostiles.Clear();
         }
+    }
 
+    private void CaravansTick(List<Exploration_Caravan> caravans)
+    {
         int cIndex = 0;
 
         foreach (Exploration_Caravan c in caravans)
@@ -390,7 +433,7 @@ public class Exploration : MonoBehaviour
             {
                 if (Vector3.Distance(c.node.transform.position, c.GetPosition()) <= c.node.intereactDistance)
                 {
-                    c.TransfferSupplies(c.node.IsTaking,null, c.node);
+                    c.TransfferSupplies(c.node.IsTaking, null, c.node);
                 }
             }
             else
@@ -411,7 +454,7 @@ public class Exploration : MonoBehaviour
             }
         }
 
-        foreach(Exploration_Caravan cDead in defeatedCaravans)
+        foreach (Exploration_Caravan cDead in defeatedCaravans)
         {
             Destroy(cDead.body.gameObject);
             caravans.Remove(cDead);
@@ -419,7 +462,10 @@ public class Exploration : MonoBehaviour
         }
 
         defeatedCaravans.Clear();
+    }
 
+    private void NodesTick(List<Exploration_Node> nodes)
+    {
         foreach (Exploration_Node n in nodes)
         {
             if (Vector3.Distance(Camera.main.transform.position, n.transform.position) >= 100)
@@ -448,7 +494,10 @@ public class Exploration : MonoBehaviour
                 n.Canvas.Button.gameObject.SetActive(false);
             }
         }
+    }
 
+    private void MousePointerTick(List<Exploration_Caravan> caravans, List<Exploration_Hostile> hostiles)
+    {
         if (MousePoint.instance.IsOverUI == true) return;
 
         if (Input.GetMouseButtonDown(0))
@@ -461,12 +510,12 @@ public class Exploration : MonoBehaviour
             if (Vector3.Distance(explorer.transform.position, transform.position) <= managementDistance &&
                 Vector3.Distance(transform.position, MousePoint.instance.transform.position) <= managementDistance)
             {
-                foreach(Exploration_Caravan c in caravans)
+                foreach (Exploration_Caravan c in caravans)
                 {
                     c.body.ProcedualCore.Agent.isStopped = true;
                 }
 
-                foreach(Exploration_Hostile h in hostiles)
+                foreach (Exploration_Hostile h in hostiles)
                 {
                     h.body.ProcedualCore.Agent.isStopped = true;
                 }
@@ -474,15 +523,5 @@ public class Exploration : MonoBehaviour
                 ActionFlowStackHandler.PushActionToStack(new FlowAction_Management { });
             }
         }
-
-
-        //List<BRT_item<Exploration_Node>> t2 = nodetree.FindClosesItems(2, new System.Numerics.Vector3(explorer.transform.position.x, explorer.transform.position.y, explorer.transform.position.z));
-        //print(t2.Count);
-
-        //Debug.DrawLine(explorer.transform.position, new Vector3(t2[0].position.X, t2[0].position.Y, t2[0].position.Z));
-        //Debug.DrawLine(explorer.transform.position, new Vector3(t2[1].position.X, t2[1].position.Y, t2[1].position.Z));
-
-
     }
-
 }

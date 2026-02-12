@@ -1,12 +1,14 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Exploration_Node_Resours : Exploration_Node
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void NodeInteract(Exploration_Caravan caravan, SupplyData d)
     {
         base.NodeInteract(caravan,d);
     }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void NodeInteract()
     {
         base.NodeInteract();

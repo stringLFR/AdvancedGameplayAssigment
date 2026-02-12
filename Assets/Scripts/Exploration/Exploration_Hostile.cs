@@ -1,5 +1,6 @@
 using ActionFlowStack;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -18,17 +19,17 @@ public class Exploration_Hostile
         explorer = explor;
     }
 
-    public void SpawnHostile(Exploration expo)
+    public Exploration_Hostile SpawnHostile(Exploration expo, Vector3 pos)
     {
-        Vector3 randomPointEnemy = expo.transform.position + Random.insideUnitSphere * 500;
+        Vector3 randomPointEnemy = pos;
         NavMesh.SamplePosition(randomPointEnemy, out NavMeshHit hitEnemy, Mathf.Infinity, NavMesh.AllAreas);
         GameObject obj = Object.Instantiate(expo.hostilePrefab.gameObject, hitEnemy.position, Quaternion.identity);
-
-        //obj.transform.parent = expo.transform;
-
         body = obj.GetComponent<DroneUnitBody>();
+
+        return this;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public Vector3 GetPosition() => body.transform.position;
 
 
@@ -38,11 +39,13 @@ public class Exploration_Hostile
         foreach(Exploration_Hostile h in hostiles)
         {
             h.body.ProcedualCore.Root.tr.gameObject.SetActive(false);
+            h.body.ProcedualCore.Agent.isStopped = true;
         }
 
         foreach (Exploration_Caravan c in caravans)
         {
             c.body.ProcedualCore.Root.tr.gameObject.SetActive(false);
+            c.body.ProcedualCore.Agent.isStopped = true;
         }
         ActionFlowStackHandler.PushActionToStack(new FlowAction_Combat { });
     }
@@ -65,12 +68,25 @@ public class Exploration_Hostile
         return false;
     }
 
+    public void Attack(Exploration expo)
+    {
+        body.ProcedualCore.Agent.SetDestination(expo.transform.position);
+        body.ProcedualCore.ManualNavRotTarget = expo.transform.position;
+    }
+
     public void SetHostileDestination(Exploration expo, List<Exploration_Node> nodes)
     {
-        if (Vector3.Distance(body.transform.position, expo.transform.position) <= 50)
+        float dist = Vector3.Distance(body.transform.position, expo.transform.position);
+
+        if (dist < 50f || dist > 450f)
         {
-            body.ProcedualCore.Agent.SetDestination(expo.transform.position);
-            body.ProcedualCore.ManualNavRotTarget = expo.transform.position;
+            if (node != null)
+            {
+                node.RemoveOccupier();
+                node = null;
+            }
+
+            Attack(expo);
         }
         else
         {

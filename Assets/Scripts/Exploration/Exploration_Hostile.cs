@@ -106,9 +106,11 @@ public class Exploration_Hostile
                     node = n;
                     node.AddOccupier(this);
 
-                    break;
+                    return;
                 }
             }
+
+            Attack(expo);
         }
     }
 }

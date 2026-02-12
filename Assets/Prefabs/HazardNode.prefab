@@ -128,8 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf93d3ff1e8e6a40af13e2d558cc6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Exploration_Node_Hazard
-  nodeOuterRadius: 20
-  nodeInnerRadius: 10
+  nodeOuterRadius: 100
+  nodeInnerRadius: 50
   isTaking: 1
   supplies:
   - Type: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_ScaleMode: 0
   m_Offset: {x: 0, y: 0, z: 0.45}
   m_Size: {x: 0.9, y: 0.9, z: 0.9}
-  m_FadeFactor: 1
+  m_FadeFactor: 0.5
   version: 1
   m_DecalLayerMask: 1
 --- !u!208 &9184438765741310771

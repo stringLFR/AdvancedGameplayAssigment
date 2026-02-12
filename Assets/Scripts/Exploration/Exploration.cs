@@ -5,6 +5,7 @@ using ActionFlowStack;
 using Unity.Jobs;
 using Unity.Collections;
 using UnityEngine.UI;
+using UnityEditor.Experimental.GraphView;
 
 public struct NodeJob_RandomPos : IJobFor
 {
@@ -94,6 +95,7 @@ public class Exploration : MonoBehaviour
 
     private HashSet<Exploration_Hostile> combatingHostiles = new HashSet<Exploration_Hostile>();
     private List<Exploration_Hostile> defeatedHostiles = new List<Exploration_Hostile>();
+    private List<Exploration_Caravan> defeatedCaravans = new List<Exploration_Caravan>();
 
     private List<Image> carvanImages = new List<Image>();
     private List<Image> hostileImages = new List<Image>();
@@ -113,6 +115,7 @@ public class Exploration : MonoBehaviour
             }
             else if (size < 0)
             {
+                Destroy(carvanImages[0].gameObject);
                 carvanImages.RemoveAt(0);
             }
 
@@ -132,6 +135,7 @@ public class Exploration : MonoBehaviour
             }
             else if (size < 0)
             {
+                Destroy(hostileImages[0].gameObject);
                 hostileImages.RemoveAt(0);
             }
 
@@ -355,6 +359,11 @@ public class Exploration : MonoBehaviour
                     hostiles.Remove(defeatedHostiles[i]);
                     Destroy(defeatedHostiles[i].body.gameObject);
                     SetImagesHostile(hostiles.Count);
+                    
+                    if (defeatedHostiles[i].node != null)
+                    {
+                        defeatedHostiles[i].node.RemoveOccupier();
+                    }
                 }
             }
 
@@ -391,7 +400,25 @@ public class Exploration : MonoBehaviour
                     c.TransfferSupplies(c.node.IsTaking, this, null);
                 }
             }
+
+            if (c.node.GetOccupier != null)
+            {
+                if (c.node.GetOccupier.TriggerHuntForCaravan(c) == true)
+                {
+                    c.node.RemoveCaravan();
+                    defeatedCaravans.Add(c);
+                }
+            }
         }
+
+        foreach(Exploration_Caravan cDead in defeatedCaravans)
+        {
+            Destroy(cDead.body.gameObject);
+            caravans.Remove(cDead);
+            SetImagesCaravan(caravans.Count);
+        }
+
+        defeatedCaravans.Clear();
 
         foreach (Exploration_Node n in nodes)
         {

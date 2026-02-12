@@ -5,6 +5,19 @@ using System;
 using actions;
 using System.Collections.Generic;
 
+
+
+public struct AfterCombatStats
+{
+    public int expGained;
+    public float damageTakenPercentile;
+
+    public AfterCombatStats(int i)
+    {
+        damageTakenPercentile = 1f; expGained = 0;
+    }
+}
+
 [Serializable]
 public sealed class DroneUnit
 {
@@ -22,7 +35,8 @@ public sealed class DroneUnit
     private float STR = 4f, DEX = 4f, CON = 4f, INT = 4f, WIS = 4f, CHA = 4f;
     [SerializeField]
     private int level = 1;
-    private int exp = 0;
+
+    public AfterCombatStats afterCombatStats = new AfterCombatStats(1);
 
     private int memory;
 

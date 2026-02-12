@@ -14,6 +14,8 @@ public class Exploration_Caravan
 
     public bool goingHome { get; private set; }
 
+    private Vector3 nodeTargetPos = Vector3.zero;
+
     public Vector3 GetPosition() => body.transform.position;
 
     //Currently it is possible to lose resources if the current amount is equal to max!
@@ -49,7 +51,7 @@ public class Exploration_Caravan
 
             goingHome = false;
 
-            body.ProcedualCore.Agent.SetDestination(node.transform.position);
+            body.ProcedualCore.Agent.SetDestination(nodeTargetPos);
             body.ProcedualCore.ManualNavRotTarget = node.transform.position;
 
             return;
@@ -114,7 +116,9 @@ public class Exploration_Caravan
 
         goingHome = false;
 
-        body.ProcedualCore.Agent.SetDestination(node.transform.position);
+        nodeTargetPos = homeBase.Explorer.transform.position;
+
+        body.ProcedualCore.Agent.SetDestination(nodeTargetPos);
         body.ProcedualCore.ManualNavRotTarget = node.transform.position;
 
         return this;

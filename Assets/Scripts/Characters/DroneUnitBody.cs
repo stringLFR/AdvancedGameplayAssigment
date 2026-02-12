@@ -33,6 +33,8 @@ public sealed class DroneUnitBody : MonoBehaviour
         IsEnemy = bollean;
     }
 
+
+    public int MyMaxHP => maxHP;
     public int MyHP => HP;
     public int MyMana => mana;
     public int MySanity => sanity;
@@ -76,11 +78,17 @@ public sealed class DroneUnitBody : MonoBehaviour
         mana = maxMana;
         sanity = maxSanity;
 
+        float damagedTaken = maxHP * droneUnit.afterCombatStats.damageTakenPercentile;
+
+
+
         myUI.gameObject.SetActive(true);
         myUI.InitUIPanel(this);
-        myUI.SetHealthSlider(maxHP);
+        myUI.SetHealthSlider((int)damagedTaken);
         myUI.SetManaSlider(maxMana);
         myUI.SetSanitySlider(maxSanity);
+
+
     }
 
     // Update is called once per frame

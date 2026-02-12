@@ -121,6 +121,11 @@ public sealed class FlowAction_Exploration : IflowAction
         e.MapSetup(nodes);
 
         SpawnHostiles(10);
+
+        foreach(Exploration_Hostile h in hostiles)
+        {
+            h.SetHostileDestination(expo, nodes);
+        }
     }
 
     public void SpawnCaravan(Exploration_Node target)
@@ -335,9 +340,21 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
     {
         combatDone = true;
 
-        for(int i = 0; i < ActionFlowStackController.Instance.Team.PlayerMembers.droneUnits.Length; i++)
+        for (int i = 0; i < winningTeam.Count; i++)
         {
+            if (winningTeam[i].MyHP <= 0)
+            {
+                for (int j = 0; j < ActionFlowStackController.Instance.Team.PlayerMembers.droneUnits.Length; j++)
+                {
+                    if (winningTeam[i].DroneUnit == ActionFlowStackController.Instance.Team.PlayerMembers.droneUnits[j])
+                    {
+                        ActionFlowStackController.Instance.Team.PlayerMembers.droneUnits[j] = null;
+                        break;
+                    }
+                }
+            }
 
+            winningTeam[i].DroneUnit.afterCombatStats.damageTakenPercentile = Mathf.Clamp01(winningTeam[i].MyHP / winningTeam[i].MyMaxHP);
         }
 
         if (winningTeam != null) //Player won!

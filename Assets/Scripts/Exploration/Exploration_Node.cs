@@ -51,6 +51,10 @@ public abstract class Exploration_Node : MonoBehaviour
     [SerializeField]
     protected DecalProjector projector;
 
+    protected Exploration_Hostile occupier;
+
+    public Exploration_Hostile GetOccupier => occupier;
+
     public bool assignedCaravan { get; private set; }
 
     public float intereactDistance {  get; protected set; }
@@ -58,6 +62,16 @@ public abstract class Exploration_Node : MonoBehaviour
     public virtual void NodeInteract(Exploration_Caravan caravan, SupplyData data)
     {
         canvas.UpdateSlider(data);
+    }
+
+    public virtual void AddOccupier(Exploration_Hostile h)
+    {
+        occupier = h;
+    }
+
+    public virtual void RemoveOccupier()
+    {
+        occupier = null;
     }
 
     public virtual void NodeInteract()

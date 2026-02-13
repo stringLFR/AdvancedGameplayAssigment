@@ -6,6 +6,7 @@ using Unity.Jobs;
 using Unity.Collections;
 using UnityEngine.UI;
 using UnityEditor.Experimental.GraphView;
+using TMPro;
 
 public struct NodeJob_RandomPos : IJobFor
 {
@@ -72,6 +73,9 @@ public class Exploration : MonoBehaviour
 
     [SerializeField]
     private Slider food, intel, mana, medicine, metalics, average;
+
+    [SerializeField]
+    private TextMeshProUGUI foodT, intelT, manaT, medicineT, metalicsT, averageT;
 
     [SerializeField]
     private GameObject startScreen;
@@ -191,22 +195,28 @@ public class Exploration : MonoBehaviour
         {
             case SupplyType.FOOD:
                 food.value = data.currentAmount;
+                foodT.text = $"Food {food.value}/{food.maxValue}";
                 break;
             case SupplyType.MANA_STORAGE:
                 mana.value = data.currentAmount;
+                manaT.text = $"Mana {mana.value}/{mana.maxValue}";
                 break;
             case SupplyType.INTEL:
                 intel.value = data.currentAmount;
+                intelT.text = $"Intel {intel.value}/{intel.maxValue}";
                 break;
             case SupplyType.MEDICINE:
                 medicine.value = data.currentAmount;
+                medicineT.text = $"Medicine {medicine.value}/{medicine.maxValue}";
                 break;
             case SupplyType.METALLICS:
                 metalics.value = data.currentAmount;
+                metalicsT.text = $"Metalics {metalics.value}/{metalics.maxValue}";
                 break;
         }
 
         average.value = (food.value + mana.value + intel.value + medicine.value + metalics.value) / 5;
+        averageT.text = $"Average {average.value}/{average.maxValue}";
     }
 
     public void MapSetup(List<Exploration_Node> nodeList)
@@ -442,6 +452,14 @@ public class Exploration : MonoBehaviour
                 {
                     c.TransfferSupplies(c.node.IsTaking, this, null);
                 }
+            }
+
+            if (c.AmIDead(caravans) == true)
+            {
+                c.node.RemoveCaravan();
+                defeatedCaravans.Add(c);
+                c.hunters.Clear();
+                continue;
             }
 
             if (c.node.GetOccupier != null)

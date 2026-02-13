@@ -187,7 +187,7 @@ public sealed class FlowAction_Exploration : IflowAction
 
             foreach (Exploration_Hostile h in hostiles)
             {
-                h.SetHostileDestination(expo, nodes);
+                h.SetHostileDestination(expo, nodes,caravans);
             }
         }
 
@@ -357,7 +357,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
                 }
             }
 
-            winningTeam[i].DroneUnit.afterCombatStats.damageTakenPercentile = Mathf.Clamp01(winningTeam[i].MyHP / winningTeam[i].MyMaxHP);
+            winningTeam[i].DroneUnit.afterCombatStats.damageTakenPercentile = winningTeam[i].MyMaxHP - winningTeam[i].MyHP;
         }
 
         if (winningTeam != null) //Player won!

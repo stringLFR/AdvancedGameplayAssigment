@@ -74,7 +74,7 @@ public class Exploration_Hostile
         body.ProcedualCore.ManualNavRotTarget = expo.transform.position;
     }
 
-    public void SetHostileDestination(Exploration expo, List<Exploration_Node> nodes)
+    public void SetHostileDestination(Exploration expo, List<Exploration_Node> nodes, List<Exploration_Caravan> caravans)
     {
         float dist = Vector3.Distance(body.transform.position, expo.transform.position);
 
@@ -107,6 +107,22 @@ public class Exploration_Hostile
                     node.AddOccupier(this);
 
                     return;
+                }
+            }
+
+            if (node == null)
+            {
+                foreach (Exploration_Caravan c in caravans)
+                {
+                    if (Vector3.Distance(body.transform.position, c.body.transform.position) < 50)
+                    {
+                        c.hunters.Add(this);
+
+                        body.ProcedualCore.Agent.SetDestination(c.body.transform.position);
+                        body.ProcedualCore.ManualNavRotTarget = c.body.transform.position;
+
+                        return;
+                    }
                 }
             }
 

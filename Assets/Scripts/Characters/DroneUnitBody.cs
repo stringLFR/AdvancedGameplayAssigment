@@ -74,17 +74,14 @@ public sealed class DroneUnitBody : MonoBehaviour
         melee_P_HitRate = (int)(droneUnit.GetSTR * lm + droneUnit.GetDEX * lm) / 2;
         melee_M_HitRate = (int)(droneUnit.GetSTR * lm + droneUnit.GetINT * lm) / 2;
 
-        HP = maxHP;
         mana = maxMana;
         sanity = maxSanity;
 
-        float damagedTaken = maxHP * droneUnit.afterCombatStats.damageTakenPercentile;
-
-
+        HP = maxHP - droneUnit.afterCombatStats.damageTakenPercentile;
 
         myUI.gameObject.SetActive(true);
         myUI.InitUIPanel(this);
-        myUI.SetHealthSlider((int)damagedTaken);
+        myUI.SetHealthSlider(HP);
         myUI.SetManaSlider(maxMana);
         myUI.SetSanitySlider(maxSanity);
 

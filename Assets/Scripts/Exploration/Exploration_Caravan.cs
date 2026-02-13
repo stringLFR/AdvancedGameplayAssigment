@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -10,6 +12,8 @@ public class Exploration_Caravan
     public Exploration_Node node { get; private set; }
 
     public Exploration homeBase { get; private set; }
+
+    public List<Exploration_Hostile> hunters { get; private set; }
 
     private SupplyData[] caravanData;
 
@@ -93,6 +97,25 @@ public class Exploration_Caravan
         }
     }
 
+    public bool AmIDead(List<Exploration_Caravan> caravans)
+    {
+        foreach (Exploration_Hostile item in hunters)
+        {
+            if (Vector3.Distance(item.body.transform.position, body.transform.position) <= 5)
+            {
+                //Will allow it to pick the last caravan again!
+                Exploration_Caravan newTarget = caravans[UnityEngine.Random.Range(0, caravans.Count - 1)];
+
+                item.body.ProcedualCore.Agent.SetDestination(newTarget.body.transform.position);
+                item.body.ProcedualCore.ManualNavRotTarget = newTarget.body.transform.position;
+                newTarget.hunters.Add(item);
+
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Exploration_Caravan SpawnCaravan(Exploration expo, Exploration_Node targetNode)
     {
         Vector3 randomPointCaravan = expo.transform.position + Random.insideUnitSphere * 10;
@@ -106,6 +129,8 @@ public class Exploration_Caravan
         node = targetNode;
 
         homeBase = expo;
+
+        hunters = new List<Exploration_Hostile>();
 
         caravanData = new SupplyData[targetNode.Supplies.Length];
 

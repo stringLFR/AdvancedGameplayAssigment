@@ -58,7 +58,7 @@ public class DroneUIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void InitUIPanel(DroneUnitBody body)
     {
-        maxHealth = body.MyHP;
+        maxHealth = body.MyMaxHP;
         maxMana = body.MyMana;
         maxSanity = body.MySanity;
         healthSlider.maxValue = maxHealth;

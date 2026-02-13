@@ -10,12 +10,7 @@ using System.Collections.Generic;
 public struct AfterCombatStats
 {
     public int expGained;
-    public float damageTakenPercentile;
-
-    public AfterCombatStats(int i)
-    {
-        damageTakenPercentile = 1f; expGained = 0;
-    }
+    public int damageTakenPercentile;
 }
 
 [Serializable]
@@ -36,7 +31,7 @@ public sealed class DroneUnit
     [SerializeField]
     private int level = 1;
 
-    public AfterCombatStats afterCombatStats = new AfterCombatStats(1);
+    public AfterCombatStats afterCombatStats = new AfterCombatStats();
 
     private int memory;
 

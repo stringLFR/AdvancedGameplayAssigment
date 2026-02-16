@@ -66,7 +66,7 @@ public class Exploration : MonoBehaviour
     private float managementDistance = 10f, resourceUpkeepTickRate = 1f;
 
     [SerializeField]
-    private GameObject[] nodeResours, nodeSpecial, nodeHazard;
+    private GameObject[] nodeResours, nodeSpecial, nodeHazard, nodeTower;
 
     [SerializeField]
     int nodeResourseAmounts = 10, nodeSpecialAmounts = 10, nodeHazardAmounts = 10, batchAmount = 10;
@@ -100,6 +100,8 @@ public class Exploration : MonoBehaviour
     private HashSet<Exploration_Hostile> combatingHostiles = new HashSet<Exploration_Hostile>();
     private List<Exploration_Hostile> defeatedHostiles = new List<Exploration_Hostile>();
     private List<Exploration_Caravan> defeatedCaravans = new List<Exploration_Caravan>();
+
+    public List<Exploration_Caravan> DefeatedCaravans => defeatedCaravans;
 
     private List<Image> carvanImages = new List<Image>();
     private List<Image> hostileImages = new List<Image>();

@@ -20,4 +20,9 @@ public class SceneRoot : MonoBehaviour
             root.gameObject.SetActive(index == targetIndex);
         }
     }
+
+    private void OnDestroy()
+    {
+        roots.Remove(this);
+    }
 }

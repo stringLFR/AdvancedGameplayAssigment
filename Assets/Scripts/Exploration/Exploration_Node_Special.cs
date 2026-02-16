@@ -1,3 +1,4 @@
+using ActionFlowStack;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -12,6 +13,22 @@ public class Exploration_Node_Special : Exploration_Node
     public override void NodeInteract()
     {
         base.NodeInteract();
+    }
+
+    public override void OnFeedOrEmpty(bool isTaking, Exploration_Caravan c, Exploration e)
+    {
+        if (isTaking == true)
+        {
+
+            FlowAction_Exploration explorationFlowAction = ActionFlowStackHandler.CurrentFlowAction as FlowAction_Exploration;
+
+            if (explorationFlowAction != null)
+            {
+                explorationFlowAction.AddVictoryPoint();
+            }
+
+            return;
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

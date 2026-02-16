@@ -75,6 +75,8 @@ public abstract class Exploration_Node : MonoBehaviour
         occupier = null;
     }
 
+    public abstract void OnFeedOrEmpty(bool isTaking, Exploration_Caravan c, Exploration e);
+
     public virtual void NodeInteract()
     {
         if (assignedCaravan == true) return;

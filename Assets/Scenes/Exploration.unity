@@ -5020,6 +5020,10 @@ PrefabInstance:
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
+      propertyPath: nodeTower.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
       propertyPath: nodeHazard.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -5031,6 +5035,10 @@ PrefabInstance:
       propertyPath: nodeSpecial.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
+      propertyPath: 'nodeTower.Array.data[0]'
+      value: 
+      objectReference: {fileID: 6926337749200054376, guid: 5212faa46f482c04e8ca29795ea17f71, type: 3}
     - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
       propertyPath: 'nodeHazard.Array.data[0]'
       value: 

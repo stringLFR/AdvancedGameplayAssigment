@@ -30,11 +30,19 @@ public class Exploration_Caravan
 
         if (expo != null)
         {
+            int totalFeed = 0;
+
             for (int i = 0; i < caravanData.Length; i++)
             {
                 for(int j = 0; j < expo.SupplyData.Length; j++)
                 {
                     if (caravanData[i].Type != expo.SupplyData[j].Type) continue;
+
+                    if (isTaking == true && caravanData[i].currentAmount == caravanData[i].MaxAmount)
+                    {
+                        totalFeed++;
+                        continue;
+                    }
 
                     int initialAmount = expo.SupplyData[j].currentAmount;
 
@@ -54,6 +62,8 @@ public class Exploration_Caravan
                 }
             }
 
+            if (node == null || totalFeed == node.Supplies.Length) return;
+
             goingHome = false;
 
             body.ProcedualCore.Agent.SetDestination(nodeTargetPos);
@@ -64,11 +74,20 @@ public class Exploration_Caravan
 
         if (leNode != null)
         {
+            int totalEmpty = 0;
+            int totalFeed = 0;
+
             for (int i = 0; i < caravanData.Length; i++)
             {
                 for (int j = 0; j < leNode.Supplies.Length; j++)
                 {
                     if (caravanData[i].Type != leNode.Supplies[j].Type) continue;
+
+                    if (isTaking == true && leNode.Supplies[j].currentAmount == leNode.Supplies[j].MaxAmount)
+                    {
+                        totalFeed++;
+                        continue;
+                    }
 
                     int initialAmount = leNode.Supplies[j].currentAmount;
 
@@ -82,10 +101,19 @@ public class Exploration_Caravan
 
                     leNode.Supplies[j].currentAmount = newAmount;
 
+                    if (isTaking == false && leNode.Supplies[j].currentAmount <= 0) totalEmpty++;
+
                     leNode.NodeInteract(this, leNode.Supplies[j]);
 
                     caravanData[i].currentAmount = transfferAmount;
                 }
+            }
+
+            if (totalEmpty == leNode.Supplies.Length || totalFeed == leNode.Supplies.Length)
+            {
+                node.OnFeedOrEmpty(isTaking,this,homeBase);
+
+                return;
             }
 
             goingHome = true;

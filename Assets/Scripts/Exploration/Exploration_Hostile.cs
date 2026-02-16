@@ -12,6 +12,9 @@ public class Exploration_Hostile
 
     private DroneUnitBody explorer;
 
+    int hostileHP;
+    float baseSpeed;
+
     public Exploration_Node node { get; private set; }
 
     public Exploration_Hostile(DroneUnitBody explor)
@@ -19,12 +22,14 @@ public class Exploration_Hostile
         explorer = explor;
     }
 
-    public Exploration_Hostile SpawnHostile(Exploration expo, Vector3 pos)
+    public Exploration_Hostile SpawnHostile(Exploration expo, Vector3 pos, int hpValue)
     {
         Vector3 randomPointEnemy = pos;
         NavMesh.SamplePosition(randomPointEnemy, out NavMeshHit hitEnemy, Mathf.Infinity, NavMesh.AllAreas);
         GameObject obj = Object.Instantiate(expo.hostilePrefab.gameObject, hitEnemy.position, Quaternion.identity);
         body = obj.GetComponent<DroneUnitBody>();
+        hostileHP = hpValue;
+        baseSpeed = body.ProcedualCore.Agent.speed;
 
         return this;
     }
@@ -36,7 +41,13 @@ public class Exploration_Hostile
     //TODO: Add it so that this can also decide what enemies from the scriptable that will be spawned!
     public void EnterCombat(List<Exploration_Hostile> hostiles, List<Exploration_Caravan> caravans)
     {
-        foreach(Exploration_Hostile h in hostiles)
+        StopExplorationBodies(hostiles, caravans);
+        ActionFlowStackHandler.PushActionToStack(new FlowAction_Combat { });
+    }
+
+    public static void StopExplorationBodies(List<Exploration_Hostile> hostiles, List<Exploration_Caravan> caravans)
+    {
+        foreach (Exploration_Hostile h in hostiles)
         {
             h.body.ProcedualCore.Root.tr.gameObject.SetActive(false);
             h.body.ProcedualCore.Agent.isStopped = true;
@@ -47,7 +58,6 @@ public class Exploration_Hostile
             c.body.ProcedualCore.Root.tr.gameObject.SetActive(false);
             c.body.ProcedualCore.Agent.isStopped = true;
         }
-        ActionFlowStackHandler.PushActionToStack(new FlowAction_Combat { });
     }
 
     public bool TriggerHuntForCaravan(Exploration_Caravan prey)

@@ -81,7 +81,7 @@ namespace ActionFlowStack
             HashSet<IflowAction> onHash = nonStatic == null ? onStackHashSet : nonStatic.OnStackHashSet;
             Stack<IflowAction> theStack = nonStatic == null ? mainActionFlowStack : nonStatic.ActionFlowStack;
 
-            while (theStack.Count < 1)
+            while (theStack.Count > 0)
             {
                 theStack.Peek().OnEnd();
                 theStack.Pop();

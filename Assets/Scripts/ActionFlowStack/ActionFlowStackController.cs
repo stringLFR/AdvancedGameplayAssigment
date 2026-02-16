@@ -21,6 +21,7 @@ public enum CombatState
 public sealed class ActionFlowStackController : MonoBehaviour
 {
     [SerializeField] private PlayerTeam team;
+    [SerializeField] private PauseMenu pauseMenu;
 
     private string callerNameKey = "ActionFlowStackController";
 
@@ -38,6 +39,7 @@ public sealed class ActionFlowStackController : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(this);
             ActionFlowStackHandler.Callers.Add(callerNameKey);
+            pauseMenu.gameObject.SetActive(false);
         }
 
         
@@ -59,6 +61,34 @@ public sealed class ActionFlowStackController : MonoBehaviour
     void Update()
     {
         if (instance == null || instance != this) return;
+        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pauseMenu.gameObject.activeInHierarchy == true)
+            {
+
+                pauseMenu.UnPause();
+
+                pauseMenu.gameObject.SetActive(false);
+            }
+            else
+            {
+                pauseMenu.gameObject.SetActive(true);
+
+                if (ActionFlowStackHandler.CurrentFlowAction is FlowAction_Exploration)
+                {
+                    FlowAction_Exploration e = ActionFlowStackHandler.CurrentFlowAction as FlowAction_Exploration;
+
+                    e.StopBodies();
+                }
+
+                FlowAction_PauseMenu p = new FlowAction_PauseMenu();
+
+                ActionFlowStackHandler.PushActionToStack(p);
+
+                pauseMenu.ActivatePause(p);
+            }
+        }
 
         ActionFlowStackHandler.CallUpdateMainActionFlowStack(ref callerNameKey);
     }
@@ -110,6 +140,25 @@ public sealed class FlowAction_Exploration : IflowAction
     private List<Exploration_Hostile> hostiles;
     private List<Exploration_Node> nodes;
 
+    public void RemoveNode(Exploration_Node target)
+    {
+        nodes.Remove(target);
+    }
+
+    private int victoryPoints;
+
+    private const int MaxVictoryPoints = 5;
+
+    public void AddVictoryPoint()
+    {
+        victoryPoints++;
+
+        if (victoryPoints == MaxVictoryPoints)
+        {
+            
+        }
+    }
+
     float time = 0f;
 
 
@@ -137,7 +186,8 @@ public sealed class FlowAction_Exploration : IflowAction
     {
         for (int i = 0; i < amount; i++)
         {
-            hostiles.Add(new Exploration_Hostile(expo.Explorer).SpawnHostile(expo, pos + Random.insideUnitSphere * radius));
+            //Using amount for hp for now... May not be a good idea XD (IF many spawn at ones, the hp will be very high!)
+            hostiles.Add(new Exploration_Hostile(expo.Explorer).SpawnHostile(expo, pos + Random.insideUnitSphere * radius, amount));
         }
 
         expo.SetImagesHostile(hostiles.Count);
@@ -147,6 +197,7 @@ public sealed class FlowAction_Exploration : IflowAction
     {
         if (bFirstTime)
         {
+            victoryPoints = 0;
             hostiles = new List<Exploration_Hostile>();
             caravans = new List<Exploration_Caravan>();
             nodes = new List<Exploration_Node>();
@@ -166,6 +217,10 @@ public sealed class FlowAction_Exploration : IflowAction
             c.body.ProcedualCore.Root.tr.gameObject.SetActive(true);
             c.body.ProcedualCore.Agent.isStopped = false;
         }
+
+        if (expo == null) return;
+
+        expo.Explorer.ProcedualCore.Agent.isStopped = false;
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnEnd()
@@ -198,11 +253,35 @@ public sealed class FlowAction_Exploration : IflowAction
         //throw new System.NotImplementedException();
     }
 
+    public void StopBodies()
+    {
+        foreach (Exploration_Hostile h in hostiles)
+        {
+            h.body.ProcedualCore.Agent.isStopped = true;
+        }
+
+        foreach (Exploration_Caravan c in caravans)
+        {
+            c.body.ProcedualCore.Agent.isStopped = true;
+        }
+        expo.Explorer.ProcedualCore.Agent.isStopped = true;
+    }
+
     void CleanUp()
     {
         foreach(Exploration_Node n in nodes)
         {
             n.CleanUpNode();
+        }
+
+        foreach(Exploration_Hostile h in hostiles)
+        {
+            Object.Destroy(h.body.gameObject);
+        }
+
+        foreach (Exploration_Caravan c in caravans)
+        {
+            Object.Destroy(c.body.gameObject);
         }
 
         expo.positions.Dispose();
@@ -421,28 +500,33 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
 public sealed class FlowAction_PauseMenu : IflowAction
 {
+    private bool done;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public bool IsDone()
     {
-        throw new System.NotImplementedException();
+        return done;
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnBegin(bool bFirstTime)
     {
         if (bFirstTime)
         {
-            //Load info before switching scenes!
+            done = false;
         }
     }
+
+    public void SetDone() => done = true;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnEnd()
     {
-        throw new System.NotImplementedException();
+        
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnUpdate()
     {
-        throw new System.NotImplementedException();
+        
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void GoToMainMenu()

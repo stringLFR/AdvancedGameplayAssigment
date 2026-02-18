@@ -19,12 +19,17 @@ public class Exploration_Node_Special : Exploration_Node
     {
         if (isTaking == true)
         {
+            c.node.RemoveCaravan();
+            e.DefeatedCaravans.Add(c);
+            c.hunters.Clear();
 
             FlowAction_Exploration explorationFlowAction = ActionFlowStackHandler.CurrentFlowAction as FlowAction_Exploration;
 
             if (explorationFlowAction != null)
             {
                 explorationFlowAction.AddVictoryPoint();
+                explorationFlowAction.RemoveNode(this);
+                Destroy(this.gameObject);
             }
 
             return;

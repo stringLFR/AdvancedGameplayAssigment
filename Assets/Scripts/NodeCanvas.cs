@@ -1,8 +1,9 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class NodeCanvas : MonoBehaviour
+public class NodeCanvas : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     private TextMeshProUGUI nodeName, nodeType;
@@ -15,6 +16,9 @@ public class NodeCanvas : MonoBehaviour
 
     [SerializeField]
     private Button button;
+
+    [SerializeField]
+    private GameObject hoverPanel;
 
     public Button Button => button;
 
@@ -66,12 +70,22 @@ public class NodeCanvas : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        hoverPanel.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        hoverPanel.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        hoverPanel.SetActive(false);
     }
 }

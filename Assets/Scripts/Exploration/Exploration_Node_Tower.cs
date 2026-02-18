@@ -51,11 +51,15 @@ public class Exploration_Node_Tower : Exploration_Node
 
         foreach (Exploration_Hostile h in targeting)
         {
+            Debug.DrawLine(transform.position, h.body.transform.position, Color.red, fireRate,false);
+
             for (int i = 0; i < targetPoints.Length; i++)
             {
                 if (Vector3.Distance(h.body.transform.position, targetPoints[i]) <= HitRadius)
                 {
                     if (UnityEngine.Random.Range(0, 1) > hitRate) continue;
+
+                    Debug.DrawLine(targetPoints[i], h.body.transform.position, Color.red, fireRate, false);
 
                     float dist = Vector3.Distance(h.body.transform.position, transform.position);
 

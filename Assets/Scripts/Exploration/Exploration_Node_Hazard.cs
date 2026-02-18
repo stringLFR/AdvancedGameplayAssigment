@@ -41,7 +41,7 @@ public class Exploration_Node_Hazard : Exploration_Node
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        float size = AreaSetUp();
+        float size = base.AreaSetUp();
 
         NavMeshObstacle.radius *= size;
         NavMeshObstacle.height *= size;

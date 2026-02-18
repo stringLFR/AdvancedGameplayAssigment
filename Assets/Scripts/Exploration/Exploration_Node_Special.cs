@@ -39,7 +39,7 @@ public class Exploration_Node_Special : Exploration_Node
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        AreaSetUp();
+        base.AreaSetUp();
     }
 
     // Update is called once per frame

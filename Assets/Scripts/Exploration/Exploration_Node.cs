@@ -110,6 +110,7 @@ public abstract class Exploration_Node : MonoBehaviour
         foreach(SupplyData d in supplies)
         {
             canvas.SetUpSliders(d);
+            canvas.UpdateSlider(d);
         }
 
         return size;

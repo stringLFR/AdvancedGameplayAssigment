@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7487444758372459397
+--- !u!1 &4537291779446147765
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,50 +8,110 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7795691306659917099}
-  - component: {fileID: 765793838546883882}
-  - component: {fileID: 5127264859476668419}
-  - component: {fileID: 7347503048784525001}
-  - component: {fileID: 7069050047439739128}
+  - component: {fileID: 6306220986305818291}
+  - component: {fileID: 4628958277536612887}
   m_Layer: 0
-  m_Name: HazardNode
+  m_Name: Decal Projector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7795691306659917099
+--- !u!4 &6306220986305818291
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7487444758372459397}
+  m_GameObject: {fileID: 4537291779446147765}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4048945302215054986}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4628958277536612887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4537291779446147765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
+  m_Material: {fileID: 2100000, guid: 82246f5f49f583c4796e4eb9ac377bcf, type: 2}
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_StartAngleFade: 180
+  m_EndAngleFade: 180
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_RenderingLayerMask:
+    serializedVersion: 0
+    m_Bits: 128
+  m_ScaleMode: 0
+  m_Offset: {x: 0, y: 0, z: 0.45}
+  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_FadeFactor: 0.5
+  version: 1
+  m_DecalLayerMask: 1
+--- !u!1 &4691866570870351813
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4048945302215054986}
+  - component: {fileID: 8243449205196337958}
+  - component: {fileID: 7118823502567147799}
+  - component: {fileID: 8033468235606109958}
+  - component: {fileID: 3097755561414306620}
+  m_Layer: 0
+  m_Name: ResoursNode_Abbadnoned Farm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4048945302215054986
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4691866570870351813}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 6.875727, y: 2.000002, z: -3.0880756}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8819813971305058772}
-  - {fileID: 1790465307971275652}
+  - {fileID: 3805746688654646240}
+  - {fileID: 6306220986305818291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &765793838546883882
+--- !u!33 &8243449205196337958
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7487444758372459397}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &5127264859476668419
+  m_GameObject: {fileID: 4691866570870351813}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &7118823502567147799
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7487444758372459397}
+  m_GameObject: {fileID: 4691866570870351813}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -93,13 +153,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &7347503048784525001
-CapsuleCollider:
+--- !u!65 &8033468235606109958
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7487444758372459397}
+  m_GameObject: {fileID: 4691866570870351813}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -111,118 +171,38 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7069050047439739128
+--- !u!114 &3097755561414306620
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7487444758372459397}
+  m_GameObject: {fileID: 4691866570870351813}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bf93d3ff1e8e6a40af13e2d558cc6b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 65ea029321091e8479d2e163d3fed34f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Exploration_Node_Hazard
-  nodeOuterRadius: 100
+  m_EditorClassIdentifier: Assembly-CSharp::Exploration_Node_Resours
+  nodeOuterRadius: 20
   nodeInnerRadius: 10
-  isTaking: 1
+  isTaking: 0
   supplies:
   - Type: 0
-    MaxAmount: 10
-    currentAmount: 0
-    carryAmount: 3
-  canvas: {fileID: 465026973871303996}
-  projector: {fileID: 5732822262166687576}
-  NavMeshObstacle: {fileID: 9184438765741310771}
---- !u!1 &8119132318102249648
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8819813971305058772}
-  - component: {fileID: 5732822262166687576}
-  - component: {fileID: 9184438765741310771}
-  m_Layer: 0
-  m_Name: Decal Projector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8819813971305058772
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8119132318102249648}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7795691306659917099}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5732822262166687576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8119132318102249648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
-  m_Material: {fileID: 2100000, guid: 48115c5d5ff0e0543b4ec66084a4372b, type: 2}
-  m_DrawDistance: 1000
-  m_FadeScale: 0.9
-  m_StartAngleFade: 180
-  m_EndAngleFade: 180
-  m_UVScale: {x: 1, y: 1}
-  m_UVBias: {x: 0, y: 0}
-  m_RenderingLayerMask:
-    serializedVersion: 0
-    m_Bits: 128
-  m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0.45}
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
-  m_FadeFactor: 0.5
-  version: 1
-  m_DecalLayerMask: 1
---- !u!208 &9184438765741310771
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8119132318102249648}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 0
-  m_Extents: {x: 0.1, y: 0.05, z: 0.1}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0.1}
-  m_TimeToStationary: 0.5
---- !u!1001 &7981370844564880003
+    MaxAmount: 100
+    currentAmount: 100
+    carryAmount: 5
+  canvas: {fileID: 3061782905651608920}
+  projector: {fileID: 4628958277536612887}
+--- !u!1001 &4812728128853650151
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 7795691306659917099}
+    m_TransformParent: {fileID: 4048945302215054986}
     m_Modifications:
     - target: {fileID: 69813974067624719, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_AnchorMax.y
@@ -235,6 +215,10 @@ PrefabInstance:
     - target: {fileID: 727570430898158646, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 992186442604256618, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
+      propertyPath: m_text
+      value: Abbandoned Farm
       objectReference: {fileID: 0}
     - target: {fileID: 1526475918107448761, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_AnchorMax.y
@@ -256,6 +240,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NodeCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 3742937020634845572, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
+      propertyPath: m_text
+      value: Resource Node
+      objectReference: {fileID: 0}
     - target: {fileID: 5995131074908197347, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -263,6 +251,11 @@ PrefabInstance:
     - target: {fileID: 6789034262737069101, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6875913533562480092, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
+      propertyPath: m_text
+      value: A former farm once owned by the city. Now it lies ruined, but food can
+        still be scavenged!
       objectReference: {fileID: 0}
     - target: {fileID: 7024034524481352330, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_AnchorMax.y
@@ -357,10 +350,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
---- !u!114 &465026973871303996 stripped
+--- !u!114 &3061782905651608920 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7545673352088655807, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
-  m_PrefabInstance: {fileID: 7981370844564880003}
+  m_PrefabInstance: {fileID: 4812728128853650151}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -368,8 +361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 543ebdd9b0f686c499933edb4b351656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NodeCanvas
---- !u!224 &1790465307971275652 stripped
+--- !u!224 &3805746688654646240 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8510260444202217735, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
-  m_PrefabInstance: {fileID: 7981370844564880003}
+  m_PrefabInstance: {fileID: 4812728128853650151}
   m_PrefabAsset: {fileID: 0}

@@ -129,9 +129,22 @@ MonoBehaviour:
   nodeOuterRadius: 20
   nodeInnerRadius: 10
   isTaking: 1
-  supplies: []
+  supplies:
+  - Type: 4
+    MaxAmount: 10
+    currentAmount: 0
+    carryAmount: 2
   canvas: {fileID: 7288518025376664393}
   projector: {fileID: 5724494530352791955}
+  fireRate: 1
+  targetRadius: 500
+  HitRadius: 5
+  hitRate: 0.75
+  slowDownEffect: 2
+  fallOffModifier: 0.001
+  damage: 200
+  targets: 3
+  resoursCostPerAttack: 1
 --- !u!1 &8080653048619494212
 GameObject:
   m_ObjectHideFlags: 0

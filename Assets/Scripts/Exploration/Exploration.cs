@@ -103,6 +103,7 @@ public class Exploration : MonoBehaviour
     private List<Exploration_Node_Tower> activeTowers = new List<Exploration_Node_Tower>();
 
     public List<Exploration_Caravan> DefeatedCaravans => defeatedCaravans;
+    public List<Exploration_Hostile> DefeatedHostiles => defeatedHostiles;
 
     private List<Image> carvanImages = new List<Image>();
     private List<Image> hostileImages = new List<Image>();
@@ -172,6 +173,8 @@ public class Exploration : MonoBehaviour
         obj.transform.position = hit.position;
 
         nodeList.Add(r);
+
+        activeTowers.Add(r);
     }
 
     //private BinaryRadianTree<Exploration_Node> nodetree;
@@ -400,7 +403,6 @@ public class Exploration : MonoBehaviour
 
     private void HostilesTick(List<Exploration_Hostile> hostiles, List<Exploration_Caravan> caravans)
     {
-
         int hIndex = 0;
         foreach (Exploration_Hostile h in hostiles)
         {
@@ -459,14 +461,14 @@ public class Exploration : MonoBehaviour
                 if (combatingHostiles.TryGetValue(defeatedHostiles[i], out Exploration_Hostile actualValue) == true)
                 {
                     combatingHostiles.Remove(defeatedHostiles[i]);
-                    hostiles.Remove(defeatedHostiles[i]);
-                    Destroy(defeatedHostiles[i].body.gameObject);
-                    SetImagesHostile(hostiles.Count);
+                }
+                hostiles.Remove(defeatedHostiles[i]);
+                Destroy(defeatedHostiles[i].body.gameObject);
+                SetImagesHostile(hostiles.Count);
 
-                    if (defeatedHostiles[i].node != null)
-                    {
-                        defeatedHostiles[i].node.RemoveOccupier();
-                    }
+                if (defeatedHostiles[i].node != null)
+                {
+                    defeatedHostiles[i].node.RemoveOccupier();
                 }
             }
 

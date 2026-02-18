@@ -29,6 +29,11 @@ public class Exploration_Hostile
             tempSpeed = speedPenalty;
             body.ProcedualCore.Agent.speed = tempSpeed;
         }
+
+        if (hostileHP <= 0)
+        {
+            expo.DefeatedHostiles.Add(this);
+        }
     }
 
     public void ReturnSpeedTick(float time)

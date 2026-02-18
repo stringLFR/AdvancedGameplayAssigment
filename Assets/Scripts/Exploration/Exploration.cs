@@ -100,11 +100,14 @@ public class Exploration : MonoBehaviour
     private HashSet<Exploration_Hostile> combatingHostiles = new HashSet<Exploration_Hostile>();
     private List<Exploration_Hostile> defeatedHostiles = new List<Exploration_Hostile>();
     private List<Exploration_Caravan> defeatedCaravans = new List<Exploration_Caravan>();
+    private List<Exploration_Node_Tower> activeTowers = new List<Exploration_Node_Tower>();
 
     public List<Exploration_Caravan> DefeatedCaravans => defeatedCaravans;
 
     private List<Image> carvanImages = new List<Image>();
     private List<Image> hostileImages = new List<Image>();
+
+    private Queue<int> towerQueue = new Queue<int>();
 
     NodeJob_RotateCanvas rotationJob;
 
@@ -147,6 +150,28 @@ public class Exploration : MonoBehaviour
 
             size = listSize - hostileImages.Count;
         }
+    }
+
+    public void AddTowerToQueue(int index)
+    {
+        towerQueue.Enqueue(index);
+    }
+
+    public void SpawnTower(int index, List<Exploration_Node> nodeList)
+    {
+        if (index > nodeTower.Length) return;
+
+        GameObject obj = Instantiate(nodeTower[index]);
+
+        obj.transform.parent = transform;
+
+        Exploration_Node_Tower r = obj.GetComponent<Exploration_Node_Tower>();
+
+        NavMesh.SamplePosition(explorer.transform.position, out NavMeshHit hit, Mathf.Infinity, NavMesh.AllAreas);
+
+        obj.transform.position = hit.position;
+
+        nodeList.Add(r);
     }
 
     //private BinaryRadianTree<Exploration_Node> nodetree;
@@ -294,40 +319,11 @@ public class Exploration : MonoBehaviour
     {
         if (startScreen != null) return;
 
-        if (Vector3.Dot(Camera.main.transform.forward, explorer.transform.position - Camera.main.transform.position) < 0)
-        {
-            explorerImage.gameObject.SetActive(false);
-        }
-        else
-        {
-            explorerImage.gameObject.SetActive(true);
-            explorerImage.transform.position = Camera.main.WorldToScreenPoint(explorer.transform.position + new Vector3(0, UIImageHeight, 0));
-        }
+        ExplorereTick();
 
-        time += Time.deltaTime;
+        ResourceTick(caravans, hostiles);
 
-        if (time >= resourceUpkeepTickRate)
-        {
-            time = 0f;
-
-            int enemyAttackers = 0;
-
-            foreach(Exploration_Hostile h in hostiles)
-            {
-                if (Vector3.Distance(h.body.transform.position, transform.position) <= managementDistance)
-                {
-                    enemyAttackers++;
-                }
-            }
-
-            for (int i = 0; i < SupplyData.Length; i++)
-            {
-                SupplyData[i].currentAmount = Mathf.Clamp(SupplyData[i].currentAmount - ((1 + 1 * caravans.Count) + enemyAttackers * enemyAttackers), 0, SupplyData[i].MaxAmount);
-
-                UpdateSlider(SupplyData[i]);
-            }
-        }
-
+        TowerTick(hostiles);
 
         HostilesTick(hostiles, caravans);
 
@@ -345,6 +341,61 @@ public class Exploration : MonoBehaviour
         //Debug.DrawLine(explorer.transform.position, new Vector3(t2[1].position.X, t2[1].position.Y, t2[1].position.Z));
 
 
+    }
+
+    private void ExplorereTick()
+    {
+        if (Vector3.Dot(Camera.main.transform.forward, explorer.transform.position - Camera.main.transform.position) < 0)
+        {
+            explorerImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            explorerImage.gameObject.SetActive(true);
+            explorerImage.transform.position = Camera.main.WorldToScreenPoint(explorer.transform.position + new Vector3(0, UIImageHeight, 0));
+        }
+    }
+
+    private void ResourceTick(List<Exploration_Caravan> caravans, List<Exploration_Hostile> hostiles)
+    {
+        time += Time.deltaTime;
+
+        if (time >= resourceUpkeepTickRate)
+        {
+            time = 0f;
+
+            int enemyAttackers = 0;
+
+            foreach (Exploration_Hostile h in hostiles)
+            {
+                if (Vector3.Distance(h.body.transform.position, transform.position) <= managementDistance)
+                {
+                    enemyAttackers++;
+                }
+            }
+
+            for (int i = 0; i < SupplyData.Length; i++)
+            {
+                SupplyData[i].currentAmount = Mathf.Clamp(SupplyData[i].currentAmount - ((1 + 1 * caravans.Count) + enemyAttackers * enemyAttackers), 0, SupplyData[i].MaxAmount);
+
+                UpdateSlider(SupplyData[i]);
+            }
+        }
+    }
+
+    private void TowerTick(List<Exploration_Hostile> hostiles)
+    {
+        float delta = Time.deltaTime;
+
+        foreach (Exploration_Hostile h in hostiles)
+        {
+            h.ReturnSpeedTick(delta);
+        }
+
+        foreach (Exploration_Node_Tower t in activeTowers)
+        {
+            t.TowerTick(hostiles, delta, this);
+        }
     }
 
     private void HostilesTick(List<Exploration_Hostile> hostiles, List<Exploration_Caravan> caravans)
@@ -486,6 +537,14 @@ public class Exploration : MonoBehaviour
 
     private void NodesTick(List<Exploration_Node> nodes)
     {
+        while(towerQueue.Count > 0)
+        {
+            int i = towerQueue.Dequeue();
+
+            SpawnTower(i, nodes);
+        }
+
+
         foreach (Exploration_Node n in nodes)
         {
             if (Vector3.Distance(Camera.main.transform.position, n.transform.position) >= 100)

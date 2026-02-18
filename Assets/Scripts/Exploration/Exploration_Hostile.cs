@@ -14,8 +14,28 @@ public class Exploration_Hostile
 
     int hostileHP;
     float baseSpeed;
+    float tempSpeed;
+
+    public float BaseSpeed => baseSpeed;
 
     public Exploration_Node node { get; private set; }
+
+    public void ReciveTowerEffects(int damage,float speedPenalty, Exploration expo)
+    {
+        hostileHP -= damage;
+
+        if (speedPenalty < tempSpeed)
+        {
+            tempSpeed = speedPenalty;
+            body.ProcedualCore.Agent.speed = tempSpeed;
+        }
+    }
+
+    public void ReturnSpeedTick(float time)
+    {
+        tempSpeed = Mathf.Clamp(tempSpeed += time,0, baseSpeed);
+        body.ProcedualCore.Agent.speed = tempSpeed;
+    }
 
     public Exploration_Hostile(DroneUnitBody explor)
     {
@@ -30,6 +50,7 @@ public class Exploration_Hostile
         body = obj.GetComponent<DroneUnitBody>();
         hostileHP = hpValue;
         baseSpeed = body.ProcedualCore.Agent.speed;
+        tempSpeed = baseSpeed;
 
         return this;
     }

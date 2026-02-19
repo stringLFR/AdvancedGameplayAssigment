@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6516785992478888280
+--- !u!1 &5156091196722940775
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,110 +8,50 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4962544643479391065}
-  - component: {fileID: 6377651163508458856}
+  - component: {fileID: 7873512428980128461}
+  - component: {fileID: 1202356161678043726}
+  - component: {fileID: 5293811726614230006}
+  - component: {fileID: 6765838985201715037}
+  - component: {fileID: 4204278722541351239}
   m_Layer: 0
-  m_Name: Decal Projector
+  m_Name: HazardNode_Wasteland Anomaly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4962544643479391065
+--- !u!4 &7873512428980128461
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6516785992478888280}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8674333786015424610}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6377651163508458856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6516785992478888280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
-  m_Material: {fileID: 2100000, guid: 82246f5f49f583c4796e4eb9ac377bcf, type: 2}
-  m_DrawDistance: 1000
-  m_FadeScale: 0.9
-  m_StartAngleFade: 180
-  m_EndAngleFade: 180
-  m_UVScale: {x: 1, y: 1}
-  m_UVBias: {x: 0, y: 0}
-  m_RenderingLayerMask:
-    serializedVersion: 0
-    m_Bits: 128
-  m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0.45}
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
-  m_FadeFactor: 0.5
-  version: 1
-  m_DecalLayerMask: 1
---- !u!1 &7393785050246014654
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8674333786015424610}
-  - component: {fileID: 3208335095814745341}
-  - component: {fileID: 1838164302750975635}
-  - component: {fileID: 6809483580832360724}
-  - component: {fileID: 1842988464456721281}
-  m_Layer: 0
-  m_Name: ResoursNode_Hospital bunker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8674333786015424610
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7393785050246014654}
+  m_GameObject: {fileID: 5156091196722940775}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.51, y: 2.000002, z: -3.0880756}
+  m_LocalPosition: {x: -20.09, y: 0.0000019073486, z: 9.989759}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2356486102179190367}
-  - {fileID: 4962544643479391065}
+  - {fileID: 5910958770810845153}
+  - {fileID: 55933060219434348}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3208335095814745341
+--- !u!33 &1202356161678043726
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7393785050246014654}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1838164302750975635
+  m_GameObject: {fileID: 5156091196722940775}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &5293811726614230006
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7393785050246014654}
+  m_GameObject: {fileID: 5156091196722940775}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -153,13 +93,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6809483580832360724
-BoxCollider:
+--- !u!136 &6765838985201715037
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7393785050246014654}
+  m_GameObject: {fileID: 5156091196722940775}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -171,38 +111,118 @@ BoxCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1842988464456721281
+--- !u!114 &4204278722541351239
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7393785050246014654}
+  m_GameObject: {fileID: 5156091196722940775}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65ea029321091e8479d2e163d3fed34f, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bf93d3ff1e8e6a40af13e2d558cc6b7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Exploration_Node_Resours
-  nodeOuterRadius: 20
-  nodeInnerRadius: 10
-  isTaking: 0
+  m_EditorClassIdentifier: Assembly-CSharp::Exploration_Node_Hazard
+  nodeOuterRadius: 100
+  nodeInnerRadius: 50
+  isTaking: 1
   supplies:
-  - Type: 3
-    MaxAmount: 1000
-    currentAmount: 1000
-    carryAmount: 5
-  canvas: {fileID: 4476281953121874151}
-  projector: {fileID: 6377651163508458856}
---- !u!1001 &6244644777983354712
+  - Type: 2
+    MaxAmount: 200
+    currentAmount: 0
+    carryAmount: 2
+  canvas: {fileID: 2192039114026472404}
+  projector: {fileID: 583713837073459993}
+  NavMeshObstacle: {fileID: 637651428247145885}
+--- !u!1 &7271797674933236826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5910958770810845153}
+  - component: {fileID: 583713837073459993}
+  - component: {fileID: 637651428247145885}
+  m_Layer: 0
+  m_Name: Decal Projector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5910958770810845153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7271797674933236826}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7873512428980128461}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &583713837073459993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7271797674933236826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
+  m_Material: {fileID: 2100000, guid: 48115c5d5ff0e0543b4ec66084a4372b, type: 2}
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_StartAngleFade: 180
+  m_EndAngleFade: 180
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_RenderingLayerMask:
+    serializedVersion: 0
+    m_Bits: 128
+  m_ScaleMode: 0
+  m_Offset: {x: 0, y: 0, z: 0.45}
+  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_FadeFactor: 0.5
+  version: 1
+  m_DecalLayerMask: 1
+--- !u!208 &637651428247145885
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7271797674933236826}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.1, y: 0.05, z: 0.1}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.1}
+  m_TimeToStationary: 0.5
+--- !u!1001 &8564775680937509995
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 8674333786015424610}
+    m_TransformParent: {fileID: 7873512428980128461}
     m_Modifications:
     - target: {fileID: 69813974067624719, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_AnchorMax.y
@@ -218,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 992186442604256618, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_text
-      value: Hospital bunker
+      value: Wasteland Anomaly
       objectReference: {fileID: 0}
     - target: {fileID: 1526475918107448761, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_AnchorMax.y
@@ -242,7 +262,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3742937020634845572, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_text
-      value: Resource Node
+      value: Hazard Node
       objectReference: {fileID: 0}
     - target: {fileID: 5995131074908197347, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_AnchorMax.y
@@ -254,8 +274,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6875913533562480092, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_text
-      value: One of our lost bunkers. It still houses medicine the city desperatly
-        needs!
+      value: An unprecedented space anomaly has erupted here! We need intel to determine
+        what is going on here!
       objectReference: {fileID: 0}
     - target: {fileID: 7024034524481352330, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
       propertyPath: m_AnchorMax.y
@@ -350,15 +370,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
---- !u!224 &2356486102179190367 stripped
+--- !u!224 &55933060219434348 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8510260444202217735, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
-  m_PrefabInstance: {fileID: 6244644777983354712}
+  m_PrefabInstance: {fileID: 8564775680937509995}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4476281953121874151 stripped
+--- !u!114 &2192039114026472404 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7545673352088655807, guid: 0691739c82b6ac945a0725ce1bbdc844, type: 3}
-  m_PrefabInstance: {fileID: 6244644777983354712}
+  m_PrefabInstance: {fileID: 8564775680937509995}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1

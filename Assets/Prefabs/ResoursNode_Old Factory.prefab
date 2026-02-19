@@ -131,8 +131,8 @@ MonoBehaviour:
   isTaking: 0
   supplies:
   - Type: 4
-    MaxAmount: 100
-    currentAmount: 100
+    MaxAmount: 1000
+    currentAmount: 1000
     carryAmount: 5
   canvas: {fileID: 6658667968032261982}
   projector: {fileID: 6038103254977328834}

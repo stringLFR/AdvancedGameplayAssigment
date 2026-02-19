@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
-
     private FlowAction_PauseMenu pause;
 
     public void ActivatePause(FlowAction_PauseMenu menu)
@@ -20,7 +19,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (pause == null) return;
 
-        pause.GoToMainMenu();
+        FlowAction_PauseMenu.GoToMainMenu();
 
         gameObject.SetActive(false);
     }

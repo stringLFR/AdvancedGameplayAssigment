@@ -80,6 +80,24 @@ public class Exploration : MonoBehaviour
     [SerializeField]
     private GameObject startScreen;
 
+    [SerializeField]
+    private GameObject gameOverScreen;
+
+    [SerializeField]
+    private TextMeshProUGUI gameOverScreenText;
+
+    [SerializeField]
+    private Button gameOverScreenButton;
+
+    [SerializeField]
+    private TextMeshProUGUI winScoreText;
+
+    public GameObject GameOverScreen => gameOverScreen;
+    public TextMeshProUGUI GameOverScreenText => gameOverScreenText;
+    public Button GameOverScreenButton => gameOverScreenButton;
+
+    public TextMeshProUGUI WinScoreText => winScoreText;
+
     public NativeArray<Vector3> positions { get; private set; }
     public NativeArray<Quaternion> rotations { get; private set; }
 
@@ -111,7 +129,6 @@ public class Exploration : MonoBehaviour
     private Queue<int> towerQueue = new Queue<int>();
 
     NodeJob_RotateCanvas rotationJob;
-
 
     public void SetImagesCaravan(int listSize)
     {
@@ -382,6 +399,13 @@ public class Exploration : MonoBehaviour
                 SupplyData[i].currentAmount = Mathf.Clamp(SupplyData[i].currentAmount - ((1 + 1 * caravans.Count) + enemyAttackers * enemyAttackers), 0, SupplyData[i].MaxAmount);
 
                 UpdateSlider(SupplyData[i]);
+            }
+
+            if (average.value <= 50)
+            {
+                FlowAction_GameOver game = new FlowAction_GameOver();
+                game.SetGameOverState(false, this);
+                ActionFlowStackHandler.PushActionToStack(game);
             }
         }
     }

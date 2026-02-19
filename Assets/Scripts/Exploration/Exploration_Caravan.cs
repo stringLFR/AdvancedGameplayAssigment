@@ -129,6 +129,8 @@ public class Exploration_Caravan
     {
         foreach (Exploration_Hostile item in hunters)
         {
+            if (item.body == null || body == null) continue;
+
             if (Vector3.Distance(item.body.transform.position, body.transform.position) <= 5)
             {
                 //Will allow it to pick the last caravan again!

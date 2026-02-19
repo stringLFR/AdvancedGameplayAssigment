@@ -88,6 +88,8 @@ public class Exploration_Hostile
 
     public bool TriggerHuntForCaravan(Exploration_Caravan prey)
     {
+        if (prey == null || node == null || body == null) return false;
+
         if (Vector3.Distance(prey.body.transform.position, body.transform.position) <= node.intereactDistance * 2)
         {
             body.ProcedualCore.Agent.SetDestination(prey.body.transform.position);

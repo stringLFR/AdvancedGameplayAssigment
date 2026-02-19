@@ -145,17 +145,21 @@ public sealed class FlowAction_Exploration : IflowAction
         nodes.Remove(target);
     }
 
-    private int victoryPoints;
+    private int victoryPoints = 0;
 
-    private const int MaxVictoryPoints = 5;
+    private const int MaxVictoryPoints = 3;
 
     public void AddVictoryPoint()
     {
         victoryPoints++;
 
+        expo.WinScoreText.text = $"Win Score<br>{victoryPoints}/{MaxVictoryPoints}";
+
         if (victoryPoints == MaxVictoryPoints)
         {
-            
+            FlowAction_GameOver game = new FlowAction_GameOver();
+            game.SetGameOverState(true, expo);
+            ActionFlowStackHandler.PushActionToStack(game);
         }
     }
 
@@ -171,7 +175,7 @@ public sealed class FlowAction_Exploration : IflowAction
     public void Init(Exploration e)
     {
         expo = e;
-
+        expo.WinScoreText.text = $"Win Score<br>{victoryPoints}/{MaxVictoryPoints}";
         e.MapSetup(nodes);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
@@ -529,7 +533,7 @@ public sealed class FlowAction_PauseMenu : IflowAction
         
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public void GoToMainMenu()
+    public static void GoToMainMenu()
     {
         FlowAction_MainMenu menu = new FlowAction_MainMenu();
         IflowAction[] arr = { menu };
@@ -671,4 +675,59 @@ public sealed class FlowAction_Management : IflowAction
         managementPrefab.Release();
         Object.Destroy(management.gameObject);
     }
+
+    
 }
+
+public sealed class FlowAction_GameOver : IflowAction
+{
+
+    private bool wonBoolean;
+    private Exploration expo = null;
+    private string gameOverText;
+
+    public void SetGameOverState(bool won, Exploration e)
+    {
+        wonBoolean = won;
+        expo = e;
+
+        if (wonBoolean == true)
+        {
+            gameOverText = "YOU WON!";
+        }
+        else
+        {
+            gameOverText = "YOU LOST!";
+        }
+    }
+
+    public bool IsDone()
+    {
+        return false;
+    }
+
+    public void OnBegin(bool bFirstTime)
+    {
+        if (bFirstTime)
+        {
+            expo.GameOverScreen.gameObject.SetActive(true);
+
+            expo.GameOverScreenButton.onClick.AddListener(() => { FlowAction_PauseMenu.GoToMainMenu(); });
+
+            expo.GameOverScreenText.text = gameOverText;
+        }
+    }
+
+    public void OnEnd()
+    {
+        expo.GameOverScreenButton.onClick.RemoveAllListeners();
+
+    }
+
+    public void OnUpdate()
+    {
+
+    }
+}
+
+

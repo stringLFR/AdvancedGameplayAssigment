@@ -1206,6 +1206,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7051454957782623874, guid: d48f520e9abb0d74c8b6c3c11a0e6031, type: 3}
+      propertyPath: m_text
+      value: "Greetings Commander number 54...\nSorry for the rude awakening...\nBut
+        53 just lost their sanity and was \"decommissioned...\"\nThe role of command
+        now lies with you...\nA new strike unit has been deployed...\nWaiting your
+        command...\nYour mission is...\nSecure our city's future...\nIn this wasteland
+        scared by the \"War of the magi...\"\nAreas of interest has been classified
+        as \"Nodes...\"\nNodes include: Resource, hazard, and \"special...\"\nCaravans
+        has been \"formed\" to handle the supplylines between these nodes and the
+        city...\nStrike unit has cappability to deploy defensive structures...\nThese
+        are classified as \"Tower nodes...\"\nThey also need caravans to supply them...\nBut
+        remember that our resources are also our \"life...\"\nSpending or losing
+        to much will result in us no longer cappable of sustaining the city...\nResulting
+        with our total desctruction...\nGoodluck 54... \nMay the \"old gods\" watch
+        over you...\n"
+      objectReference: {fileID: 0}
     - target: {fileID: 8004694599081663195, guid: d48f520e9abb0d74c8b6c3c11a0e6031, type: 3}
       propertyPath: m_LocalPosition.x
       value: -47.294514

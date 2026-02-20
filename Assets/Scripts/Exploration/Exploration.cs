@@ -113,7 +113,9 @@ public class Exploration : MonoBehaviour
     const float UIImageHeight = 3f;
 
     const int maxSupply = 1000;
-    const int startingSupply = 500;
+    const int startingSupply = 750;
+    const int towerCost = 50;
+    const int resourceGainOnCombatWin = 25;
 
     private HashSet<Exploration_Hostile> combatingHostiles = new HashSet<Exploration_Hostile>();
     private List<Exploration_Hostile> defeatedHostiles = new List<Exploration_Hostile>();
@@ -179,6 +181,11 @@ public class Exploration : MonoBehaviour
     {
         if (index > nodeTower.Length) return;
 
+        foreach(SupplyData data in SupplyData)
+        {
+            if (data.currentAmount - towerCost < 0) return;
+        }
+
         GameObject obj = Instantiate(nodeTower[index]);
 
         obj.transform.parent = transform;
@@ -192,6 +199,12 @@ public class Exploration : MonoBehaviour
         nodeList.Add(r);
 
         activeTowers.Add(r);
+
+        for(int i = 0; i < SupplyData.Length; i++)
+        {
+            SupplyData[i].currentAmount -= towerCost;
+            UpdateSlider(SupplyData[i]);
+        }
     }
 
     //private BinaryRadianTree<Exploration_Node> nodetree;
@@ -459,6 +472,13 @@ public class Exploration : MonoBehaviour
                     case CombatState.WON:
 
                         defeatedHostiles.Add(h);
+
+                        for (int i = 0; i < SupplyData.Length; i++)
+                        {
+                            //Need to balance this with how towers act. Enemies defeated by towers won't give resources, while combat will!
+                            SupplyData[i].currentAmount += resourceGainOnCombatWin;
+                            UpdateSlider(SupplyData[i]);
+                        }
 
                         ActionFlowStackController.Instance.SetCombatState(CombatState.NOT_IN_COMBAT);
                         break;

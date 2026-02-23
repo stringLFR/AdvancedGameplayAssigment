@@ -10,7 +10,8 @@ using System.Collections.Generic;
 public struct AfterCombatStats
 {
     public int expGained;
-    public int damageTakenPercentile;
+    public int HPdamageTakenPercentile;
+    public int SanityDamageTakenPercentile;
 }
 
 [Serializable]

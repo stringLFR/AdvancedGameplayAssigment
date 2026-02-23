@@ -212,13 +212,15 @@ public sealed class FlowAction_Exploration : IflowAction
 
         foreach (Exploration_Hostile h in hostiles)
         {
-            h.body.ProcedualCore.Root.tr.gameObject.SetActive(true);
+            if (h.body.ProcedualCore.Root.tr.gameObject.activeInHierarchy == false) h.body.ProcedualCore.Root.tr.gameObject.SetActive(true);
+
             h.body.ProcedualCore.Agent.isStopped = false;
         }
 
         foreach (Exploration_Caravan c in caravans)
         {
-            c.body.ProcedualCore.Root.tr.gameObject.SetActive(true);
+            if (c.body.ProcedualCore.Root.tr.gameObject.activeInHierarchy == false) c.body.ProcedualCore.Root.tr.gameObject.SetActive(true);
+
             c.body.ProcedualCore.Agent.isStopped = false;
         }
 
@@ -440,7 +442,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
                 }
             }
 
-            winningTeam[i].DroneUnit.afterCombatStats.damageTakenPercentile = winningTeam[i].MyMaxHP - winningTeam[i].MyHP;
+            winningTeam[i].DroneUnit.afterCombatStats.HPdamageTakenPercentile = winningTeam[i].MyMaxHP - winningTeam[i].MyHP;
         }
 
         if (winningTeam != null) //Player won!
@@ -634,10 +636,12 @@ public sealed class FlowAction_Management : IflowAction
 
     private AsyncOperationHandle<GameObject> managementPrefab;
     private Exploration_Management management;
+    private Exploration expo;
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public void Init(Exploration_Management m)
+    public void Init(Exploration_Management m, Exploration e)
     {
         management = m;
+        expo = e;
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void GoExploring()

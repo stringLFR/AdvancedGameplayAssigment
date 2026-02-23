@@ -1,9 +1,16 @@
 using ActionFlowStack;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Exploration_Management : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject upgradePage;
+
+    [SerializeField]
+    private DroneUpgradePage[] droneUpgradePages;
+
     FlowAction_Management managementFlowAction;
 
     private void Awake()
@@ -12,7 +19,24 @@ public class Exploration_Management : MonoBehaviour
 
         if (managementFlowAction == null) return;
 
-        managementFlowAction.Init(this);
+        managementFlowAction.Init(this, FindFirstObjectByType<Exploration>());
+
+        int index = -1;
+
+        foreach (DroneUpgradePage upgradePage in droneUpgradePages)
+        {
+            index++;
+
+            if (index > ActionFlowStackController.Instance.Team.PlayerMembers.droneUnits.Length - 1)
+            {
+                upgradePage.gameObject.SetActive(false);
+                continue;
+            }
+
+            upgradePage.Init(this, ActionFlowStackController.Instance.Team.PlayerMembers.droneUnits[index]);
+        }
+
+        upgradePage.SetActive(false);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void CloseManagement()
@@ -20,6 +44,11 @@ public class Exploration_Management : MonoBehaviour
         if (managementFlowAction == null) return;
 
         managementFlowAction.GoExploring();
+    }
+
+    public void OpenUpgradePage()
+    {
+        upgradePage.SetActive(true);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,4 +62,6 @@ public class Exploration_Management : MonoBehaviour
     {
         
     }
+
+
 }

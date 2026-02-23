@@ -77,7 +77,7 @@ public sealed class DroneUnitBody : MonoBehaviour
         mana = maxMana;
         sanity = maxSanity;
 
-        HP = maxHP - droneUnit.afterCombatStats.damageTakenPercentile;
+        HP = maxHP - droneUnit.afterCombatStats.HPdamageTakenPercentile;
 
         myUI.gameObject.SetActive(true);
         myUI.InitUIPanel(this);

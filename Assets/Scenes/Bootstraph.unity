@@ -289,6 +289,22 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: playerMembers.droneUnits.Array.data[0].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: playerMembers.droneUnits.Array.data[1].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: playerMembers.droneUnits.Array.data[2].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: playerMembers.droneUnits.Array.data[3].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: playerMembers.droneUnits.Array.data[1].droneName
       value: Player 2
       objectReference: {fileID: 0}

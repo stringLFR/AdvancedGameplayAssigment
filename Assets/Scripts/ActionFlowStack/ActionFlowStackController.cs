@@ -290,6 +290,7 @@ public sealed class FlowAction_Exploration : IflowAction
             Object.Destroy(c.body.gameObject);
         }
 
+        Exploration_Management.Activated = false;
         expo.positions.Dispose();
         expo.rotations.Dispose();
         Addressables.UnloadSceneAsync(explorationScene);
@@ -637,6 +638,8 @@ public sealed class FlowAction_Management : IflowAction
     private AsyncOperationHandle<GameObject> managementPrefab;
     private Exploration_Management management;
     private Exploration expo;
+
+    public Exploration Expo => expo;
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void Init(Exploration_Management m, Exploration e)
     {

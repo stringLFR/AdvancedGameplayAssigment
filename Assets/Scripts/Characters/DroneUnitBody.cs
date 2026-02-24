@@ -75,7 +75,8 @@ public sealed class DroneUnitBody : MonoBehaviour
         melee_M_HitRate = (int)(droneUnit.GetSTR * lm + droneUnit.GetINT * lm) / 2;
 
         mana = maxMana;
-        sanity = maxSanity;
+
+        sanity = maxSanity - droneUnit.afterCombatStats.SanityDamageTakenPercentile;
 
         HP = maxHP - droneUnit.afterCombatStats.HPdamageTakenPercentile;
 
@@ -83,17 +84,8 @@ public sealed class DroneUnitBody : MonoBehaviour
         myUI.InitUIPanel(this);
         myUI.SetHealthSlider(HP);
         myUI.SetManaSlider(maxMana);
-        myUI.SetSanitySlider(maxSanity);
-
-
+        myUI.SetSanitySlider(sanity); 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void TakeDamage(int hitRate, float manaCost)

@@ -1191,7 +1191,19 @@ MonoBehaviour:
   m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5819919787542928405}
+        m_TargetAssemblyTypeName: Exploration_Management, Assembly-CSharp
+        m_MethodName: SliderTextUpdate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5343326039945041772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1466,6 +1478,9 @@ MonoBehaviour:
   - {fileID: 6249349080521136348}
   - {fileID: 8558606315451293577}
   - {fileID: 6340834695533543793}
+  upgradeSlider: {fileID: 8112917391919527787}
+  droneInfoPanel: {fileID: 4302327689647938923}
+  sliderText: {fileID: 6462268133458444632}
 --- !u!1 &7004257084644568247
 GameObject:
   m_ObjectHideFlags: 0
@@ -1802,8 +1817,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

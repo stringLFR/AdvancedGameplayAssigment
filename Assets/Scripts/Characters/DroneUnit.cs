@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System;
 using actions;
 using System.Collections.Generic;
+using System.Collections;
 
 
 
@@ -14,6 +15,21 @@ public struct AfterCombatStats
     public int SanityDamageTakenPercentile;
 }
 
+public enum CoreStatType
+{
+    NONE, STR, DEX, CON, INT, WIS, CHA,
+}
+
+public struct UpgradePageStruct
+{
+    public float currentUpgradeValue;
+    public CoreStatType full;
+    public CoreStatType half;
+    public CoreStatType minus;
+}
+
+
+
 [Serializable]
 public sealed class DroneUnit
 {
@@ -22,10 +38,7 @@ public sealed class DroneUnit
 
     public string DroneName => droneName;
 
-    public enum CoreStatType
-    {
-        NONE,STR,DEX,CON,INT,WIS,CHA,
-    }
+    public UpgradePageStruct myUpgradePageInfo { get; private set; }   
 
     [SerializeField]
     private float STR = 4f, DEX = 4f, CON = 4f, INT = 4f, WIS = 4f, CHA = 4f;
@@ -68,6 +81,135 @@ public sealed class DroneUnit
 
     public int Level => level;
     public int Memory => memory;
+
+    public void RerollUpgradeStats(float maxValue)
+    {
+        UpgradePageStruct newPage = new UpgradePageStruct();
+
+        newPage.currentUpgradeValue = UnityEngine.Random.Range(1, maxValue);
+
+        newPage.full = (CoreStatType)UnityEngine.Random.Range(1, 7);
+
+        CoreStatType[] arr1 = new CoreStatType[0];
+        CoreStatType[] arr2 = new CoreStatType[4];
+
+        switch (newPage.full)
+        {
+            case CoreStatType.STR:
+
+                arr1 = new CoreStatType[5] {CoreStatType.DEX, CoreStatType.CON, CoreStatType.INT, CoreStatType.WIS, CoreStatType.CHA };
+
+                break;
+            case CoreStatType.DEX:
+
+                arr1 = new CoreStatType[5] { CoreStatType.STR, CoreStatType.CON, CoreStatType.INT, CoreStatType.WIS, CoreStatType.CHA };
+
+                break;
+            case CoreStatType.CON:
+
+                arr1 = new CoreStatType[5] { CoreStatType.STR, CoreStatType.DEX, CoreStatType.INT, CoreStatType.WIS, CoreStatType.CHA };
+
+                break;
+            case CoreStatType.INT:
+
+                arr1 = new CoreStatType[5] { CoreStatType.STR, CoreStatType.DEX, CoreStatType.CON, CoreStatType.WIS, CoreStatType.CHA };
+
+                break;
+            case CoreStatType.WIS:
+
+                arr1 = new CoreStatType[5] { CoreStatType.STR, CoreStatType.DEX, CoreStatType.CON, CoreStatType.INT, CoreStatType.CHA };
+
+                break;
+            case CoreStatType.CHA:
+
+                arr1 = new CoreStatType[5] { CoreStatType.STR, CoreStatType.DEX, CoreStatType.CON, CoreStatType.INT, CoreStatType.WIS };
+
+                break;
+        }
+
+        newPage.half = arr1[UnityEngine.Random.Range(0, arr1.Length - 1)];
+
+        int index = 0;
+
+        switch (newPage.half)
+        {
+            case CoreStatType.STR:
+
+                for(int i = 0; i < arr1.Length; i++)
+                {
+                    if (arr1[i] == CoreStatType.STR) continue;
+
+                    arr2[index] = arr1[i];
+
+                    index++;
+                }
+
+                break;
+            case CoreStatType.DEX:
+
+                for (int i = 0; i < arr1.Length; i++)
+                {
+                    if (arr1[i] == CoreStatType.DEX) continue;
+
+                    arr2[index] = arr1[i];
+
+                    index++;
+                }
+
+                break;
+            case CoreStatType.CON:
+
+                for (int i = 0; i < arr1.Length; i++)
+                {
+                    if (arr1[i] == CoreStatType.CON) continue;
+
+                    arr2[index] = arr1[i];
+
+                    index++;
+                }
+
+                break;
+            case CoreStatType.INT:
+
+                for (int i = 0; i < arr1.Length; i++)
+                {
+                    if (arr1[i] == CoreStatType.INT) continue;
+
+                    arr2[index] = arr1[i];
+
+                    index++;
+                }
+
+                break;
+            case CoreStatType.WIS:
+
+                for (int i = 0; i < arr1.Length; i++)
+                {
+                    if (arr1[i] == CoreStatType.WIS) continue;
+
+                    arr2[index] = arr1[i];
+
+                    index++;
+                }
+
+                break;
+            case CoreStatType.CHA:
+
+                for (int i = 0; i < arr1.Length; i++)
+                {
+                    if (arr1[i] == CoreStatType.CHA) continue;
+
+                    arr2[index] = arr1[i];
+
+                    index++;
+                }
+                break;
+        }
+
+        newPage.minus = arr2[UnityEngine.Random.Range(0, arr2.Length - 1)];
+
+        myUpgradePageInfo = newPage;
+    }
 
     public int CombatRating
     {

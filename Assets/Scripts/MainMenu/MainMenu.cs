@@ -14,12 +14,6 @@ public sealed class MainMenu : MonoBehaviour
         if (menuFlowAction != null) print("Menu Found!");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void StartExploring() => ActionFlowStackHandler.PushActionToStack(new FlowAction_Exploration { });
 

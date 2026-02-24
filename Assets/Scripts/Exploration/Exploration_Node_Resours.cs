@@ -43,10 +43,4 @@ public class Exploration_Node_Resours : Exploration_Node
     {
         base.AreaSetUp();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

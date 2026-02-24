@@ -108,10 +108,4 @@ public class Exploration_Node_Tower : Exploration_Node
         targeting = new List<Exploration_Hostile> { };
         targetPoints = new Vector3[targets];
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

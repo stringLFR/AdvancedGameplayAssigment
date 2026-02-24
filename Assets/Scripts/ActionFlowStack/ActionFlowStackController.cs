@@ -369,6 +369,8 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
         List<EnemySquadDatabase> enemyTeams = new List<EnemySquadDatabase>();
 
+
+        //May need to rework this a bit so that Exploration_Hostile decides which enemy squad to take from the database!
         foreach(EnemySquadDatabase etso in enemyDatabase.Result.Databases) if (etso.MinimumLevelRequirement <= ActionFlowStackController.Instance.Team.PlayerTeamAverageLevel) enemyTeams.Add(etso);
 
         EnemySquadDatabase enemyTeam = enemyTeams[Random.Range(0, enemyTeams.Count - 1)];

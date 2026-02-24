@@ -73,12 +73,6 @@ public class NodeCanvas : MonoBehaviour,IPointerEnterHandler, IPointerExitHandle
         hoverPanel.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         hoverPanel.SetActive(true);

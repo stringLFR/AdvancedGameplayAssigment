@@ -20,12 +20,12 @@ public class ICombatObject_Step : ICombatObject
 
     public ActionEffectBase Origin => myOrigin;
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public void CombatUpdate()
+    public virtual void CombatUpdate()
     {
         LerpAlongPath();
     }
 
-    protected void LerpAlongPath()
+    protected virtual void LerpAlongPath()
     {
         if (pointIndex >= points)
         {
@@ -56,13 +56,13 @@ public class ICombatObject_Step : ICombatObject
         lerpTime += Time.deltaTime;
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public void OnSpawn(DroneUnitBody caster, ActionEffectBase origin)
+    public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin)
     {
         myCaster = caster;
         myOrigin = origin;
     }
 
-    public void Reactivate(float mana, Vector3 targetPos)
+    public virtual void Reactivate(float mana, Vector3 targetPos)
     {
         isActive = true;
 
@@ -76,17 +76,17 @@ public class ICombatObject_Step : ICombatObject
         pointIndex = 0;
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public void Reactivate(float mana, DroneUnitBody otherCaster)
+    public virtual void Reactivate(float mana, DroneUnitBody otherCaster)
     {
         throw new System.NotImplementedException();
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public void Reactivate(float mana, GameObject targetObj)
+    public virtual void Reactivate(float mana, GameObject targetObj)
     {
         throw new System.NotImplementedException();
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public void Reactivate(float mana)
+    public virtual void Reactivate(float mana)
     {
         throw new System.NotImplementedException();
     }

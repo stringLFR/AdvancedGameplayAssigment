@@ -86,7 +86,31 @@ namespace UniGameMaths
 
     public static class BezierCurvesMaths
     {
+        public struct CubicBezierCurve
+        {
+            private Vector3 p0, p1, p2, p3;
 
+            public void SetVectors(Vector3 pa, Vector3 pb, Vector3 ta, Vector3 tb)
+            {
+                p0 = pa;
+                p1 = pa + ta;
+                p2 = pb - tb;
+                p3 = pb;
+            }
+
+            public Vector3 GetFirstPoint() => p0;
+            public Vector3 GetLastPoint() => p3;
+
+            public Vector3 GetCubicBezierPosition(float f)
+            {
+                Math.Clamp(f, 0, 1);
+                float fOneMinusT = 1.0f - f;
+                return p0 * fOneMinusT * fOneMinusT * fOneMinusT +
+                       p1 * 3 * fOneMinusT * fOneMinusT * f +
+                       p2 * 3 * fOneMinusT * f * f +
+                       p3 * f * f * f;
+            }
+        }
     }
 
     public static class GraphsMaths

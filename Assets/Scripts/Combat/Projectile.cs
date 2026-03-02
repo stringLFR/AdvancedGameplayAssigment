@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using UniGameMaths;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -12,8 +13,7 @@ public class Projectile : MonoBehaviour
     private float speed = 1f;
 
     private ICombatObject controller;
-
-    private Vector3 p0, p1, p2, p3;
+    private BezierCurvesMaths.CubicBezierCurve curve = new BezierCurvesMaths.CubicBezierCurve();
     private float startingMana;
     private float progress;
     private bool hasHit = false;
@@ -26,15 +26,15 @@ public class Projectile : MonoBehaviour
     {
         startingMana -= Time.deltaTime * manaDrainPerSec;
         progress += Time.deltaTime * speed;
-        float i = Mathf.InverseLerp(0,1, UniGameMaths.EasingFunctionMaths.EaseInSine(progress));
-        transform.position = GetCubicBezierPosition(i);
+        float i = Mathf.InverseLerp(0,1, EasingFunctionMaths.EaseInSine(progress));
+        transform.position = UnityMaths.GetUnityVecFromNumericsVec(curve.GetCubicBezierPosition(i));
 
         if (startingMana < 0.1f)
         {
             CombatListener.AddLineToCombatText($"Projectile ran out of mana!");
             return false;
         }
-        if (Vector3.Distance(transform.position, p3) < 1)
+        if (Vector3.Distance(transform.position, UnityMaths.GetUnityVecFromNumericsVec(curve.GetLastPoint())) < 1)
         {
             CombatListener.AddLineToCombatText($"Projectile missed!");
             return false;
@@ -46,25 +46,16 @@ public class Projectile : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void Fire(float mana, Vector3 pa, Vector3 pb)
     {
-        p0 = pa;
-        p1 = pa + (pa_Tangent + RandomTangent(pa_Tangent_Rand));
-        p2 = pb - (pb_Tangent + RandomTangent(pb_Tangent_Rand)); 
-        p3 = pb;
+        curve.SetVectors(UnityMaths.GetNumericsVecFromUnityVec(pa), 
+            UnityMaths.GetNumericsVecFromUnityVec(pb), 
+            UnityMaths.GetNumericsVecFromUnityVec(pa_Tangent + pa_Tangent_Rand), 
+            UnityMaths.GetNumericsVecFromUnityVec(pb_Tangent + pb_Tangent_Rand));
         startingMana = mana;
         progress = 0f;
         hasHit = false;
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     private Vector3 RandomTangent(Vector3 value) => new Vector3(Random.Range(-value.x, value.x), Random.Range(-value.y, value.y), Random.Range(-value.z, value.z));
-
-    private Vector3 GetCubicBezierPosition(float f)
-    {
-        float fOneMinusT = 1.0f - f;
-        return p0 * fOneMinusT * fOneMinusT * fOneMinusT +
-               p1 * 3 * fOneMinusT * fOneMinusT * f +
-               p2 * 3 * fOneMinusT * f * f +
-               p3 * f * f * f;
-    }
 
     //Clamps given float!
     //Still needs some work! TODO!!!
@@ -73,7 +64,7 @@ public class Projectile : MonoBehaviour
     {
         progressLeft = progress;
 
-        return GetCubicBezierPosition(Mathf.Clamp01(time));
+        return UnityMaths.GetUnityVecFromNumericsVec(curve.GetCubicBezierPosition(Mathf.Clamp01(time)));
     }
 
     private void OnTriggerEnter(Collider other)

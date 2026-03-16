@@ -1,6 +1,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using static UnityEditor.PlayerSettings;
 
 public class ICombatObject_Projectile : ICombatObject
@@ -13,6 +14,8 @@ public class ICombatObject_Projectile : ICombatObject
     protected Projectile prefab;
 
     protected Vector3 target;
+
+    public event System.Action<ICombatObject> MyActionDelegate;
 
     public ICombatObject_Projectile(GameObject path, Vector3 pos)
     {
@@ -70,6 +73,35 @@ public class ICombatObject_Projectile : ICombatObject
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void Reactivate(float mana, GameObject targetObj)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool FinalEffectReturnValue()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool FinalEffectReturnValue(Vector3 triggerPos)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool FinalEffectReturnValue(DroneUnitBody triggeredDrone)
+    {
+        if (triggeredDrone != Caster)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool FinalEffectReturnValue(GameObject triggeredObject)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void MyRespondAction(ICombatObject obj)
     {
         throw new System.NotImplementedException();
     }

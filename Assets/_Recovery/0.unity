@@ -351,11 +351,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e508d9835a1223458cdcf7b0648722a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Melee
-  test: {fileID: 66250036}
-  isTesting: 1
+  test: {fileID: 0}
   data:
-    BezierStartOffset: {x: -1, y: -1, z: -1}
-    BezierEndOffset: {x: 1, y: 1, z: 1}
+    BezierStartOffset: {x: -2, y: -2, z: -2}
+    BezierEndOffset: {x: 2, y: 2, z: 2}
     BezierStartTangent: {x: 1, y: 1, z: 1}
     BezierEndOTanget: {x: -1, y: -1, z: -1}
     Xsize:
@@ -447,7 +446,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

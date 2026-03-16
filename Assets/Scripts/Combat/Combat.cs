@@ -1,17 +1,26 @@
-using UnityEngine;
 using ActionFlowStack;
+using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
+using UnityEngine;
 
 
 public interface ICombatObject
 {
+    public event Action<ICombatObject> MyActionDelegate;
+    public void MyRespondAction(ICombatObject obj);
     public void CombatUpdate();
     public void OnSpawn(DroneUnitBody caster, ActionEffectBase origin);
     public void Reactivate(float mana);
     public void Reactivate(float mana, Vector3 targetPos);
     public void Reactivate(float mana, DroneUnitBody otherCaster);
     public void Reactivate(float mana, GameObject targetObj);
+    public bool FinalEffectReturnValue();
+    public bool FinalEffectReturnValue(Vector3 triggerPos);
+    public bool FinalEffectReturnValue(DroneUnitBody triggeredDrone);
+    public bool FinalEffectReturnValue(GameObject triggeredObject);
     public bool IsActive { get; }
     public DroneUnitBody Caster { get; }
     public ActionEffectBase Origin { get; }

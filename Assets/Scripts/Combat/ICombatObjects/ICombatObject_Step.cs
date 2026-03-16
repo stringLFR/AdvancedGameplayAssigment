@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,6 +14,8 @@ public class ICombatObject_Step : ICombatObject
     protected float lerpTime;
     protected Vector3 directionVelocity;
     protected float moveSpeed = 100;
+
+    public event Action<ICombatObject> MyActionDelegate;
 
     public bool IsActive => isActive;
 
@@ -89,5 +92,30 @@ public class ICombatObject_Step : ICombatObject
     public virtual void Reactivate(float mana)
     {
         throw new System.NotImplementedException();
+    }
+
+    public bool FinalEffectReturnValue()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool FinalEffectReturnValue(Vector3 triggerPos)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool FinalEffectReturnValue(DroneUnitBody triggeredDrone)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool FinalEffectReturnValue(GameObject triggeredObject)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void MyRespondAction(ICombatObject obj)
+    {
+        throw new NotImplementedException();
     }
 }

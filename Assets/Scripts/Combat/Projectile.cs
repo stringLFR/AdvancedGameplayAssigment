@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-
     [SerializeField]
     private float baseDamage = 1f, manaDrainPerSec = 1f;
     [SerializeField]
     Vector3 pa_Tangent, pb_Tangent, pa_Tangent_Rand, pb_Tangent_Rand;
     [SerializeField, Range(0,1)]
     private float speed = 1f;
-
     private ICombatObject controller;
     private BezierCurvesMaths.CubicBezierCurve curve = new BezierCurvesMaths.CubicBezierCurve();
     private float startingMana;
     private float progress;
     private bool hasHit = false;
+
+    [SerializeField]
+    private bool canPierce = false;
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void InitProjectile(ICombatObject c)
     {
@@ -48,14 +49,15 @@ public class Projectile : MonoBehaviour
     {
         curve.SetVectors(UnityMaths.GetNumericsVecFromUnityVec(pa), 
             UnityMaths.GetNumericsVecFromUnityVec(pb), 
-            UnityMaths.GetNumericsVecFromUnityVec(pa_Tangent + pa_Tangent_Rand), 
-            UnityMaths.GetNumericsVecFromUnityVec(pb_Tangent + pb_Tangent_Rand));
+            UnityMaths.GetNumericsVecFromUnityVec(pa_Tangent + RandomTangent(pa_Tangent_Rand)), 
+            UnityMaths.GetNumericsVecFromUnityVec(pb_Tangent + RandomTangent(pb_Tangent_Rand)));
         startingMana = mana;
         progress = 0f;
         hasHit = false;
     }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    private Vector3 RandomTangent(Vector3 value) => new Vector3(Random.Range(-value.x, value.x), Random.Range(-value.y, value.y), Random.Range(-value.z, value.z));
+    public static Vector3 RandomTangent(Vector3 value) => new Vector3(UnityEngine.Random.Range(-value.x, value.x), UnityEngine.Random.Range(-value.y, value.y), UnityEngine.Random.Range(-value.z, value.z));
 
     //Clamps given float!
     //Still needs some work! TODO!!!
@@ -71,14 +73,22 @@ public class Projectile : MonoBehaviour
     {
         if (other.TryGetComponent<DroneUnitBody>(out DroneUnitBody hit) == true)
         {
-            if (hit != controller.Caster)
-            {
-                hasHit = true;
+            hasHit = controller.FinalEffectReturnValue(hit);
 
+            if (hasHit == true)
+            {
                 CombatListener.AddLineToCombatText($"Projectile hit {hit.DroneUnit.DroneName} with {(int)startingMana} mana left!");
 
                 hit.TakeDamage(controller.Caster.MyRanged_P_HitRate, startingMana);
             }
+
+            if (canPierce == true) hasHit = false;
+
+            return;
         }
+
+        if (canPierce == true) return;
+
+        hasHit = true;
     }
 }

@@ -2,6 +2,11 @@ using System.Runtime.CompilerServices;
 using UniGameMaths;
 using UnityEngine;
 
+public enum MeleeSynergy
+{
+    NONE,DEFLECT, BLOCK, REDIRECT,
+}
+
 public class Projectile : MonoBehaviour
 {
     [SerializeField]
@@ -10,6 +15,9 @@ public class Projectile : MonoBehaviour
     Vector3 pa_Tangent, pb_Tangent, pa_Tangent_Rand, pb_Tangent_Rand;
     [SerializeField, Range(0,1)]
     private float speed = 1f;
+    [SerializeField]
+    private MeleeSynergy[] meleeSynergy;
+
     private ICombatObject controller;
     private BezierCurvesMaths.CubicBezierCurve curve = new BezierCurvesMaths.CubicBezierCurve();
     private float startingMana;
@@ -67,6 +75,49 @@ public class Projectile : MonoBehaviour
         progressLeft = progress;
 
         return UnityMaths.GetUnityVecFromNumericsVec(curve.GetCubicBezierPosition(Mathf.Clamp01(time)));
+    }
+
+    public void OnHitByMelee(DroneUnitBody attacker)
+    {
+        foreach(MeleeSynergy m in meleeSynergy)
+        {
+            switch (m)
+            {
+                case MeleeSynergy.NONE:
+                    break;
+                case MeleeSynergy.DEFLECT:
+
+                    Vector3 pa = UnityMaths.GetUnityVecFromNumericsVec(curve.GetFirstPoint());
+                    Vector3 pb = UnityMaths.GetUnityVecFromNumericsVec(curve.GetLastPoint());
+
+                    curve.SetVectors(UnityMaths.GetNumericsVecFromUnityVec(pb),
+                        UnityMaths.GetNumericsVecFromUnityVec(pa),
+                        UnityMaths.GetNumericsVecFromUnityVec(pa_Tangent + RandomTangent(pa_Tangent_Rand)),
+                        UnityMaths.GetNumericsVecFromUnityVec(pb_Tangent + RandomTangent(pb_Tangent_Rand)));
+
+                    progress = 0f;
+
+                    break;
+                case MeleeSynergy.BLOCK:
+
+                    hasHit = true;
+
+                    break;
+                case MeleeSynergy.REDIRECT:
+
+                    Vector3 start = transform.position;
+                    Vector3 end = CombatListener.GetClosesTarget(CombatListener.IsEnemy(attacker), start).transform.position;
+
+                    curve.SetVectors(UnityMaths.GetNumericsVecFromUnityVec(start),
+                        UnityMaths.GetNumericsVecFromUnityVec(end),
+                        UnityMaths.GetNumericsVecFromUnityVec(pa_Tangent + RandomTangent(pa_Tangent_Rand)),
+                        UnityMaths.GetNumericsVecFromUnityVec(pb_Tangent + RandomTangent(pb_Tangent_Rand)));
+
+                    progress = 0f;
+
+                    break;
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)

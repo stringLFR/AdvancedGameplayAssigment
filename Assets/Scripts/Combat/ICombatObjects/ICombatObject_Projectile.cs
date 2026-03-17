@@ -101,7 +101,7 @@ public class ICombatObject_Projectile : ICombatObject
         throw new System.NotImplementedException();
     }
 
-    public void MyRespondAction(ICombatObject obj)
+    public void MyRespondAction(ICombatObject obj, Vector3 targetPos, DroneUnitBody otherCaster = null, GameObject triggeredObject = null)
     {
         throw new System.NotImplementedException();
     }

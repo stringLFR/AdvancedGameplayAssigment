@@ -18,6 +18,10 @@ public class Projectile : MonoBehaviour
     [SerializeField]
     private MeleeSynergy[] meleeSynergy;
 
+    [SerializeField]
+    private bool isMagical = false;
+    public bool isMagic { get { return isMagical; } }
+
     private ICombatObject controller;
     private BezierCurvesMaths.CubicBezierCurve curve = new BezierCurvesMaths.CubicBezierCurve();
     private float startingMana;
@@ -130,7 +134,7 @@ public class Projectile : MonoBehaviour
             {
                 CombatListener.AddLineToCombatText($"Projectile hit {hit.DroneUnit.DroneName} with {(int)startingMana} mana left!");
 
-                hit.TakeDamage(controller.Caster.MyRanged_P_HitRate, startingMana);
+                hit.TakeDamage((int)controller.myDamageType, startingMana);
             }
 
             if (canPierce == true) hasHit = false;

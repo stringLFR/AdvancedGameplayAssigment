@@ -60,7 +60,7 @@ public class MainAction_RunToPoint : MainActionBase
             {
                 if (effect is AE_Move)
                 {
-                    effect.TriggerActionEffect(d, MousePoint.instance.transform.position);
+                    effect.TriggerActionEffect(d.MyMana, d, MousePoint.instance.transform.position);
 
                     CombatListener.AddLineToCombatText(d.DroneUnit.DroneName + " Used MainAction_RunToPoint!");
 

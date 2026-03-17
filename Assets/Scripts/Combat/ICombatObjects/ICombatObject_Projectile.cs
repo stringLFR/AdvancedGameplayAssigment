@@ -1,8 +1,5 @@
-using System.IO;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
-using static UnityEditor.PlayerSettings;
 
 public class ICombatObject_Projectile : ICombatObject
 {
@@ -36,6 +33,9 @@ public class ICombatObject_Projectile : ICombatObject
     public DroneUnitBody Caster => myCaster;
 
     public ActionEffectBase Origin => myOrigin;
+
+    public float myDamageType { get { if (prefab.isMagic == true) return Caster.MyRanged_M_HitRate; else return Caster.MyRanged_P_HitRate; } set { } }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void CombatUpdate()
     {
@@ -47,17 +47,20 @@ public class ICombatObject_Projectile : ICombatObject
             isActive = false;
         }
     }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin)
     {
         myCaster = caster;
         myOrigin = origin;
     }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void Reactivate(float mana)
     {
         throw new System.NotImplementedException();
     }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void Reactivate(float mana, Vector3 targetPos)
     {

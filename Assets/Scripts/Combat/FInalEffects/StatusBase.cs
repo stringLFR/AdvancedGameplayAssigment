@@ -15,6 +15,10 @@ public abstract class StatusBase
     protected DroneUnitBody targetHost;
     protected float baseDamage = 1f, manaDrainPerSec = 1f;
 
+
+    protected bool isMagical = false;
+    public bool isMagic { get { return isMagical; } }
+
     public DroneUnitBody Host => targetHost;
 
     public virtual void InitStatus(ICombatObject c, StatusController s)

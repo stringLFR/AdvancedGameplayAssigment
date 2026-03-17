@@ -16,6 +16,10 @@ public class SummonObject : MonoBehaviour
     [SerializeField]
     private float lifetime;
 
+    [SerializeField]
+    private bool isMagical = false;
+    public bool isMagic { get { return isMagical; } }
+
     public void InitSummonedObject(ICombatObject c)
     {
         controller = c;

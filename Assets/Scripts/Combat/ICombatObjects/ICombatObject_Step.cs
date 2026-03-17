@@ -22,6 +22,9 @@ public class ICombatObject_Step : ICombatObject
     public DroneUnitBody Caster => myCaster;
 
     public ActionEffectBase Origin => myOrigin;
+
+    public float myDamageType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void CombatUpdate()
     {
@@ -118,4 +121,5 @@ public class ICombatObject_Step : ICombatObject
     {
         throw new NotImplementedException();
     }
+
 }

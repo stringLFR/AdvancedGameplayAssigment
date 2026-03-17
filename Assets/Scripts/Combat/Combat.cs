@@ -10,6 +10,8 @@ using UnityEngine;
 public interface ICombatObject
 {
     public event Action<ICombatObject> MyActionDelegate;
+
+    public float myDamageType { get; set; }
     public void MyRespondAction(ICombatObject obj, Vector3 targetPos, DroneUnitBody otherCaster = null, GameObject triggeredObject = null);
     public void CombatUpdate();
     public void OnSpawn(DroneUnitBody caster, ActionEffectBase origin);

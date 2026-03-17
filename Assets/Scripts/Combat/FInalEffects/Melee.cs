@@ -136,6 +136,9 @@ public class Melee : MonoBehaviour
         progress = 0f;
     }
 
+    [SerializeField]
+    private bool isMagical = false;
+    public bool isMagic { get { return isMagical; } }
     public bool Swinging()
     {
         startingMana -= Time.deltaTime * manaDrainPerSec;
@@ -166,7 +169,7 @@ public class Melee : MonoBehaviour
             {
                 CombatListener.AddLineToCombatText($"Melee hit {hit.DroneUnit.DroneName} with {(int)startingMana} mana left!");
 
-                hit.TakeDamage(controller.Caster.MyMelee_M_HitRate, startingMana);
+                hit.TakeDamage((int)controller.myDamageType, startingMana);
             }
         }
 

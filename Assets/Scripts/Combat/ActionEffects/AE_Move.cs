@@ -10,12 +10,12 @@ public class AE_Move : ActionEffectBase
 
     protected ICombatObject_Step step;
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public override void TriggerActionEffect(DroneUnitBody caster)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster)
     {
         Init();
     }
 
-    public override void TriggerActionEffect(DroneUnitBody caster, Vector3 targetPos)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, Vector3 targetPos)
     {
         Init();
 
@@ -24,27 +24,27 @@ public class AE_Move : ActionEffectBase
         step.Reactivate(caster.MyMana, targetPos);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public override void TriggerActionEffect(DroneUnitBody caster, Vector3[] targetPositions)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, Vector3[] targetPositions)
     {
         Init();
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public override void TriggerActionEffect(DroneUnitBody caster, DroneUnitBody otherCaster)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, DroneUnitBody otherCaster)
     {
         Init();
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public override void TriggerActionEffect(DroneUnitBody caster, DroneUnitBody[] otherCasters)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, DroneUnitBody[] otherCasters)
     {
         Init();
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public override void TriggerActionEffect(DroneUnitBody caster, GameObject targetObj)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, GameObject targetObj)
     {
         Init();
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public override void TriggerActionEffect(DroneUnitBody caster, GameObject[] targetObjs)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, GameObject[] targetObjs)
     {
         Init();
     }

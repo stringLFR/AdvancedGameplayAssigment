@@ -44,19 +44,19 @@ public class AE_ShotProjectile : ActionEffectBase
         Combat.actionEffectObjects.Add(pNew);
     }
 
-    public override void TriggerActionEffect(DroneUnitBody caster)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster)
     {
         throw new System.NotImplementedException();
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public override void TriggerActionEffect(DroneUnitBody caster, Vector3 targetPos)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, Vector3 targetPos)
     {
         CombatListener.AddLineToCombatText($"{caster.DroneUnit.DroneName} Shoots one projectile!");
 
         SetUpProjectile(caster, targetPos);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public override void TriggerActionEffect(DroneUnitBody caster, Vector3[] targetPositions)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, Vector3[] targetPositions)
     {
         CombatListener.AddLineToCombatText($"{caster.DroneUnit.DroneName} Shoots {targetPositions.Length} projectiles!");
 
@@ -66,22 +66,22 @@ public class AE_ShotProjectile : ActionEffectBase
         }
     }
 
-    public override void TriggerActionEffect(DroneUnitBody caster, DroneUnitBody otherCaster)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, DroneUnitBody otherCaster)
     {
         throw new System.NotImplementedException();
     }
 
-    public override void TriggerActionEffect(DroneUnitBody caster, DroneUnitBody[] otherCasters)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, DroneUnitBody[] otherCasters)
     {
         throw new System.NotImplementedException();
     }
 
-    public override void TriggerActionEffect(DroneUnitBody caster, GameObject targetObj)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, GameObject targetObj)
     {
         throw new System.NotImplementedException();
     }
 
-    public override void TriggerActionEffect(DroneUnitBody caster, GameObject[] targetObjs)
+    public override void TriggerActionEffect(float mana, DroneUnitBody caster, GameObject[] targetObjs)
     {
         throw new System.NotImplementedException();
     }

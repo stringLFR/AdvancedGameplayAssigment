@@ -30,6 +30,10 @@ public class Area : MonoBehaviour
     private float progress;
     private float currentScale;
 
+
+    [SerializeField]
+    private bool isMagical = false;
+    public bool isMagic { get { return isMagical; } }
     public void InitArea(ICombatObject c, AreaController a)
     {
         controller = c;
@@ -61,7 +65,7 @@ public class Area : MonoBehaviour
             {
                 CombatListener.AddLineToCombatText($"Area Damages {target.DroneUnit.DroneName} with {(int)startingMana} mana left!");
 
-                target.TakeDamage(controller.Caster.MyMelee_M_HitRate, startingMana);
+                target.TakeDamage((int)controller.myDamageType, startingMana);
             }
         }
 

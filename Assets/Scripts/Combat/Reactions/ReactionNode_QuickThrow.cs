@@ -69,7 +69,7 @@ public class ReactionNode_QuickThrow : ActionNodeBase
 
                 if (target == null) continue;
 
-                aE_ShotProjectile.TriggerActionEffect(caster, target.transform.position);
+                aE_ShotProjectile.TriggerActionEffect(caster.MyMana, caster, target.transform.position);
             }
         }
     }

@@ -17,6 +17,9 @@ public abstract class BuffORDebuffBase
 
     public DroneUnitBody Host => targetHost;
 
+    protected bool isMagical = false;
+    public bool isMagic { get { return isMagical; } }
+
     public virtual void InitStatus(ICombatObject c, BuffORDebuffController s)
     {
         controller = c;

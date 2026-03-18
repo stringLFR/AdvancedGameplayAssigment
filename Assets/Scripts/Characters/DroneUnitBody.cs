@@ -1,6 +1,7 @@
 using actions;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 using UnityEngine;
 
 public sealed class DroneUnitBody : MonoBehaviour
@@ -90,7 +91,7 @@ public sealed class DroneUnitBody : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void TakeDamage(int hitRate, float manaCost)
     {
-        int rand = Random.Range(hitRate - toughness, hitRate);
+        int rand = UnityEngine.Random.Range(hitRate - toughness, hitRate);
         //rand -+ others 
         int defaultValue = (rand * (int)Mathf.Clamp(manaCost, 1,float.MaxValue)) / toughness;
         //defaultvalue -+ others 
@@ -113,5 +114,44 @@ public sealed class DroneUnitBody : MonoBehaviour
         }
 
         
+    }
+
+    public void DirectDamage(int damage)
+    {
+        HP -= damage;
+
+        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} was dealt {damage} Direct Damage!");
+
+        myUI.SetHealthSlider(HP);
+
+        if (HP <= 0)
+        {
+            CombatListener.CombatantDied(this);
+        }
+    }
+
+    public void Heal(int amount, float manaCost)
+    {
+        HP = math.clamp(HP + (int)(amount * manaCost), 0, maxHP);
+
+        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} regains {amount} HP!");
+
+        myUI.SetHealthSlider(HP);
+    }
+
+    public void ManaSpent(int amount)
+    {
+        mana = math.clamp(mana - amount, 0, maxMana);
+
+        myUI.SetManaSlider(mana);
+    }
+
+    public void RegainMana()//INT is the amount!
+    {
+        mana = math.clamp(mana + (int)droneUnit.GetINT, 0, maxMana);
+
+        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} regains {(int)droneUnit.GetINT} Mana!");
+
+        myUI.SetManaSlider(mana);
     }
 }

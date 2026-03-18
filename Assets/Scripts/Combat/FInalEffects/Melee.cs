@@ -3,7 +3,9 @@ using System.Security.Cryptography;
 using UniGameMaths;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Melee : MonoBehaviour
 {
@@ -16,6 +18,17 @@ public class Melee : MonoBehaviour
     private float progress;
 
     public float Progress { get; set; }
+
+    [SerializeField]
+    private AddedEffectSO[] addedEffects;
+
+    [SerializeField]
+    private bool isMagical = false;
+    public bool isMagic { get { return isMagical; } }
+
+    [SerializeField]
+    private bool isDamaging = true;
+    public bool dealsDamage { get { return isDamaging; } }
 
     [Serializable]
     public struct SlashData
@@ -104,7 +117,7 @@ public class Melee : MonoBehaviour
     private float baseDamage = 1f, manaDrainPerSec = 1f;
 
     [SerializeField, Range(0, 1)]
-    private float speed = 1f;
+    private float progressSpeed = 1f;
 
     [SerializeField,Range(0f,10f)]
     public float time = 0;
@@ -134,15 +147,18 @@ public class Melee : MonoBehaviour
 
         startingMana = mana;
         progress = 0f;
+
+        foreach (AddedEffectSO added in addedEffects)
+        {
+            added.OnStarted(null,null,this,null);
+        }
     }
 
-    [SerializeField]
-    private bool isMagical = false;
-    public bool isMagic { get { return isMagical; } }
+    
     public bool Swinging()
     {
         startingMana -= Time.deltaTime * manaDrainPerSec;
-        progress += Time.deltaTime * speed;
+        progress += Time.deltaTime * progressSpeed;
 
         int index = (int)Math.Clamp(progress, 0f, data.Length - 1);
 
@@ -151,10 +167,29 @@ public class Melee : MonoBehaviour
         if (startingMana < 0.1f)
         {
             CombatListener.AddLineToCombatText($"Melee ran out of mana!");
+
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnCompleted(null, null, this, null);
+            }
+
             return false;
         }
 
-        if ((int)progress > data.Length - 1) return false;
+        if ((int)progress > data.Length - 1)
+        {
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnCompleted(null, null, this, null);
+            }
+
+            return false;
+        }
+
+        foreach (AddedEffectSO added in addedEffects)
+        {
+            added.OnProgress(progress, null, null, this, null);
+        }
 
         return true;
     }
@@ -169,20 +204,42 @@ public class Melee : MonoBehaviour
             {
                 CombatListener.AddLineToCombatText($"Melee hit {hit.DroneUnit.DroneName} with {(int)startingMana} mana left!");
 
-                hit.TakeDamage((int)controller.myDamageType, startingMana);
+                if (isDamaging == true)
+                {
+                    hit.TakeDamage((int)controller.myDamageType, startingMana);
+                }
+                else
+                {
+                    hit.Heal((int)controller.myDamageType, startingMana);
+                }
+
+                foreach (AddedEffectSO added in addedEffects)
+                {
+                    added.OnTargetFound(hit, null, null, this, null);
+                }
             }
         }
 
         if (other.TryGetComponent<Projectile>(out Projectile projectile) == true)
         {
             projectile.OnHitByMelee(controller.Caster);
+
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnProjectileFound(projectile, null, null, this, null);
+            }
         }
 
         if (other.TryGetComponent<Melee>(out Melee otherMelee) == true)
         {
             //Both strikes block eachother!
             otherMelee.Progress = (int)Math.Clamp(otherMelee.Progress, 0f, otherMelee.MaxSlashes) + 1;
-            progress = (int)Math.Clamp(progress, 0f, data.Length - 1) + 1;
+            progressSpeed = (int)Math.Clamp(progressSpeed, 0f, data.Length - 1) + 1;
+
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnMeleeFound(otherMelee, null, null, this, null);
+            }
         }
     }
 

@@ -14,13 +14,20 @@ public class Projectile : MonoBehaviour
     [SerializeField]
     Vector3 pa_Tangent, pb_Tangent, pa_Tangent_Rand, pb_Tangent_Rand;
     [SerializeField, Range(0,1)]
-    private float speed = 1f;
+    private float progressSpeed = 1f;
     [SerializeField]
     private MeleeSynergy[] meleeSynergy;
 
     [SerializeField]
+    private AddedEffectSO[] addedEffects;
+
+    [SerializeField]
     private bool isMagical = false;
     public bool isMagic { get { return isMagical; } }
+
+    [SerializeField]
+    private bool isDamaging = true;
+    public bool dealsDamage { get { return isDamaging; } }
 
     private ICombatObject controller;
     private BezierCurvesMaths.CubicBezierCurve curve = new BezierCurvesMaths.CubicBezierCurve();
@@ -38,21 +45,46 @@ public class Projectile : MonoBehaviour
     public bool moveProjectile()
     {
         startingMana -= Time.deltaTime * manaDrainPerSec;
-        progress += Time.deltaTime * speed;
+        progress += Time.deltaTime * progressSpeed;
         float i = Mathf.InverseLerp(0,1, EasingFunctionMaths.EaseInSine(progress));
         transform.position = UnityMaths.GetUnityVecFromNumericsVec(curve.GetCubicBezierPosition(i));
 
         if (startingMana < 0.1f)
         {
             CombatListener.AddLineToCombatText($"Projectile ran out of mana!");
+
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnCompleted(null, this, null, null);
+            }
+
             return false;
         }
         if (Vector3.Distance(transform.position, UnityMaths.GetUnityVecFromNumericsVec(curve.GetLastPoint())) < 1)
         {
             CombatListener.AddLineToCombatText($"Projectile missed!");
+
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnCompleted(null, this, null, null);
+            }
+
             return false;
         }
-        if (hasHit == true) return false;
+        if (hasHit == true)
+        {
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnCompleted(null, this, null, null);
+            }
+
+            return false;
+        }
+
+        foreach (AddedEffectSO added in addedEffects)
+        {
+            added.OnProgress(progress, null, this, null, null);
+        }
 
         return true;
     }
@@ -66,6 +98,11 @@ public class Projectile : MonoBehaviour
         startingMana = mana;
         progress = 0f;
         hasHit = false;
+
+        foreach (AddedEffectSO added in addedEffects)
+        {
+            added.OnStarted(null,this,null,null);
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
@@ -110,7 +147,7 @@ public class Projectile : MonoBehaviour
                 case MeleeSynergy.REDIRECT:
 
                     Vector3 start = transform.position;
-                    Vector3 end = CombatListener.GetClosesTarget(CombatListener.IsEnemy(attacker), start).transform.position;
+                    Vector3 end = CombatListener.GetClosesTarget(attacker.IsEnemy, start).transform.position;
 
                     curve.SetVectors(UnityMaths.GetNumericsVecFromUnityVec(start),
                         UnityMaths.GetNumericsVecFromUnityVec(end),
@@ -134,7 +171,19 @@ public class Projectile : MonoBehaviour
             {
                 CombatListener.AddLineToCombatText($"Projectile hit {hit.DroneUnit.DroneName} with {(int)startingMana} mana left!");
 
-                hit.TakeDamage((int)controller.myDamageType, startingMana);
+                if (isDamaging == true)
+                {
+                    hit.TakeDamage((int)controller.myDamageType, startingMana);
+                }
+                else
+                {
+                    hit.Heal((int)controller.myDamageType, startingMana);
+                }
+
+                foreach (AddedEffectSO added in addedEffects)
+                {
+                    added.OnTargetFound(hit, null, this, null, null);
+                }
             }
 
             if (canPierce == true) hasHit = false;

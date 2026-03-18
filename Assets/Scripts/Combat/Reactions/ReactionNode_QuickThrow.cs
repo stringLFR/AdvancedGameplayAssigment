@@ -69,7 +69,15 @@ public class ReactionNode_QuickThrow : ActionNodeBase
 
                 if (target == null) continue;
 
-                aE_ShotProjectile.TriggerActionEffect(caster.MyMana, caster, target.transform.position);
+                caster.ManaSpent(manaCost);
+
+                if (caster.MyMana < 0)
+                {
+                    CombatListener.AddLineToCombatText($"{caster.DroneUnit.DroneName} Ran out of mana!");
+                    return;
+                }
+
+                aE_ShotProjectile.TriggerActionEffect(manaCost, caster, target.transform.position);
             }
         }
     }

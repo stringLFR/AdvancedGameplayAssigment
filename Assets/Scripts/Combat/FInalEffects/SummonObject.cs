@@ -1,5 +1,6 @@
 using UniGameMaths;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SummonObject : MonoBehaviour
 {
@@ -8,10 +9,16 @@ public class SummonObject : MonoBehaviour
     private float progress;
 
     [SerializeField]
+    private NavMeshObstacle navMeshObstacle;
+
+    [SerializeField]
     private float baseDamage = 1f, manaDrainPerSec = 1f;
 
     [SerializeField, Range(0, 1)]
-    private float speed = 1f;
+    private float progressSpeed = 1f;
+
+    [SerializeField]
+    private AddedEffectSO[] addedEffects;
 
     [SerializeField]
     private float lifetime;
@@ -19,6 +26,10 @@ public class SummonObject : MonoBehaviour
     [SerializeField]
     private bool isMagical = false;
     public bool isMagic { get { return isMagical; } }
+
+    [SerializeField]
+    private bool isDamaging = true;
+    public bool dealsDamage { get { return isDamaging; } }
 
     public void InitSummonedObject(ICombatObject c)
     {
@@ -31,22 +42,75 @@ public class SummonObject : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(lookPos, Vector3.up);
         startingMana = mana;
         progress = 0f;
+
+        foreach (AddedEffectSO added in addedEffects)
+        {
+            added.OnStarted(this);
+        }
     }
 
     public bool SustainSummon(Vector3 pos)
     {
         startingMana -= Time.deltaTime * manaDrainPerSec;
-        progress += Time.deltaTime * speed;
+        progress += Time.deltaTime * progressSpeed;
 
         if (startingMana < 0.1f)
         {
             CombatListener.AddLineToCombatText($"Summon ran out of mana!");
+
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnCompleted(this);
+            }
+
             return false;
         }
 
-        if (progress > lifetime) return false;
+        if (progress > lifetime)
+        {
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnCompleted(this);
+            }
+
+            return false;
+        }
+
+        foreach (AddedEffectSO added in addedEffects)
+        {
+            added.OnProgress(progress, this);
+        }
 
         return true;
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<Projectile>(out Projectile projectile) == true)
+        {
+            projectile.OnHitByMelee(controller.Caster);
+
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnProjectileFound(projectile, this);
+            }
+        }
+
+        if (other.TryGetComponent<Melee>(out Melee melle) == true)
+        {
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnMeleeFound(melle, this);
+            }
+        }
+
+        if (other.TryGetComponent<Area>(out Area area) == true)
+        {
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnAreaFound(area, this);
+            }
+        }
     }
 }

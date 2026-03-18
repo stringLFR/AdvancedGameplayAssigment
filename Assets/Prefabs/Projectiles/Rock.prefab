@@ -159,3 +159,7 @@ MonoBehaviour:
   pa_Tangent_Rand: {x: 0, y: 0, z: 0}
   pb_Tangent_Rand: {x: 0, y: 0, z: 0}
   speed: 0.291
+  meleeSynergy: 
+  isMagical: 0
+  isDamaging: 1
+  canPierce: 0

@@ -11,13 +11,16 @@ public abstract class StatusBase
     protected StatusController statusController; //Should be same object as controller!
     protected float startingMana;
     protected float progress;
-    protected float speed = 1f;
+    protected float progressSpeed = 1f;
     protected DroneUnitBody targetHost;
     protected float baseDamage = 1f, manaDrainPerSec = 1f;
 
 
     protected bool isMagical = false;
     public bool isMagic { get { return isMagical; } }
+
+    protected bool isDamaging = true;
+    public bool dealsDamage { get { return isDamaging; } }
 
     public DroneUnitBody Host => targetHost;
 
@@ -39,7 +42,7 @@ public abstract class StatusBase
     {
 
         startingMana -= Time.deltaTime * manaDrainPerSec;
-        progress += Time.deltaTime * speed;
+        progress += Time.deltaTime * progressSpeed;
 
         bool isActive = StatusEffect(targetHost);
 

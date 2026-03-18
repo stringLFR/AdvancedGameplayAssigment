@@ -597,6 +597,7 @@ public sealed class FlowAction_Turn : IflowAction
             userPos = turnHolder.transform.position;
             userPos.y = monoCombat.BattleCamera.transform.position.y;
             turnHolder.Controller.ControllerEnable(turnHolder);
+            turnHolder.RegainMana();
         }
         
     }

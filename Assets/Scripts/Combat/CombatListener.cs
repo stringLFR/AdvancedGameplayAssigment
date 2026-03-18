@@ -36,15 +36,6 @@ public sealed class CombatListener
         Combat = c;
     }
 
-    public static bool IsEnemy(DroneUnitBody drone)
-    {
-        if (Combat.EnemyTeam.Contains(drone) == false)
-        {
-            return false;
-        }
-        else return true;
-    }
-
     public static DroneUnitBody GetClosesTarget(bool isEnemy, Vector3 pos)
     {
         List<DroneUnitBody> team = isEnemy == false ? Combat.EnemyTeam : Combat.Playerteam;

@@ -11,7 +11,7 @@ public abstract class BuffORDebuffBase
     protected BuffORDebuffController buffDebuffController; //Should be same object as controller!
     protected float startingMana;
     protected float progress;
-    protected float speed = 1f;
+    protected float progressSpeed = 1f;
     protected DroneUnitBody targetHost;
     protected float baseDamage = 1f, manaDrainPerSec = 1f;
 
@@ -19,6 +19,9 @@ public abstract class BuffORDebuffBase
 
     protected bool isMagical = false;
     public bool isMagic { get { return isMagical; } }
+
+    protected bool isDamaging = true;
+    public bool dealsDamage { get { return isDamaging; } }
 
     public virtual void InitStatus(ICombatObject c, BuffORDebuffController s)
     {
@@ -38,7 +41,7 @@ public abstract class BuffORDebuffBase
     {
 
         startingMana -= Time.deltaTime * manaDrainPerSec;
-        progress += Time.deltaTime * speed;
+        progress += Time.deltaTime * progressSpeed;
 
         bool isActive = BuffDebuffEffect(targetHost);
 

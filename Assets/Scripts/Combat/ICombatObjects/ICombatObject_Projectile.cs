@@ -67,7 +67,7 @@ public class ICombatObject_Projectile : ICombatObject
         isActive = true;
         target = targetPos;
         prefab.gameObject.SetActive(true);
-        prefab.Fire(myCaster.MyMana, myCaster.transform.position, target);
+        prefab.Fire(mana, myCaster.transform.position, target);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void Reactivate(float mana, DroneUnitBody otherCaster)

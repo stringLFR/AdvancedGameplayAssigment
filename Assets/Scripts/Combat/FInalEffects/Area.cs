@@ -17,7 +17,10 @@ public class Area : MonoBehaviour
     private float baseDamage = 1f, manaDrainPerSec = 1f;
 
     [SerializeField, Range(0, 1)]
-    private float speed = 1f;
+    private float progressSpeed = 1f;
+
+    [SerializeField]
+    private AddedEffectSO[] addedEffects;
 
     [SerializeField]
     private float startingScale, maxScale, lifeTime, scaleSpeed;
@@ -34,6 +37,10 @@ public class Area : MonoBehaviour
     [SerializeField]
     private bool isMagical = false;
     public bool isMagic { get { return isMagical; } }
+
+    [SerializeField]
+    private bool isDamaging = true;
+    public bool dealsDamage { get { return isDamaging; } }
     public void InitArea(ICombatObject c, AreaController a)
     {
         controller = c;
@@ -47,12 +54,17 @@ public class Area : MonoBehaviour
         transform.localScale = Vector3.one * currentScale;
         startingMana = mana;
         progress = 0f;
+
+        foreach (AddedEffectSO added in addedEffects)
+        {
+            added.OnStarted(null,null,null,this);
+        }
     }
 
     public bool SustainArea(Vector3 pos)
     {
         startingMana -= Time.deltaTime * manaDrainPerSec;
-        progress += Time.deltaTime * speed;
+        progress += Time.deltaTime * progressSpeed;
         currentScale += scaleSpeed * Time.deltaTime;
         transform.localScale = Vector3.one * Mathf.InverseLerp(startingScale, maxScale, EasingFunctionMaths.EaseInSine(currentScale));
         transform.position = pos;
@@ -65,21 +77,68 @@ public class Area : MonoBehaviour
             {
                 CombatListener.AddLineToCombatText($"Area Damages {target.DroneUnit.DroneName} with {(int)startingMana} mana left!");
 
-                target.TakeDamage((int)controller.myDamageType, startingMana);
+                if (isDamaging == true)
+                {
+                    target.TakeDamage((int)controller.myDamageType, startingMana);
+                }
+                else
+                {
+                    target.Heal((int)controller.myDamageType, startingMana);
+                }
+
+                foreach (AddedEffectSO added in addedEffects)
+                {
+                    added.OnTargetFound(target, null, null, null, this);
+                }
             }
         }
 
-        foreach (var target in overlapedProjectiles) areaController.CheckProjectile(target);
+        foreach (var target in overlapedProjectiles)
+        {
+            areaController.CheckProjectile(target);
 
-        foreach (var target in overlapedSlashes) areaController.CheckMelee(target);
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnProjectileFound(target, null, null, null, this);
+            }
+        }
+
+        foreach (var target in overlapedSlashes)
+        {
+            areaController.CheckMelee(target);
+
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnMeleeFound(target, null, null, null, this);
+            }
+        }
 
         if (startingMana < 0.1f)
         {
             CombatListener.AddLineToCombatText($"Area ran out of mana!");
+
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnCompleted(null, null, null, this);
+            }
+
             return false;
         }
 
-        if (progress > lifeTime) return false;
+        if (progress > lifeTime)
+        {
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnCompleted(null, null, null, this);
+            }
+
+            return false;
+        }
+
+        foreach (AddedEffectSO added in addedEffects)
+        {
+            added.OnProgress(progress, null, null, null, this);
+        }
 
         return true;
 

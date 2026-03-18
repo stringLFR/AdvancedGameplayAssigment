@@ -89,8 +89,6 @@ public class SummonObject : MonoBehaviour
     {
         if (other.TryGetComponent<Projectile>(out Projectile projectile) == true)
         {
-            projectile.OnHitByMelee(controller.Caster);
-
             foreach (AddedEffectSO added in addedEffects)
             {
                 added.OnProjectileFound(projectile, this);

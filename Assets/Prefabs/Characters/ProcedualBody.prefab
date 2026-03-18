@@ -367,6 +367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DroneUnitBody
   procedualCore: {fileID: 7462557800488158945}
   myUI: {fileID: 7649165524820287470}
+  Overdrive: 0
 --- !u!114 &7462557800488158945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,7 +448,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1442218781528043263}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50

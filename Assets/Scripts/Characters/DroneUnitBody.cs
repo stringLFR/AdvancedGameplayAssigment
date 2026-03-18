@@ -27,6 +27,18 @@ public sealed class DroneUnitBody : MonoBehaviour
     public ControllerBase Controller => controller;
     public ProcedualCore ProcedualCore => procedualCore;
 
+    #region Buffs
+
+    public int Overdrive = 0;
+
+    #endregion
+
+    #region Debuffs
+
+    #endregion
+
+    public Dictionary<string,StatusBase> AppliedStatusDict = new Dictionary<string,StatusBase>();
+
     public bool IsEnemy {  get; private set; }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void SetEnemyBool(bool bollean)
@@ -130,6 +142,21 @@ public sealed class DroneUnitBody : MonoBehaviour
         }
     }
 
+    public void SanityDamage(int damage)
+    {
+        sanity -= damage;
+
+        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} was dealt {damage} sanity Damage!");
+
+        myUI.SetSanitySlider(sanity);
+
+        /*
+        if (HP <= 0)
+        {
+            CombatListener.CombatantDied(this);
+        }*/
+    }
+
     public void Heal(int amount, float manaCost)
     {
         HP = math.clamp(HP + (int)(amount * manaCost), 0, maxHP);
@@ -153,5 +180,26 @@ public sealed class DroneUnitBody : MonoBehaviour
         CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} regains {(int)droneUnit.GetINT} Mana!");
 
         myUI.SetManaSlider(mana);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent<DroneUnitBody>(out DroneUnitBody hit) == true)
+        {
+            if (AppliedStatusDict.TryGetValue(Status_Knockback.KnockbackKey, out StatusBase status) == true)
+            {
+                Status_Knockback k = status as Status_Knockback;
+
+                Vector3 bounce = Vector3.Reflect(k.KnockbackDirection, collision.contacts[0].normal);
+
+                k.AddAdditionalKnockBackSpeed(bounce);
+
+                k.reduceKnockBackSpeed(0.5f);
+
+                DirectDamage((int)k.KnockbackDirection.magnitude);//May change it to normal damage method later!
+
+                hit.DirectDamage((int)k.KnockbackDirection.magnitude);
+            }
+        }
     }
 }

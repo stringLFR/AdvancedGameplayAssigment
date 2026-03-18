@@ -354,6 +354,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Melee
   test: {fileID: 66250036}
   isTesting: 1
+  addedEffects: []
+  isMagical: 0
+  isDamaging: 1
   data:
   - BezierStartOffset: {x: 0, y: 0, z: 0}
     BezierEndOffset: {x: 10, y: 10, z: 0}
@@ -438,7 +441,7 @@ MonoBehaviour:
     user: {fileID: 66250036}
   baseDamage: 1
   manaDrainPerSec: 1
-  speed: 1
+  progressSpeed: 1
   time: 0
   gizmosAccuracy: 0.186
 --- !u!136 &649886856

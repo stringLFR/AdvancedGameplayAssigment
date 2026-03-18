@@ -6,6 +6,7 @@ public interface AreaController
 {
     public void CheckProjectile(Projectile p);
     public void CheckMelee(Melee m);
+    public void CheckSummon(SummonObject s);
 }
 
 public class Area : MonoBehaviour
@@ -28,6 +29,7 @@ public class Area : MonoBehaviour
     private HashSet<DroneUnitBody> overlapedTargets = new HashSet<DroneUnitBody>();
     private HashSet<Projectile> overlapedProjectiles = new HashSet<Projectile>();
     private HashSet<Melee> overlapedSlashes = new HashSet<Melee>();
+    private HashSet<SummonObject> overlapedSummons = new HashSet<SummonObject>();
 
     private float startingMana;
     private float progress;
@@ -63,6 +65,16 @@ public class Area : MonoBehaviour
 
     public bool SustainArea(Vector3 pos)
     {
+        if (controller.Caster.AppliedStatusDict.TryGetValue(Status_Stunned.StunnedKey, out StatusBase status) == true)
+        {
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnCompleted(null, null, null, this);
+            }
+
+            return false;
+        }
+
         startingMana -= Time.deltaTime * manaDrainPerSec;
         progress += Time.deltaTime * progressSpeed;
         currentScale += scaleSpeed * Time.deltaTime;
@@ -113,6 +125,16 @@ public class Area : MonoBehaviour
             }
         }
 
+        foreach (var target in overlapedSummons)
+        {
+            areaController.CheckSummon(target);
+
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnSummonObjectFound(target, null, null, null, this);
+            }
+        }
+
         if (startingMana < 0.1f)
         {
             CombatListener.AddLineToCombatText($"Area ran out of mana!");
@@ -160,6 +182,10 @@ public class Area : MonoBehaviour
         {
             overlapedSlashes.Add(slash);
         }
+        if (other.TryGetComponent<SummonObject>(out SummonObject summon) == true)
+        {
+            overlapedSummons.Add(summon);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -177,6 +203,10 @@ public class Area : MonoBehaviour
         if (other.TryGetComponent<Melee>(out Melee slash) == true)
         {
             overlapedSlashes.Remove(slash);
+        }
+        if (other.TryGetComponent<SummonObject>(out SummonObject summon) == true)
+        {
+            overlapedSummons.Remove(summon);
         }
     }
 }

@@ -157,6 +157,16 @@ public class Melee : MonoBehaviour
     
     public bool Swinging()
     {
+        if (controller.Caster.AppliedStatusDict.TryGetValue(Status_Stunned.StunnedKey, out StatusBase status) == true)
+        {
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnCompleted(null, null, this, null);
+            }
+
+            return false;
+        }
+
         startingMana -= Time.deltaTime * manaDrainPerSec;
         progress += Time.deltaTime * progressSpeed;
 
@@ -239,6 +249,14 @@ public class Melee : MonoBehaviour
             foreach (AddedEffectSO added in addedEffects)
             {
                 added.OnMeleeFound(otherMelee, null, null, this, null);
+            }
+        }
+
+        if (other.TryGetComponent<SummonObject>(out SummonObject summon) == true)
+        {
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnSummonObjectFound(summon, null, null, this, null);
             }
         }
     }

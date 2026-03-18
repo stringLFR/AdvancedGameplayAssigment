@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class PlayerController : ControllerBase
@@ -8,6 +9,8 @@ public class PlayerController : ControllerBase
     private Combat monoCombat;
     private bool done = false;
     public override bool isDone => done;
+
+    private int overdrives = 0;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void ControllerDisable(DroneUnitBody user)
@@ -53,9 +56,23 @@ public class PlayerController : ControllerBase
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public void SetDoneBool()
+    public void SetDoneBool(DroneUnitBody user)
     {
+        if (user.Overdrive > overdrives)
+        {
+            CombatListener.AddLineToCombatText(user.DroneUnit.DroneName + $" has overdrive {user.Overdrive}! " +
+                $"They can take {user.Overdrive - overdrives} more main actions!");
+
+            overdrives++;
+
+            if (UnityEngine.Random.Range(0f, 1f) > 1f - overdrives/user.Overdrive) user.SanityDamage(user.Overdrive);
+
+            return;
+        }
+
         done = true;
+
+        overdrives = 0;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!

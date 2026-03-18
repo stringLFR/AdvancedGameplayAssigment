@@ -191,6 +191,14 @@ public class Projectile : MonoBehaviour
             return;
         }
 
+        if (other.TryGetComponent<SummonObject>(out SummonObject summon) == true)
+        {
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnSummonObjectFound(summon, null, this, null, null);
+            }
+        }
+
         if (canPierce == true) return;
 
         hasHit = true;

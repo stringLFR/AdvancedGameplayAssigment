@@ -615,6 +615,20 @@ public sealed class FlowAction_Turn : IflowAction
 
         CombatListener.Tick(monoCombat);
 
+        if (turnHolder.AppliedStatusDict.TryGetValue(Status_Stunned.StunnedKey, out StatusBase status) == true)
+        {
+            isDone = true;
+
+            if (status is Status_Stunned)
+            {
+                Status_Stunned s = status as Status_Stunned;
+
+                s.TakeOffStunned();
+            }
+
+            return;
+        }
+
         if (turnHolder.Controller.isDone == true)
         {
             isDone = true;

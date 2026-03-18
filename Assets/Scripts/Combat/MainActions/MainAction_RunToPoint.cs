@@ -82,7 +82,7 @@ public class MainAction_RunToPoint : MainActionBase
             yield return null;
         }
 
-        p.SetDoneBool();
+        p.SetDoneBool(d);
 
         yield return null;
     }

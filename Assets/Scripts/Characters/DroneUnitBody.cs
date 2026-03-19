@@ -29,11 +29,27 @@ public sealed class DroneUnitBody : MonoBehaviour
 
     #region Buffs
 
-    public int Overdrive = 0;
+    public int Overdrive = 0; //Adds more main action uses, can cause sanity lost!
+    public int MartialProwess = 0; //Increases physical damages by value!
+    public int MagicalProwess = 0; //Increases magical damages by value!
+    public int ArmorPolish = 0; //increases toughness value on base hitrate damage calc!
+    public int ManaReinforcement = 0; //increases toughness value on mana modifier calc, which takes place after base damage calc!
+    public int CriticalProtection = 0; //Reduces chance to take crit damage!
+    public int MultiHits = 0; //Adds additional basic damage/heal triggers based on value!
+    public int ManaRegeneration = 0; //Adds extra mana regained on turn start!
+    public int HealthRegeneration = 0; //Regain value based amount of HP on turn start!
 
     #endregion
 
     #region Debuffs
+
+    public int ArmorBreak = 0; //Reduces toughness value on base hitrate damage calc!
+    public int ManaSusceptibility = 0; //Reduces toughness value on mana modifier calc, which takes place after base damage calc!
+    public int MartialIneptitiude = 0; //Reduces physical damages by value!
+    public int MagicalIneptitiude = 0; //Reduces magical damages by value!
+    public int CriticalVulnerability = 0; //Add chance to make damage after mana calc critical (crit value = current damage * 2 + CriticalExploit)!
+    public int CriticalExploit = 0; //Makes critical damages taken stronger (crit value = current damage * 2 + CriticalExploit)!
+    public int StatusVulnerability = 0; //Makes status damages taken worse (extra damage based on value)!
 
     #endregion
 
@@ -103,10 +119,17 @@ public sealed class DroneUnitBody : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void TakeDamage(int hitRate, float manaCost)
     {
-        int rand = UnityEngine.Random.Range(hitRate - toughness, hitRate);
+        int rand = UnityEngine.Random.Range(hitRate - math.clamp(toughness - ArmorBreak + ArmorPolish, 0, toughness), hitRate);
         //rand -+ others 
-        int defaultValue = (rand * (int)Mathf.Clamp(manaCost, 1,float.MaxValue)) / toughness;
+        int defaultValue = (rand * (int)Mathf.Clamp(manaCost, 1,float.MaxValue)) / math.clamp(toughness - ManaSusceptibility + ManaReinforcement, 1, toughness);
         //defaultvalue -+ others 
+
+        if (UnityEngine.Random.Range(0f, CriticalVulnerability) > CriticalProtection)
+        {
+            defaultValue *= 2 + CriticalExploit;
+
+            CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} Got critically hit! Damage is modified by {2 + CriticalExploit}!");
+        }
 
         if (defaultValue <= 0)
         {
@@ -175,11 +198,22 @@ public sealed class DroneUnitBody : MonoBehaviour
 
     public void RegainMana()//INT is the amount!
     {
-        mana = math.clamp(mana + (int)droneUnit.GetINT, 0, maxMana);
+        mana = math.clamp(mana + (int)droneUnit.GetINT + ManaRegeneration, 0, maxMana);
 
-        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} regains {(int)droneUnit.GetINT} Mana!");
+        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} regains {(int)droneUnit.GetINT + ManaRegeneration} Mana!");
 
         myUI.SetManaSlider(mana);
+    }
+
+    public void RegainHP()
+    {
+        if (HealthRegeneration < 1) return;
+
+        HP = math.clamp(HP + HealthRegeneration, 0, maxHP);
+
+        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} regains {HealthRegeneration} Health from HealthRegeneration buff!");
+
+        myUI.SetHealthSlider(HP);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -196,9 +230,9 @@ public sealed class DroneUnitBody : MonoBehaviour
 
                 k.reduceKnockBackSpeed(0.5f);
 
-                DirectDamage((int)k.KnockbackDirection.magnitude);//May change it to normal damage method later!
+                DirectDamage((int)k.KnockbackDirection.magnitude + StatusVulnerability);//May change it to normal damage method later!
 
-                hit.DirectDamage((int)k.KnockbackDirection.magnitude);
+                hit.DirectDamage((int)k.KnockbackDirection.magnitude + hit.StatusVulnerability);
             }
         }
     }

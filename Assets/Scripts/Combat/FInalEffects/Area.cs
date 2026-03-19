@@ -89,13 +89,16 @@ public class Area : MonoBehaviour
             {
                 CombatListener.AddLineToCombatText($"Area Damages {target.DroneUnit.DroneName} with {(int)startingMana} mana left!");
 
-                if (isDamaging == true)
+                for (int i = 0; i < controller.Caster.MultiHits + 1; i++)
                 {
-                    target.TakeDamage((int)controller.myDamageType, startingMana);
-                }
-                else
-                {
-                    target.Heal((int)controller.myDamageType, startingMana);
+                    if (isDamaging == true)
+                    {
+                        target.TakeDamage((int)controller.myDamageType, startingMana);
+                    }
+                    else
+                    {
+                        target.Heal((int)controller.myDamageType, startingMana);
+                    }
                 }
 
                 foreach (AddedEffectSO added in addedEffects)

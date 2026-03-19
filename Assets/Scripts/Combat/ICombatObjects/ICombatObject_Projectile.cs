@@ -34,7 +34,15 @@ public class ICombatObject_Projectile : ICombatObject
 
     public ActionEffectBase Origin => myOrigin;
 
-    public float myDamageType { get { if (prefab.isMagic == true) return Caster.MyRanged_M_HitRate; else return Caster.MyRanged_P_HitRate; } set { } }
+    public float myDamageType 
+    { 
+        get 
+        { 
+            if (prefab.isMagic == true) return Caster.MyRanged_M_HitRate + Caster.MagicalProwess - Caster.MagicalIneptitiude; 
+            else return Caster.MyRanged_P_HitRate + Caster.MartialProwess - Caster.MartialIneptitiude; 
+        } 
+        set { } 
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void CombatUpdate()

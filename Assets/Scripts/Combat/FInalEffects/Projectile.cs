@@ -171,13 +171,16 @@ public class Projectile : MonoBehaviour
             {
                 CombatListener.AddLineToCombatText($"Projectile hit {hit.DroneUnit.DroneName} with {(int)startingMana} mana left!");
 
-                if (isDamaging == true)
+                for (int i = 0; i < controller.Caster.MultiHits + 1; i++)
                 {
-                    hit.TakeDamage((int)controller.myDamageType, startingMana);
-                }
-                else
-                {
-                    hit.Heal((int)controller.myDamageType, startingMana);
+                    if (isDamaging == true)
+                    {
+                        hit.TakeDamage((int)controller.myDamageType, startingMana);
+                    }
+                    else
+                    {
+                        hit.Heal((int)controller.myDamageType, startingMana);
+                    }
                 }
 
                 foreach (AddedEffectSO added in addedEffects)

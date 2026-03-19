@@ -149,17 +149,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 8445428069630807303}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee0cc964c61068d419d4fb17f6cede2a, type: 3}
+  m_Script: {fileID: 11500000, guid: 882aa630ee721f84b96edd5d09e9056d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
   baseDamage: 1
-  manaDrainPerSec: 0.15
+  manaDrainPerSec: 0.5
   pa_Tangent: {x: 0, y: 10, z: 0}
   pb_Tangent: {x: 0, y: -10, z: 0}
   pa_Tangent_Rand: {x: 0, y: 0, z: 0}
   pb_Tangent_Rand: {x: 0, y: 0, z: 0}
-  speed: 0.291
-  meleeSynergy: 
+  progressSpeed: 0.3
+  meleeSynergy: 03000000
+  addedEffects: []
   isMagical: 0
   isDamaging: 1
   canPierce: 0

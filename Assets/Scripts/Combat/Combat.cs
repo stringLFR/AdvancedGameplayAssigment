@@ -11,6 +11,7 @@ public interface ICombatObject
 {
     public event Action<ICombatObject> MyActionDelegate;
 
+    public void TriggerDelegate();
     public float myDamageType { get; set; }
     public void MyRespondAction(ICombatObject obj, Vector3 targetPos, DroneUnitBody otherCaster = null, GameObject triggeredObject = null);
     public void CombatUpdate();

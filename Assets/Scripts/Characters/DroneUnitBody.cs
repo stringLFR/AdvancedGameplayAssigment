@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public sealed class DroneUnitBody : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public sealed class DroneUnitBody : MonoBehaviour
     public int MultiHits = 0; //Adds additional basic damage/heal triggers based on value!
     public int ManaRegeneration = 0; //Adds extra mana regained on turn start!
     public int HealthRegeneration = 0; //Regain value based amount of HP on turn start!
+    public int StatusProtection = 0; //Makes status damages taken less, based on value!
 
     #endregion
 
@@ -49,7 +51,7 @@ public sealed class DroneUnitBody : MonoBehaviour
     public int MagicalIneptitiude = 0; //Reduces magical damages by value!
     public int CriticalVulnerability = 0; //Add chance to make damage after mana calc critical (crit value = current damage * 2 + CriticalExploit)!
     public int CriticalExploit = 0; //Makes critical damages taken stronger (crit value = current damage * 2 + CriticalExploit)!
-    public int StatusVulnerability = 0; //Makes status damages taken worse (extra damage based on value)!
+    public int StatusVulnerability = 0; //Makes status damages taken worse. extra damage based on value!
 
     #endregion
 
@@ -139,16 +141,21 @@ public sealed class DroneUnitBody : MonoBehaviour
 
         HP -= defaultValue;
 
+        myUI.SetHealthSlider(HP);
+
         CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} was dealt {defaultValue} Damage!");
 
-        myUI.SetHealthSlider(HP);
+        if (AppliedStatusDict.TryGetValue(Status_Leaking.LeakingKey, out StatusBase status) == true)
+        {
+            Status_Leaking leak = status as Status_Leaking;
+
+            leak.IncreaseLeakSpeed();
+        }
 
         if (HP <= 0)
         {
             CombatListener.CombatantDied(this);
         }
-
-        
     }
 
     public void DirectDamage(int damage)
@@ -172,12 +179,6 @@ public sealed class DroneUnitBody : MonoBehaviour
         CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} was dealt {damage} sanity Damage!");
 
         myUI.SetSanitySlider(sanity);
-
-        /*
-        if (HP <= 0)
-        {
-            CombatListener.CombatantDied(this);
-        }*/
     }
 
     public void Heal(int amount, float manaCost)
@@ -230,9 +231,9 @@ public sealed class DroneUnitBody : MonoBehaviour
 
                 k.reduceKnockBackSpeed(0.5f);
 
-                DirectDamage((int)k.KnockbackDirection.magnitude + StatusVulnerability);//May change it to normal damage method later!
+                DirectDamage(k.KnockBackDamage);
 
-                hit.DirectDamage((int)k.KnockbackDirection.magnitude + hit.StatusVulnerability);
+                hit.DirectDamage(k.KnockBackDamage - StatusVulnerability + StatusProtection);
             }
         }
     }

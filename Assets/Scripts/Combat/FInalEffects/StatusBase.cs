@@ -39,7 +39,7 @@ public abstract class StatusBase
         }
 
         SetupStatus();
-
+        controller.TriggerDelegate();
         
     }
 
@@ -125,6 +125,10 @@ public class Status_Knockback : StatusBase
 
     private const float addModifier = 2f;
 
+    private const float damageModifier = 1f;
+
+    public int KnockBackDamage => (int)(KnockbackDirection.magnitude * damageModifier) + Host.StatusVulnerability - Host.StatusProtection;
+
     protected override string dictoKey()
     {
         return KnockbackKey;
@@ -132,7 +136,7 @@ public class Status_Knockback : StatusBase
 
     protected override void SetupStatus()
     {
-        manaDrainPerSec = 0;
+        manaDrainPerSec = 0.5f;
     }
 
     public void AddAdditionalKnockBackSpeed(Vector3 addedDir)
@@ -154,6 +158,112 @@ public class Status_Knockback : StatusBase
         if (kockbackDirection.magnitude < minimumKnockBackSpeed)
         {
             return false;
+        }
+
+        return true;
+    }
+}
+
+public class Status_Leaking : StatusBase
+{
+    public static string LeakingKey = "Leaking";
+
+    private const float leakTimer = 1f;
+
+    private const float leakIncreaseValue = 0.1f;
+
+    private float leakProgress = 0f;
+
+    private float leakSpeed;
+
+    private int lastHostHPValue;
+
+    public void IncreaseLeakSpeed()
+    {
+        leakSpeed += leakIncreaseValue;
+    }
+
+    protected override string dictoKey()
+    {
+        return LeakingKey;
+    }
+
+    protected override void SetupStatus()
+    {
+        manaDrainPerSec = 0;
+        leakSpeed = 1f;
+        lastHostHPValue = Host.MyHP;
+    }
+
+    protected override bool StatusEffect()
+    {
+        if (lastHostHPValue < Host.MyHP) return false;
+
+        leakProgress += Time.deltaTime * leakSpeed;
+
+        if (leakProgress >= leakTimer)
+        {
+            leakProgress = 0f;
+
+            Host.DirectDamage(1 + Host.StatusVulnerability - Host.StatusProtection);
+
+            lastHostHPValue = Host.MyHP;
+        }
+
+        if (Host.MyHP <= 0) return false;
+
+        return true;
+    }
+}
+
+public class Status_ManaBurn : StatusBase
+{
+    public static string ManaBurnKey = "ManaBurn";
+
+    private float manaBurnSplitValue = 4f;
+
+    private float triggerRate = 1f;
+
+    private float triggerProgress = 0f;
+
+    private bool isRemoved = false;
+
+    public void RemoveManaBurn()
+    {
+        isRemoved = true;
+    }
+
+    protected override string dictoKey()
+    {
+        return ManaBurnKey;
+    }
+
+    protected override void SetupStatus()
+    {
+        manaDrainPerSec = 0;
+        isRemoved = false;
+    }
+
+    public int ManaBurnDealDamage()
+    {
+        int burnDamage = (int)(Host.MyMana / manaBurnSplitValue);
+        Host.DirectDamage(burnDamage + Host.StatusVulnerability - Host.StatusProtection);
+        Host.ManaSpent(burnDamage + Host.StatusVulnerability - Host.StatusProtection);
+
+        return burnDamage;
+    }
+
+    protected override bool StatusEffect()
+    {
+        if (isRemoved == true) return false;
+
+        if (Host.MyMana <= 0) return false;
+
+        triggerProgress += Time.deltaTime;
+
+        if (triggerProgress >= triggerRate)
+        {
+            ManaBurnDealDamage();
         }
 
         return true;

@@ -14,6 +14,11 @@ public class ICombatObject_Projectile : ICombatObject
 
     public event System.Action<ICombatObject> MyActionDelegate;
 
+    public void TriggerDelegate()
+    {
+        MyActionDelegate?.Invoke(this);
+    }
+
     public ICombatObject_Projectile(GameObject path, Vector3 pos)
     {
         SetupProjectileObj(path, pos);
@@ -74,7 +79,7 @@ public class ICombatObject_Projectile : ICombatObject
     {
         isActive = true;
         target = targetPos;
-        prefab.gameObject.SetActive(true);
+        prefab.gameObject.SetActive(true); 
         prefab.Fire(mana, myCaster.transform.position, target);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
@@ -102,6 +107,8 @@ public class ICombatObject_Projectile : ICombatObject
     {
         if (triggeredDrone != Caster)
         {
+            TriggerDelegate();
+
             return true;
         }
         return false;
@@ -116,4 +123,6 @@ public class ICombatObject_Projectile : ICombatObject
     {
         throw new System.NotImplementedException();
     }
+
+    
 }

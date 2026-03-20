@@ -20,6 +20,7 @@ public abstract class BuffORDebuffBase
         targetHost = target;
         startingMana = mana;
         SetupBuffDebuff();
+        controller.TriggerDelegate();
     }
 
     public virtual bool BuffDebuffDuration()
@@ -175,6 +176,21 @@ public class HealthRegenerationBuff : BuffORDebuffBase
     protected override void SetupBuffDebuff()
     {
         targetHost.HealthRegeneration++;
+
+        manaDrainPerSec = 1f;
+    }
+}
+
+public class StatusProtectionBuff : BuffORDebuffBase
+{
+    protected override void EndBuffDebuff()
+    {
+        targetHost.StatusProtection--;
+    }
+
+    protected override void SetupBuffDebuff()
+    {
+        targetHost.StatusProtection++;
 
         manaDrainPerSec = 1f;
     }

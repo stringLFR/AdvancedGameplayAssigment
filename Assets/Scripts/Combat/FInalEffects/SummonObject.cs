@@ -113,7 +113,7 @@ public class SummonObject : MonoBehaviour
 
                 k.reduceKnockBackSpeed(0.5f);
 
-                hit.DirectDamage((int)k.KnockbackDirection.magnitude + hit.StatusVulnerability);//May change it to normal damage method later!
+                hit.DirectDamage(k.KnockBackDamage);//May change it to normal damage method later!
 
                 foreach (AddedEffectSO added in addedEffects)
                 {

@@ -31,6 +31,10 @@ public class ICombatObject_Step : ICombatObject
         LerpAlongPath();
     }
 
+    public void TriggerDelegate()
+    {
+        MyActionDelegate?.Invoke(this);
+    }
     protected virtual void LerpAlongPath()
     {
         if (pointIndex >= points)
@@ -80,6 +84,8 @@ public class ICombatObject_Step : ICombatObject
 
         points = path.corners.Length;
         pointIndex = 0;
+
+        TriggerDelegate();
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void Reactivate(float mana, DroneUnitBody otherCaster)

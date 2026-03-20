@@ -71,6 +71,8 @@ public abstract class StatusBase
             return false;
         }
 
+        if (Host.MyHP <= 0) return false;
+
         return true;
     }
 
@@ -81,6 +83,7 @@ public abstract class StatusBase
     protected abstract string dictoKey();
 }
 
+//Stuns, Do not need mana to sustain!
 public class Status_Stunned : StatusBase
 {
     public static string StunnedKey = "Stunned";
@@ -105,10 +108,15 @@ public class Status_Stunned : StatusBase
 
     protected override bool StatusEffect()
     {
+        if (Host.AppliedStatusDict.TryGetValue(Status_Negation.NegationKey, out StatusBase status) == true)
+        {
+            return false;
+        }
+
         return isStunned;
     }
 }
-
+//Adds knock back that causes damage on colliding. Needs mana to sustain!
 public class Status_Knockback : StatusBase
 {
     public static string KnockbackKey = "Knockback";
@@ -151,6 +159,11 @@ public class Status_Knockback : StatusBase
 
     protected override bool StatusEffect()
     {
+        if (Host.AppliedStatusDict.TryGetValue(Status_Negation.NegationKey, out StatusBase status) == true)
+        {
+            return false;
+        }
+
         Host.ProcedualCore.Agent.Move(kockbackDirection * Time.deltaTime * Speed);
 
         kockbackDirection *= Time.deltaTime * friction;
@@ -163,7 +176,7 @@ public class Status_Knockback : StatusBase
         return true;
     }
 }
-
+//Deals low damage on tick, but tick rate increases on being hit. Do not need mana to sustain! (is removed on healing above a damage cap!)
 public class Status_Leaking : StatusBase
 {
     public static string LeakingKey = "Leaking";
@@ -197,6 +210,11 @@ public class Status_Leaking : StatusBase
 
     protected override bool StatusEffect()
     {
+        if (Host.AppliedStatusDict.TryGetValue(Status_Negation.NegationKey, out StatusBase status) == true)
+        {
+            return false;
+        }
+
         if (lastHostHPValue < Host.MyHP) return false;
 
         leakProgress += Time.deltaTime * leakSpeed;
@@ -210,12 +228,10 @@ public class Status_Leaking : StatusBase
             lastHostHPValue = Host.MyHP;
         }
 
-        if (Host.MyHP <= 0) return false;
-
         return true;
     }
 }
-
+//Both deals damage and reduces mana based on current mana amount/value. Do not need mana to sustain! (It drains the target afterall XD)
 public class Status_ManaBurn : StatusBase
 {
     public static string ManaBurnKey = "ManaBurn";
@@ -255,6 +271,11 @@ public class Status_ManaBurn : StatusBase
 
     protected override bool StatusEffect()
     {
+        if (Host.AppliedStatusDict.TryGetValue(Status_Negation.NegationKey, out StatusBase status) == true)
+        {
+            return false;
+        }
+
         if (isRemoved == true) return false;
 
         if (Host.MyMana <= 0) return false;
@@ -266,6 +287,47 @@ public class Status_ManaBurn : StatusBase
             ManaBurnDealDamage();
         }
 
+        return true;
+    }
+}
+//The main way to protect from statuses. Is active for as long as it has mana! 
+public class Status_Negation : StatusBase
+{
+    public static string NegationKey = "Negation";
+
+    protected override string dictoKey()
+    {
+        return NegationKey;
+    }
+
+    protected override void SetupStatus()
+    {
+        manaDrainPerSec = 5;
+    }
+
+    protected override bool StatusEffect()
+    {
+        return true;
+    }
+}
+//Reverses the effect of buffs and debuffs when gained. Needs mana to sustain!
+//Was planning switching already exisiting ones, but it would take to much refacotring! So doing on gained instead!
+public class Status_Hacked : StatusBase
+{
+    public static string HackedKey = "Hacked";
+
+    protected override string dictoKey()
+    {
+        return HackedKey;
+    }
+
+    protected override void SetupStatus()
+    {
+        manaDrainPerSec = 5;
+    }
+
+    protected override bool StatusEffect()
+    {
         return true;
     }
 }

@@ -7,6 +7,7 @@ public abstract class BuffORDebuffBase
     protected float startingMana;
     protected DroneUnitBody targetHost;
     protected float manaDrainPerSec = 1f;
+    protected bool wasHackedOnGain = false;
 
     public DroneUnitBody Host => targetHost;
 
@@ -19,7 +20,17 @@ public abstract class BuffORDebuffBase
     {
         targetHost = target;
         startingMana = mana;
-        SetupBuffDebuff();
+
+        if (targetHost.AppliedStatusDict.TryGetValue(Status_Hacked.HackedKey, out StatusBase status) == true)
+        {
+            wasHackedOnGain = true;
+        }
+        else
+        {
+            wasHackedOnGain = false;
+        }
+
+            SetupBuffDebuff();
         controller.TriggerDelegate();
     }
 
@@ -36,6 +47,8 @@ public abstract class BuffORDebuffBase
             return false;
         }
 
+        if (targetHost.MyHP <= 0) return false;
+
         return true;
     }
 
@@ -50,12 +63,14 @@ public class OverdriveBuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.Overdrive--;
+        if (wasHackedOnGain == true) targetHost.Overdrive++;
+        else targetHost.Overdrive--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.Overdrive++;
+        if (wasHackedOnGain == true) targetHost.Overdrive--;
+        else targetHost.Overdrive++;
 
         manaDrainPerSec = 1f;
     }
@@ -65,12 +80,14 @@ public class MartialProwessBuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.MartialProwess--;
+        if (wasHackedOnGain == true) targetHost.MartialProwess++;
+        else targetHost.MartialProwess--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.MartialProwess++;
+        if (wasHackedOnGain == true) targetHost.MartialProwess--;
+        else targetHost.MartialProwess++;
 
         manaDrainPerSec = 1f;
     }
@@ -80,12 +97,14 @@ public class MagicalProwessBuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.MagicalProwess--;
+        if (wasHackedOnGain == true) targetHost.MagicalProwess++;
+        else targetHost.MagicalProwess--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.MagicalProwess++;
+        if (wasHackedOnGain == true) targetHost.MagicalProwess--;
+        else targetHost.MagicalProwess++;
 
         manaDrainPerSec = 1f;
     }
@@ -95,12 +114,14 @@ public class ArmorPolishBuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.ArmorPolish--;
+        if (wasHackedOnGain == true) targetHost.ArmorPolish++;
+        else targetHost.ArmorPolish--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.ArmorPolish++;
+        if (wasHackedOnGain == true) targetHost.ArmorPolish--;
+        else targetHost.ArmorPolish++;
 
         manaDrainPerSec = 1f;
     }
@@ -110,12 +131,14 @@ public class ManaReinforcementBuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.ManaReinforcement--;
+        if (wasHackedOnGain == true) targetHost.ManaReinforcement++;
+        else targetHost.ManaReinforcement--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.ManaReinforcement++;
+        if (wasHackedOnGain == true) targetHost.ManaReinforcement--;
+        else targetHost.ManaReinforcement++;
 
         manaDrainPerSec = 1f;
     }
@@ -125,12 +148,14 @@ public class CriticalProtectionBuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.CriticalProtection--;
+        if (wasHackedOnGain == true) targetHost.CriticalProtection++;
+        else targetHost.CriticalProtection--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.CriticalProtection++;
+        if (wasHackedOnGain == true) targetHost.CriticalProtection--;
+        else targetHost.CriticalProtection++;
 
         manaDrainPerSec = 1f;
     }
@@ -140,12 +165,14 @@ public class MultiHitsBuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.MultiHits--;
+        if (wasHackedOnGain == true) targetHost.MultiHits++;
+        else targetHost.MultiHits--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.MultiHits++;
+        if (wasHackedOnGain == true) targetHost.MultiHits--;
+        else targetHost.MultiHits++;
 
         manaDrainPerSec = 1f;
     }
@@ -155,12 +182,14 @@ public class ManaRegenerationBuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.ManaRegeneration--;
+        if (wasHackedOnGain == true) targetHost.ManaRegeneration++;
+        else targetHost.ManaRegeneration--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.ManaRegeneration++;
+        if (wasHackedOnGain == true) targetHost.ManaRegeneration--;
+        else targetHost.ManaRegeneration++;
 
         manaDrainPerSec = 1f;
     }
@@ -170,12 +199,14 @@ public class HealthRegenerationBuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.HealthRegeneration--;
+        if (wasHackedOnGain == true) targetHost.HealthRegeneration++;
+        else targetHost.HealthRegeneration--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.HealthRegeneration++;
+        if (wasHackedOnGain == true) targetHost.HealthRegeneration--;
+        else targetHost.HealthRegeneration++;
 
         manaDrainPerSec = 1f;
     }
@@ -185,12 +216,14 @@ public class StatusProtectionBuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.StatusProtection--;
+        if (wasHackedOnGain == true) targetHost.StatusProtection++;
+        else targetHost.StatusProtection--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.StatusProtection++;
+        if (wasHackedOnGain == true) targetHost.StatusProtection--;
+        else targetHost.StatusProtection++;
 
         manaDrainPerSec = 1f;
     }
@@ -204,12 +237,14 @@ public class ArmorBreakDebuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.ArmorBreak--;
+        if (wasHackedOnGain == true) targetHost.ArmorBreak++;
+        else targetHost.ArmorBreak--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.ArmorBreak++;
+        if (wasHackedOnGain == true) targetHost.ArmorBreak--;
+        else targetHost.ArmorBreak++;
 
         manaDrainPerSec = 1f;
     }
@@ -219,12 +254,14 @@ public class ManaSusceptibilityDebuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.ManaSusceptibility--;
+        if (wasHackedOnGain == true) targetHost.ManaSusceptibility++;
+        else targetHost.ManaSusceptibility--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.ManaSusceptibility++;
+        if (wasHackedOnGain == true) targetHost.ManaSusceptibility--;
+        else targetHost.ManaSusceptibility++;
 
         manaDrainPerSec = 1f;
     }
@@ -234,12 +271,14 @@ public class MartialIneptitiudeDebuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.MartialIneptitiude--;
+        if (wasHackedOnGain == true) targetHost.MartialIneptitiude++;
+        else targetHost.MartialIneptitiude--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.MartialIneptitiude++;
+        if (wasHackedOnGain == true) targetHost.MartialIneptitiude--;
+        else targetHost.MartialIneptitiude++;
 
         manaDrainPerSec = 1f;
     }
@@ -249,12 +288,14 @@ public class MagicalIneptitiudeDebuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.MagicalIneptitiude--;
+        if (wasHackedOnGain == true) targetHost.MagicalIneptitiude++;
+        else targetHost.MagicalIneptitiude--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.MagicalIneptitiude++;
+        if (wasHackedOnGain == true) targetHost.MagicalIneptitiude--;
+        else targetHost.MagicalIneptitiude++;
 
         manaDrainPerSec = 1f;
     }
@@ -264,12 +305,14 @@ public class CriticalVulnerabilityDebuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.CriticalVulnerability--;
+        if (wasHackedOnGain == true) targetHost.CriticalVulnerability++;
+        else targetHost.CriticalVulnerability--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.CriticalVulnerability++;
+        if (wasHackedOnGain == true) targetHost.CriticalVulnerability--;
+        else targetHost.CriticalVulnerability++;
 
         manaDrainPerSec = 1f;
     }
@@ -279,12 +322,14 @@ public class CriticalExploitDebuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.CriticalExploit--;
+        if (wasHackedOnGain == true) targetHost.CriticalExploit++;
+        else targetHost.CriticalExploit--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.CriticalExploit++;
+        if (wasHackedOnGain == true) targetHost.CriticalExploit--;
+        else targetHost.CriticalExploit++;
 
         manaDrainPerSec = 1f;
     }
@@ -294,12 +339,48 @@ public class StatusVulnerabilityDebuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
     {
-        targetHost.StatusVulnerability--;
+        if (wasHackedOnGain == true) targetHost.StatusVulnerability++;
+        else targetHost.StatusVulnerability--;
     }
 
     protected override void SetupBuffDebuff()
     {
-        targetHost.StatusVulnerability++;
+        if (wasHackedOnGain == true) targetHost.StatusVulnerability--;
+        else targetHost.StatusVulnerability++;
+
+        manaDrainPerSec = 1f;
+    }
+}
+
+public class HealthDrainDebuff : BuffORDebuffBase
+{
+    protected override void EndBuffDebuff()
+    {
+        if (wasHackedOnGain == true) targetHost.HealthDrain++;
+        else targetHost.HealthDrain--;
+    }
+
+    protected override void SetupBuffDebuff()
+    {
+        if (wasHackedOnGain == true) targetHost.HealthDrain--;
+        else targetHost.HealthDrain++;
+
+        manaDrainPerSec = 1f;
+    }
+}
+
+public class ManaDrainDebuff : BuffORDebuffBase
+{
+    protected override void EndBuffDebuff()
+    {
+        if (wasHackedOnGain == true) targetHost.ManaDrain++;
+        else targetHost.ManaDrain--;
+    }
+
+    protected override void SetupBuffDebuff()
+    {
+        if (wasHackedOnGain == true) targetHost.ManaDrain--;
+        else targetHost.ManaDrain++;
 
         manaDrainPerSec = 1f;
     }

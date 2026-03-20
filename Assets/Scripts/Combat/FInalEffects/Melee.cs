@@ -89,7 +89,7 @@ public class Melee : MonoBehaviour
             Vector3 s = localPos + BezierStartOffset;
             Vector3 e = localPos + BezierEndOffset;
             Vector3 sT = localPos + (BezierStartTangent + Projectile.RandomTangent(startTangentRandom));
-            Vector3 eT = localPos + (BezierStartTangent + Projectile.RandomTangent(endTangentRandom));
+            Vector3 eT = localPos + (BezierEndOTanget + Projectile.RandomTangent(endTangentRandom));
 
             Vector3 rs = localPos + BezierStartRotate;
             Vector3 re = localPos + BezierEndRotate;

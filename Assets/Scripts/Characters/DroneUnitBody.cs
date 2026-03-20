@@ -52,6 +52,8 @@ public sealed class DroneUnitBody : MonoBehaviour
     public int CriticalVulnerability = 0; //Add chance to make damage after mana calc critical (crit value = current damage * 2 + CriticalExploit)!
     public int CriticalExploit = 0; //Makes critical damages taken stronger (crit value = current damage * 2 + CriticalExploit)!
     public int StatusVulnerability = 0; //Makes status damages taken worse. extra damage based on value!
+    public int HealthDrain = 0; //lose value based amount of HP on turn start!
+    public int ManaDrain = 0; //Removes mana on turn start!
 
     #endregion
 
@@ -199,9 +201,9 @@ public sealed class DroneUnitBody : MonoBehaviour
 
     public void RegainMana()//INT is the amount!
     {
-        mana = math.clamp(mana + (int)droneUnit.GetINT + ManaRegeneration, 0, maxMana);
+        mana = math.clamp(mana + (int)droneUnit.GetINT + ManaRegeneration - ManaDrain, 0, maxMana);
 
-        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} regains {(int)droneUnit.GetINT + ManaRegeneration} Mana!");
+        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName}'s mana is changed by {(int)droneUnit.GetINT + ManaRegeneration - ManaDrain} from int based {(int)droneUnit.GetINT} + manaRegenerationBuff {ManaRegeneration} - ManaDrain debuff {ManaDrain}!");
 
         myUI.SetManaSlider(mana);
     }
@@ -210,9 +212,9 @@ public sealed class DroneUnitBody : MonoBehaviour
     {
         if (HealthRegeneration < 1) return;
 
-        HP = math.clamp(HP + HealthRegeneration, 0, maxHP);
+        HP = math.clamp(HP + HealthRegeneration - HealthDrain, 0, maxHP);
 
-        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} regains {HealthRegeneration} Health from HealthRegeneration buff!");
+        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName}'s health is changed by {HealthRegeneration - HealthDrain} from HealthRegeneration buff {HealthRegeneration} - HealthDrain debuff {HealthDrain}!");
 
         myUI.SetHealthSlider(HP);
     }

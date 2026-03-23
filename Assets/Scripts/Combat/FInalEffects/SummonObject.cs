@@ -97,30 +97,7 @@ public class SummonObject : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<DroneUnitBody>(out DroneUnitBody hit) == true)
-        {
-            if (controller.Caster.AppliedStatusDict.TryGetValue(Status_Knockback.KnockbackKey, out StatusBase status) == true)
-            {
-                Status_Knockback k = status as Status_Knockback;
-
-                Vector3 closestPoint = other.ClosestPoint(transform.position);
-
-                Vector3 surfaceNormal = (closestPoint - transform.position).normalized;
-
-                Vector3 bounce = Vector3.Reflect(k.KnockbackDirection, surfaceNormal);
-
-                k.AddAdditionalKnockBackSpeed(bounce);
-
-                k.reduceKnockBackSpeed(0.5f);
-
-                hit.DirectDamage(k.KnockBackDamage);//May change it to normal damage method later!
-
-                foreach (AddedEffectSO added in addedEffects)
-                {
-                    added.OnTargetFound(hit, this);
-                }
-            }
-        }
+        
 
         if (other.TryGetComponent<Projectile>(out Projectile projectile) == true)
         {
@@ -143,6 +120,38 @@ public class SummonObject : MonoBehaviour
             foreach (AddedEffectSO added in addedEffects)
             {
                 added.OnAreaFound(area, this);
+            }
+        }
+
+        if (other.TryGetComponent<DroneUnitBody>(out DroneUnitBody hit) == true)
+        {
+            bool isValid = controller.FinalEffectReturnValue(hit);
+
+            if (isValid != true)
+            {
+                return;
+            }
+
+            foreach (AddedEffectSO added in addedEffects)
+            {
+                added.OnTargetFound(hit, this);
+            }
+
+            if (controller.Caster.AppliedStatusDict.TryGetValue(Status_Knockback.KnockbackKey, out StatusBase status) == true)
+            {
+                Status_Knockback k = status as Status_Knockback;
+
+                Vector3 closestPoint = other.ClosestPoint(transform.position);
+
+                Vector3 surfaceNormal = (closestPoint - transform.position).normalized;
+
+                Vector3 bounce = Vector3.Reflect(k.KnockbackDirection, surfaceNormal);
+
+                k.AddAdditionalKnockBackSpeed(bounce);
+
+                k.reduceKnockBackSpeed(0.5f);
+
+                hit.DirectDamage(k.KnockBackDamage);//May change it to normal damage method later!
             }
         }
     }

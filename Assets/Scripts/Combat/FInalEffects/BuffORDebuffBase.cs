@@ -30,7 +30,7 @@ public abstract class BuffORDebuffBase
             wasHackedOnGain = false;
         }
 
-            SetupBuffDebuff();
+        SetupBuffDebuff();
         controller.TriggerDelegate();
     }
 

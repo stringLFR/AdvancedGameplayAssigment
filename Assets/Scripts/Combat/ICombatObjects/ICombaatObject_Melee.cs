@@ -41,6 +41,10 @@ public class ICombaatObject_Melee : ICombatObject
 
     public ActionEffectBase Origin => myOrigin;
 
+    protected ICombatDelegateTriggers myDelegateTriggerType = ICombatDelegateTriggers.NONE;
+
+    public ICombatDelegateTriggers MyDelegateTriggerType => myDelegateTriggerType;
+
     public event Action<ICombatObject> MyActionDelegate;
 
     public virtual void CombatUpdate()
@@ -49,6 +53,7 @@ public class ICombaatObject_Melee : ICombatObject
 
         if (hasMana == false)
         {
+            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_FINISHED) TriggerDelegate();
             prefab.gameObject.SetActive(false);
             isActive = false;
         }
@@ -68,7 +73,7 @@ public class ICombaatObject_Melee : ICombatObject
     {
         if (triggeredDrone != Caster)
         {
-            TriggerDelegate();
+            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_DRONEHIT) TriggerDelegate();
 
             return true;
         }
@@ -85,10 +90,11 @@ public class ICombaatObject_Melee : ICombatObject
         throw new NotImplementedException();
     }
 
-    public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin)
+    public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin, ICombatDelegateTriggers delegateTrigger)
     {
         myCaster = caster;
         myOrigin = origin;
+        myDelegateTriggerType = delegateTrigger;
     }
 
     public virtual void Reactivate(float mana)
@@ -96,6 +102,7 @@ public class ICombaatObject_Melee : ICombatObject
         isActive = true;
         prefab.gameObject.SetActive(true);
         prefab.UnSheath(mana);
+        if (myDelegateTriggerType == ICombatDelegateTriggers.ON_REACTIVATE) TriggerDelegate();
     }
 
     public void Reactivate(float mana, Vector3 targetPos)

@@ -25,6 +25,10 @@ public class ICombatObject_Step : ICombatObject
 
     public float myDamageType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+    protected ICombatDelegateTriggers myDelegateTriggerType = ICombatDelegateTriggers.NONE;
+
+    public ICombatDelegateTriggers MyDelegateTriggerType => myDelegateTriggerType;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void CombatUpdate()
     {
@@ -50,6 +54,7 @@ public class ICombatObject_Step : ICombatObject
 
             if (pointIndex >= points)
             {
+                if (myDelegateTriggerType == ICombatDelegateTriggers.ON_FINISHED) TriggerDelegate();
                 isActive = false;
                 return;
             }
@@ -66,10 +71,11 @@ public class ICombatObject_Step : ICombatObject
         lerpTime += Time.deltaTime;
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin)
+    public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin, ICombatDelegateTriggers delegateTrigger)
     {
         myCaster = caster;
         myOrigin = origin;
+        myDelegateTriggerType = delegateTrigger;
     }
 
     public virtual void Reactivate(float mana, Vector3 targetPos)
@@ -85,7 +91,7 @@ public class ICombatObject_Step : ICombatObject
         points = path.corners.Length;
         pointIndex = 0;
 
-        TriggerDelegate();
+        if (myDelegateTriggerType == ICombatDelegateTriggers.ON_REACTIVATE) TriggerDelegate();
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void Reactivate(float mana, DroneUnitBody otherCaster)

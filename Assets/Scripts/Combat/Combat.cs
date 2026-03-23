@@ -6,6 +6,10 @@ using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
+public enum ICombatDelegateTriggers
+{
+    NONE, ON_REACTIVATE, ON_FINISHED, ON_DRONEHIT,
+}
 
 public interface ICombatObject
 {
@@ -15,7 +19,7 @@ public interface ICombatObject
     public float myDamageType { get; set; }
     public void MyRespondAction(ICombatObject obj, Vector3 targetPos, DroneUnitBody otherCaster = null, GameObject triggeredObject = null);
     public void CombatUpdate();
-    public void OnSpawn(DroneUnitBody caster, ActionEffectBase origin);
+    public void OnSpawn(DroneUnitBody caster, ActionEffectBase origin, ICombatDelegateTriggers delegateTrigger);
     public void Reactivate(float mana);
     public void Reactivate(float mana, Vector3 targetPos);
     public void Reactivate(float mana, DroneUnitBody otherCaster);
@@ -27,6 +31,7 @@ public interface ICombatObject
     public bool IsActive { get; }
     public DroneUnitBody Caster { get; }
     public ActionEffectBase Origin { get; }
+    public ICombatDelegateTriggers MyDelegateTriggerType { get; }
 }
 
 public sealed class Combat : MonoBehaviour

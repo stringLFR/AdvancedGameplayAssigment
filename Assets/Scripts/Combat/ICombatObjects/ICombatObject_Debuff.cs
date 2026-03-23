@@ -23,7 +23,9 @@ public class ICombatObject_Debuff : ICombatObject
 
     public event Action<ICombatObject> MyActionDelegate;
 
+    protected ICombatDelegateTriggers myDelegateTriggerType = ICombatDelegateTriggers.NONE;
 
+    public ICombatDelegateTriggers MyDelegateTriggerType => myDelegateTriggerType;
     protected virtual void SetupDebuff(DebuffsEnum targetDebuff)
     {
         switch (targetDebuff)
@@ -68,6 +70,7 @@ public class ICombatObject_Debuff : ICombatObject
 
         if (hasMana == false)
         {
+            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_FINISHED) TriggerDelegate();
             isActive = false;
         }
     }
@@ -97,10 +100,11 @@ public class ICombatObject_Debuff : ICombatObject
         throw new NotImplementedException();
     }
 
-    public void OnSpawn(DroneUnitBody caster, ActionEffectBase origin)
+    public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin, ICombatDelegateTriggers delegateTrigger)
     {
         myCaster = caster;
         myOrigin = origin;
+        myDelegateTriggerType = delegateTrigger;
     }
 
     public void Reactivate(float mana)
@@ -118,6 +122,7 @@ public class ICombatObject_Debuff : ICombatObject
         isActive = true;
         target = otherCaster;
         debuffEffect.AttachBuffDebuff(mana, target);
+        if (myDelegateTriggerType == ICombatDelegateTriggers.ON_REACTIVATE) TriggerDelegate();
     }
 
     public void Reactivate(float mana, GameObject targetObj)

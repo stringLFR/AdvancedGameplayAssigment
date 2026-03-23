@@ -12,7 +12,9 @@ public class ICombatObject_SummonObject : ICombatObject
     protected SummonObject prefab;
 
     protected Vector3 target;
+    protected ICombatDelegateTriggers myDelegateTriggerType = ICombatDelegateTriggers.NONE;
 
+    public ICombatDelegateTriggers MyDelegateTriggerType => myDelegateTriggerType;
     public float myDamageType {
         get
         {
@@ -50,6 +52,7 @@ public class ICombatObject_SummonObject : ICombatObject
 
         if (hasMana == false)
         {
+            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_FINISHED) TriggerDelegate();
             prefab.gameObject.SetActive(false);
             isActive = false;
         }
@@ -69,7 +72,7 @@ public class ICombatObject_SummonObject : ICombatObject
     {
         if (triggeredDrone != Caster)
         {
-            TriggerDelegate();
+            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_DRONEHIT) TriggerDelegate();
 
             return true;
         }
@@ -86,10 +89,11 @@ public class ICombatObject_SummonObject : ICombatObject
         throw new NotImplementedException();
     }
 
-    public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin)
+    public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin, ICombatDelegateTriggers delegateTrigger)
     {
         myCaster = caster;
         myOrigin = origin;
+        myDelegateTriggerType = delegateTrigger;
     }
 
     public void Reactivate(float mana)
@@ -103,6 +107,7 @@ public class ICombatObject_SummonObject : ICombatObject
         target = targetPos;
         prefab.gameObject.SetActive(true);
         prefab.Summon(mana, myCaster.transform.position, myCaster.transform.position - target);
+        if (myDelegateTriggerType == ICombatDelegateTriggers.ON_REACTIVATE) TriggerDelegate();
     }
 
     public void Reactivate(float mana, DroneUnitBody otherCaster)

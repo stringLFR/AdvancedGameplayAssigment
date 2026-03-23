@@ -103,7 +103,7 @@ public class ICombatObject_Projectile : ICombatObject
         throw new System.NotImplementedException();
     }
 
-    public bool FinalEffectReturnValue(DroneUnitBody triggeredDrone)
+    public virtual bool FinalEffectReturnValue(DroneUnitBody triggeredDrone)
     {
         if (triggeredDrone != Caster)
         {

@@ -83,6 +83,11 @@ public abstract class StatusBase
     protected abstract string dictoKey();
 }
 
+public enum StatusEnum
+{
+    None,Stunned,Kncokback,Leaking,Negation,Hacked,
+}
+
 //Stuns, Do not need mana to sustain!
 public class Status_Stunned : StatusBase
 {

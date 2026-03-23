@@ -59,6 +59,11 @@ public abstract class BuffORDebuffBase
 
 #region buffs
 
+public enum BuffsEnum
+{
+    None, Overdrive,MartialProwess, MagicalProwess, ArmorPolish, ManaReinforcement, CriticalProtection,Multihit,ManaRegeneration,HealthRegeneration,StatusProtection,
+}
+
 public class OverdriveBuff : BuffORDebuffBase
 {
     protected override void EndBuffDebuff()
@@ -232,6 +237,11 @@ public class StatusProtectionBuff : BuffORDebuffBase
 #endregion
 
 #region Debuffs
+
+public enum DebuffsEnum
+{
+    None, ArmorBreak, ManaSusceptibility, MartialIneptitiude, MagicalIneptitiude, CriticalVulnerability, CriticalExploit, StatusVulnerability, HealthDrain, ManaDrain,
+}
 
 public class ArmorBreakDebuff : BuffORDebuffBase
 {

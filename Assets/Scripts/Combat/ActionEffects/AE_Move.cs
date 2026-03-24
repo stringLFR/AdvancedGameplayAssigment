@@ -19,9 +19,9 @@ public class AE_Move : ActionEffectBase
     {
         Init();
 
-        step.OnSpawn(caster, this);//Might allow things to take over. So leaving this function for now!
+        step.OnSpawn(caster, this, ICombatDelegateTriggers.NONE);//Might allow things to take over. So leaving this function for now!
 
-        step.Reactivate(caster.MyMana, targetPos);
+        step.Reactivate(mana, targetPos);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override void TriggerActionEffect(float mana, DroneUnitBody caster, Vector3[] targetPositions)
@@ -49,7 +49,7 @@ public class AE_Move : ActionEffectBase
         Init();
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    protected void Init()
+    protected virtual void Init()
     {
         if (step.IsActive == true) return;
 

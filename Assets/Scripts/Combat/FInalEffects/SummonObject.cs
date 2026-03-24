@@ -151,7 +151,7 @@ public class SummonObject : MonoBehaviour
 
                 k.reduceKnockBackSpeed(0.5f);
 
-                hit.DirectDamage(k.KnockBackDamage);//May change it to normal damage method later!
+                hit.DirectDamage(k.KnockBackDamage + (int)baseDamage);//May change it to normal damage method later!
             }
         }
     }

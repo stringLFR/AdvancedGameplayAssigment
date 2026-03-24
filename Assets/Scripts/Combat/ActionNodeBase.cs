@@ -9,10 +9,7 @@ namespace actions
     {
         P_MELEE, P_RANGED, M_MELEE, M_RANGED,MOVEMENT,
     }
-    public enum NodeType //This is used to chose what child class of ActionNodeBase to create!
-    {
-        NONE, QuickThrow,
-    }
+    
 
     [Serializable]
     public struct ActionNodeStats

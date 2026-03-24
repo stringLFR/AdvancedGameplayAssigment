@@ -93,7 +93,7 @@ public class Area : MonoBehaviour
                 {
                     if (isDamaging == true)
                     {
-                        target.TakeDamage((int)controller.myDamageType, startingMana);
+                        target.TakeDamage((int)controller.myDamageType + (int)baseDamage, startingMana);
                     }
                     else
                     {

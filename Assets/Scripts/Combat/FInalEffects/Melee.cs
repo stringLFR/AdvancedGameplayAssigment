@@ -85,27 +85,27 @@ public class Melee : MonoBehaviour
 
         public void SetupSlash(Transform tr, Vector3 startTangentRandom, Vector3 endTangentRandom)
         {
-            Vector3 localPos = tr.InverseTransformPoint(tr.position);
-            Vector3 s = localPos + BezierStartOffset;
-            Vector3 e = localPos + BezierEndOffset;
-            Vector3 sT = localPos + (BezierStartTangent + Projectile.RandomTangent(startTangentRandom));
-            Vector3 eT = localPos + (BezierEndOTanget + Projectile.RandomTangent(endTangentRandom));
+            Matrix4x4 rotationMatrix = Matrix4x4.Rotate(tr.rotation);
 
-            Vector3 rs = localPos + BezierStartRotate;
-            Vector3 re = localPos + BezierEndRotate;
-            Vector3 rsT = localPos + (BezierStartTangentRotate);
-            Vector3 reT = localPos + (BezierEndOTangetRotate);
+            Vector3 s = rotationMatrix.MultiplyPoint3x4(BezierStartOffset) + tr.localPosition;
+            Vector3 e = rotationMatrix.MultiplyPoint3x4(BezierEndOffset) + tr.localPosition;
+            Vector3 sT = rotationMatrix.MultiplyPoint3x4(BezierStartTangent + Projectile.RandomTangent(startTangentRandom));
+            Vector3 eT = rotationMatrix.MultiplyPoint3x4(BezierEndOTanget + Projectile.RandomTangent(startTangentRandom));
 
+            Vector3 rs = rotationMatrix.MultiplyPoint3x4(BezierStartRotate) + tr.localPosition;
+            Vector3 re = rotationMatrix.MultiplyPoint3x4(BezierEndRotate) + tr.localPosition;
+            Vector3 rsT = rotationMatrix.MultiplyPoint3x4(BezierStartTangentRotate);
+            Vector3 reT = rotationMatrix.MultiplyPoint3x4(BezierEndOTangetRotate);
 
-            curve.SetVectors(UnityMaths.GetNumericsVecFromUnityVec(tr.TransformPoint(s)),
-            UnityMaths.GetNumericsVecFromUnityVec(tr.TransformPoint(e)),
-            UnityMaths.GetNumericsVecFromUnityVec(tr.TransformPoint(sT)),
-            UnityMaths.GetNumericsVecFromUnityVec(tr.TransformPoint(eT)));
+            curve.SetVectors(UnityMaths.GetNumericsVecFromUnityVec(s),
+            UnityMaths.GetNumericsVecFromUnityVec(e),
+            UnityMaths.GetNumericsVecFromUnityVec(sT),
+            UnityMaths.GetNumericsVecFromUnityVec(eT));
 
-            rotateCurve.SetVectors(UnityMaths.GetNumericsVecFromUnityVec(tr.TransformPoint(rs)),
-            UnityMaths.GetNumericsVecFromUnityVec(tr.TransformPoint(re)),
-            UnityMaths.GetNumericsVecFromUnityVec(tr.TransformPoint(rsT)),
-            UnityMaths.GetNumericsVecFromUnityVec(tr.TransformPoint(reT)));
+            rotateCurve.SetVectors(UnityMaths.GetNumericsVecFromUnityVec(rs),
+            UnityMaths.GetNumericsVecFromUnityVec(re),
+            UnityMaths.GetNumericsVecFromUnityVec(rsT),
+            UnityMaths.GetNumericsVecFromUnityVec(reT));
         }
     }
 
@@ -172,7 +172,9 @@ public class Melee : MonoBehaviour
 
         int index = (int)Math.Clamp(progress, 0f, data.Length - 1);
 
-        data[index].SlashUpdate(time % 1, transform);
+        data[index].SetupSlash(controller.Caster.transform, Vector3.zero, Vector3.zero);
+
+        data[index].SlashUpdate(progress % 1, transform);
 
         if (startingMana < 0.1f)
         {
@@ -218,7 +220,7 @@ public class Melee : MonoBehaviour
                 {
                     if (isDamaging == true)
                     {
-                        hit.TakeDamage((int)controller.myDamageType, startingMana);
+                        hit.TakeDamage((int)controller.myDamageType + (int)baseDamage, startingMana);
                     }
                     else
                     {

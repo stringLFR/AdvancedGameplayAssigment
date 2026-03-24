@@ -1,6 +1,16 @@
 using actions;
 using UnityEngine;
 
+public enum NodeType //This is used to chose what child class of ActionNodeBase to create!
+{
+    NONE, RockThrow, QuickSlash,
+}
+
+public enum MainActionTypes//This is used to chose what child class of MainActionBase to create!
+{
+    NONE, RunToPoint,
+}
+
 public static class ActionCreator
 {
     public static MainActionBase CreateMainAction(MainActionStats stats, string userName)
@@ -20,12 +30,20 @@ public static class ActionCreator
     {
         switch (stats.Node)
         {
-            case NodeType.QuickThrow:
+            case NodeType.NONE:
+                break;
+            case NodeType.RockThrow:
 
                 ReactionNode_QuickThrow quickThrow = new ReactionNode_QuickThrow();
-                quickThrow.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect),stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
-                quickThrow.SetProjectilesPath("Assets/Prefabs/Projectiles/Rock.prefab");
+                quickThrow.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
+                quickThrow.SetQuickTrhowPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
                 return quickThrow;
+            
+            case NodeType.QuickSlash:
+                ReactionNode_QuickThrow quickSlash = new ReactionNode_QuickThrow();
+                quickSlash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
+                quickSlash.SetQuickTrhowPrefabPath("Assets/Prefabs/QuckSlash.prefab");
+                return quickSlash;
         }
 
         return null;
@@ -35,10 +53,12 @@ public static class ActionCreator
     {
         switch (effect)
         {
-            case effectType.Move: 
-                
+            case effectType.NONE:
+                break;
+            case effectType.Move:
+
                 AE_Move move = new AE_Move();
-                
+
                 return move;
 
             case effectType.ShotProjectile:
@@ -46,6 +66,21 @@ public static class ActionCreator
                 AE_ShotProjectile projectile = new AE_ShotProjectile();
 
                 return projectile;
+            case effectType.SummonPbject:
+
+                AE_SummonObject summon = new AE_SummonObject();
+
+                return summon;
+            case effectType.CreateArea:
+
+                AE_CreateArea area = new AE_CreateArea();
+
+                return area;
+            case effectType.SwingMelee:
+
+                AE_SwingMelee melee = new AE_SwingMelee();
+
+                return melee;
         }
 
         return null;

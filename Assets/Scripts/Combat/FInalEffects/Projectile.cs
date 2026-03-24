@@ -175,7 +175,7 @@ public class Projectile : MonoBehaviour
                 {
                     if (isDamaging == true)
                     {
-                        hit.TakeDamage((int)controller.myDamageType, startingMana);
+                        hit.TakeDamage((int)controller.myDamageType + (int)baseDamage, startingMana);
                     }
                     else
                     {
@@ -200,10 +200,10 @@ public class Projectile : MonoBehaviour
             {
                 added.OnSummonObjectFound(summon, null, this, null, null);
             }
+
+            if (canPierce == true) return;
+
+            hasHit = true;
         }
-
-        if (canPierce == true) return;
-
-        hasHit = true;
     }
 }

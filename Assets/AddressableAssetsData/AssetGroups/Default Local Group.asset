@@ -51,6 +51,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c16553f517639d64e95c3ac27aa1e0dc
+    m_Address: Assets/Prefabs/QuckSlash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d2685f6faed6bf547ad61a78d212a021
     m_Address: Assets/Scenes/MainMenu.unity
     m_ReadOnly: 0

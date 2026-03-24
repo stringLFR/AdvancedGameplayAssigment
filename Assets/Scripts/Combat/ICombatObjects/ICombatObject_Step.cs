@@ -32,7 +32,15 @@ public class ICombatObject_Step : ICombatObject
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void CombatUpdate()
     {
-        LerpAlongPath();
+        if (CombatListener.travelers.TryGetValue(Caster,out DroneUnitBody body) == true)
+        {
+            LerpAlongPath();
+        }
+        else
+        {
+            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_FINISHED) TriggerDelegate();
+            isActive = false;
+        }
     }
 
     public void TriggerDelegate()
@@ -43,6 +51,8 @@ public class ICombatObject_Step : ICombatObject
     {
         if (pointIndex >= points)
         {
+            CombatListener.travelers.Remove(Caster);
+            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_FINISHED) TriggerDelegate();
             isActive = false;
             return;
         }
@@ -54,6 +64,7 @@ public class ICombatObject_Step : ICombatObject
 
             if (pointIndex >= points)
             {
+                CombatListener.travelers.Remove(Caster);
                 if (myDelegateTriggerType == ICombatDelegateTriggers.ON_FINISHED) TriggerDelegate();
                 isActive = false;
                 return;
@@ -92,6 +103,8 @@ public class ICombatObject_Step : ICombatObject
         pointIndex = 0;
 
         if (myDelegateTriggerType == ICombatDelegateTriggers.ON_REACTIVATE) TriggerDelegate();
+
+        CombatListener.travelers.Add(Caster);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void Reactivate(float mana, DroneUnitBody otherCaster)

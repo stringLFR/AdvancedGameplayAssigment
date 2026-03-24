@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum effectType//This is used to chose what child class of ActionEffectBase to create!
 {
-    NONE, ShotProjectile, Move,
+    NONE, ShotProjectile, Move, SummonPbject, CreateArea, SwingMelee,
 }
 
 

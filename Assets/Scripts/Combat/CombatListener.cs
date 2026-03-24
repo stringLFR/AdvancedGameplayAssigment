@@ -25,6 +25,8 @@ public sealed class CombatListener
 
     public static MainActionBase currentMainAction = null;
 
+    public static HashSet<DroneUnitBody> travelers = new HashSet<DroneUnitBody>();
+
     private static Combat Combat = null;
 
     private static List<string> pastLines = new List<string>();

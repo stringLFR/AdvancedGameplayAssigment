@@ -3,10 +3,7 @@ using actions;
 using System;
 using UnityEngine.Events;
 
-public enum MainActionTypes//This is used to chose what child class of MainActionBase to create!
-{
-    NONE, RunToPoint,
-}
+
 
 [Serializable]
 public struct MainActionStats

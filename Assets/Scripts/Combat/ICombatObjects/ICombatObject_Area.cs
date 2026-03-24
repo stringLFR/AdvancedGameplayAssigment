@@ -128,17 +128,17 @@ public class ICombatObject_Area : ICombatObject, AreaController
 
     //AreaController interface stuff!
 
-    public void CheckProjectile(Projectile p)
+    public virtual void CheckProjectile(Projectile p)
     {
         throw new NotImplementedException();
     }
 
-    public void CheckMelee(Melee m)
+    public virtual void CheckMelee(Melee m)
     {
         throw new NotImplementedException();
     }
 
-    public void CheckSummon(SummonObject s)
+    public virtual void CheckSummon(SummonObject s)
     {
         throw new NotImplementedException();
     }

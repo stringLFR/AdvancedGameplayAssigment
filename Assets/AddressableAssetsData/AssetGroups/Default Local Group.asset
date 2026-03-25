@@ -45,6 +45,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b23700e213444d45a9ae01aedeaf948
+    m_Address: Assets/Prefabs/Areas/QuickSplash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9eaffa1d693d13945acb8fb1e8d40da9
     m_Address: Assets/Prefabs/Projectiles/Rock.prefab
     m_ReadOnly: 0

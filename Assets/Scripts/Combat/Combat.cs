@@ -17,7 +17,9 @@ public interface ICombatObject
 
     public void TriggerDelegate();
     public float myDamageType { get; set; }
-    public void MyRespondAction(ICombatObject obj, Vector3 targetPos, DroneUnitBody otherCaster = null, GameObject triggeredObject = null);
+    public float RespondActionMana { get; set; }
+    public DroneUnitBody RespondActionTarget { get; set; }
+    public void MyRespondAction(ICombatObject obj);
     public void CombatUpdate();
     public void OnSpawn(DroneUnitBody caster, ActionEffectBase origin, ICombatDelegateTriggers delegateTrigger);
     public void Reactivate(float mana);

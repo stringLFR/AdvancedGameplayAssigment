@@ -24,7 +24,7 @@ public class Area : MonoBehaviour
     private AddedEffectSO[] addedEffects;
 
     [SerializeField]
-    private float startingScale, maxScale, lifeTime, scaleSpeed;
+    private float startingScale, maxScale, lifeTime, scaleSpeed,damageRate;
 
     private HashSet<DroneUnitBody> overlapedTargets = new HashSet<DroneUnitBody>();
     private HashSet<Projectile> overlapedProjectiles = new HashSet<Projectile>();
@@ -34,6 +34,7 @@ public class Area : MonoBehaviour
     private float startingMana;
     private float progress;
     private float currentScale;
+    private float damagetime;
 
 
     [SerializeField]
@@ -78,63 +79,69 @@ public class Area : MonoBehaviour
         startingMana -= Time.deltaTime * manaDrainPerSec;
         progress += Time.deltaTime * progressSpeed;
         currentScale += scaleSpeed * Time.deltaTime;
-        transform.localScale = Vector3.one * Mathf.InverseLerp(startingScale, maxScale, EasingFunctionMaths.EaseInSine(currentScale));
+        damagetime += Time.deltaTime;
+        float modifier = Mathf.Clamp(currentScale,startingScale, maxScale);
+        transform.localScale = new Vector3(1 * modifier,1 * modifier, 1 * modifier); 
         transform.position = pos;
 
-        foreach (var target in overlapedTargets)
+        if (damagetime >= damageRate)
         {
-            bool affected = controller.FinalEffectReturnValue(target);
-
-            if (affected == true)
+            damagetime = 0;
+            foreach (var target in overlapedTargets)
             {
-                CombatListener.AddLineToCombatText($"Area Damages {target.DroneUnit.DroneName} with {(int)startingMana} mana left!");
+                bool affected = controller.FinalEffectReturnValue(target);
 
-                for (int i = 0; i < controller.Caster.MultiHits + 1; i++)
+                if (affected == true)
                 {
-                    if (isDamaging == true)
+                    CombatListener.AddLineToCombatText($"Area Damages {target.DroneUnit.DroneName} with {(int)startingMana} mana left!");
+
+                    for (int i = 0; i < controller.Caster.MultiHits + 1; i++)
                     {
-                        target.TakeDamage((int)controller.myDamageType + (int)baseDamage, startingMana);
+                        if (isDamaging == true)
+                        {
+                            target.TakeDamage((int)controller.myDamageType + (int)baseDamage, startingMana);
+                        }
+                        else
+                        {
+                            target.Heal((int)controller.myDamageType, startingMana);
+                        }
                     }
-                    else
+
+                    foreach (AddedEffectSO added in addedEffects)
                     {
-                        target.Heal((int)controller.myDamageType, startingMana);
+                        added.OnTargetFound(target, null, null, null, this);
                     }
                 }
+            }
+
+            foreach (var target in overlapedProjectiles)
+            {
+                areaController.CheckProjectile(target);
 
                 foreach (AddedEffectSO added in addedEffects)
                 {
-                    added.OnTargetFound(target, null, null, null, this);
+                    added.OnProjectileFound(target, null, null, null, this);
                 }
             }
-        }
 
-        foreach (var target in overlapedProjectiles)
-        {
-            areaController.CheckProjectile(target);
-
-            foreach (AddedEffectSO added in addedEffects)
+            foreach (var target in overlapedSlashes)
             {
-                added.OnProjectileFound(target, null, null, null, this);
+                areaController.CheckMelee(target);
+
+                foreach (AddedEffectSO added in addedEffects)
+                {
+                    added.OnMeleeFound(target, null, null, null, this);
+                }
             }
-        }
 
-        foreach (var target in overlapedSlashes)
-        {
-            areaController.CheckMelee(target);
-
-            foreach (AddedEffectSO added in addedEffects)
+            foreach (var target in overlapedSummons)
             {
-                added.OnMeleeFound(target, null, null, null, this);
-            }
-        }
+                areaController.CheckSummon(target);
 
-        foreach (var target in overlapedSummons)
-        {
-            areaController.CheckSummon(target);
-
-            foreach (AddedEffectSO added in addedEffects)
-            {
-                added.OnSummonObjectFound(target, null, null, null, this);
+                foreach (AddedEffectSO added in addedEffects)
+                {
+                    added.OnSummonObjectFound(target, null, null, null, this);
+                }
             }
         }
 

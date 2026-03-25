@@ -44,10 +44,19 @@ public class ICombatObject_Area : ICombatObject, AreaController
 
     public ActionEffectBase Origin => myOrigin;
 
+    public DroneUnitBody RespondActionTarget { get; set; }
+    public float RespondActionMana { get; set; }
+
     public event Action<ICombatObject> MyActionDelegate;
 
     public virtual void CombatUpdate()
     {
+        if (prefab == null)
+        {
+            isActive = false;
+            return;
+        }
+
         bool hasMana = prefab.SustainArea(target);
 
         if (hasMana == false)
@@ -72,10 +81,16 @@ public class ICombatObject_Area : ICombatObject, AreaController
     {
         if (triggeredDrone != Caster)
         {
-            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_DRONEHIT) TriggerDelegate();
+            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_DRONEHIT)
+            {
+                RespondActionTarget = triggeredDrone;
+                TriggerDelegate();
+            }
 
             return true;
         }
+        RespondActionTarget = null;
+
         return false;
     }
 
@@ -84,9 +99,9 @@ public class ICombatObject_Area : ICombatObject, AreaController
         throw new NotImplementedException();
     }
 
-    public void MyRespondAction(ICombatObject obj, Vector3 targetPos, DroneUnitBody otherCaster = null, GameObject triggeredObject = null)
+    public void MyRespondAction(ICombatObject obj)
     {
-        throw new NotImplementedException();
+        Reactivate(obj.RespondActionMana, obj.RespondActionTarget.transform.position);
     }
 
     public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin, ICombatDelegateTriggers delegateTrigger)

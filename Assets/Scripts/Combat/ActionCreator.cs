@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum NodeType //This is used to chose what child class of ActionNodeBase to create!
 {
-    NONE, RockThrow, QuickSlash,
+    NONE, RockThrow, QuickSlash,QuickSplash,
 }
 
 public enum MainActionTypes//This is used to chose what child class of MainActionBase to create!
@@ -36,14 +36,19 @@ public static class ActionCreator
 
                 ReactionNode_QuickThrow quickThrow = new ReactionNode_QuickThrow();
                 quickThrow.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
-                quickThrow.SetQuickTrhowPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
+                quickThrow.SetQuickThrowPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
                 return quickThrow;
-            
+
             case NodeType.QuickSlash:
                 ReactionNode_QuickThrow quickSlash = new ReactionNode_QuickThrow();
                 quickSlash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
-                quickSlash.SetQuickTrhowPrefabPath("Assets/Prefabs/QuckSlash.prefab");
+                quickSlash.SetQuickThrowPrefabPath("Assets/Prefabs/QuckSlash.prefab");
                 return quickSlash;
+            case NodeType.QuickSplash:
+                ReactionNode_QuickThrow quickSplash = new ReactionNode_QuickThrow();
+                quickSplash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
+                quickSplash.SetQuickThrowPrefabPath("Assets/Prefabs/Areas/QuickSplash.prefab");
+                return quickSplash;
         }
 
         return null;
@@ -81,6 +86,26 @@ public static class ActionCreator
                 AE_SwingMelee melee = new AE_SwingMelee();
 
                 return melee;
+            case effectType.KnockBackCombo:
+
+                AE_KnockBackCombo knockBackCombo = new AE_KnockBackCombo();
+
+                return knockBackCombo;
+            case effectType.PercingCombo:
+
+                AE_PercingCombo aE_PercingCombo = new AE_PercingCombo();
+
+                return aE_PercingCombo;
+            case effectType.StunningCombo:
+
+                AE_StunningCombo aE_StunningCombo = new AE_StunningCombo();
+
+                return aE_StunningCombo;
+            case effectType.HackingCombo:
+
+                AE_HackingCombo aE_HackingCombo = new AE_HackingCombo();
+
+                return aE_HackingCombo;
         }
 
         return null;

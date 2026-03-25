@@ -44,10 +44,19 @@ public class ICombatObject_SummonObject : ICombatObject
 
     public ActionEffectBase Origin => myOrigin;
 
+    public DroneUnitBody RespondActionTarget { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public float RespondActionMana { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
     public event Action<ICombatObject> MyActionDelegate;
 
     public virtual void CombatUpdate()
     {
+        if (prefab == null)
+        {
+            isActive = false;
+            return;
+        }
+
         bool hasMana = prefab.SustainSummon(target);
 
         if (hasMana == false)
@@ -72,10 +81,16 @@ public class ICombatObject_SummonObject : ICombatObject
     {
         if (triggeredDrone != Caster)
         {
-            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_DRONEHIT) TriggerDelegate();
+            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_DRONEHIT)
+            {
+                RespondActionTarget = triggeredDrone;
+                TriggerDelegate();
+            }
 
             return true;
         }
+        RespondActionTarget = null;
+
         return false;
     }
 
@@ -123,5 +138,10 @@ public class ICombatObject_SummonObject : ICombatObject
     public void TriggerDelegate()
     {
         MyActionDelegate?.Invoke(this);
+    }
+
+    public void MyRespondAction(ICombatObject obj)
+    {
+        Reactivate(obj.RespondActionMana, obj.RespondActionTarget.transform.position);
     }
 }

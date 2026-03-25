@@ -9,7 +9,7 @@ public class AE_SummonObject : ActionEffectBase
 
     protected AsyncOperationHandle<GameObject> SummonPrefab;
 
-    public virtual void SetAssetPath(string path)
+    public override void SetAssetPath(string path)
     {
         SummonPrefab = Addressables.LoadAssetAsync<GameObject>(path);
         SummonPrefab.WaitForCompletion();
@@ -21,7 +21,7 @@ public class AE_SummonObject : ActionEffectBase
 
         if (s != null)
         {
-            s.OnSpawn(caster, this, ICombatDelegateTriggers.NONE);
+            //s.OnSpawn(caster, this, ICombatDelegateTriggers.NONE);
 
             s.Reactivate(mana, targetPos);
 
@@ -77,6 +77,11 @@ public class AE_SummonObject : ActionEffectBase
     }
 
     public override void TriggerActionEffect(float mana, DroneUnitBody caster, GameObject[] targetObjs)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void DelegateHandler(ICombatObject Iobj)
     {
         throw new System.NotImplementedException();
     }

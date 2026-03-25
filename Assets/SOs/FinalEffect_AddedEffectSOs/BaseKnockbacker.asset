@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 877ebd5c524280a44a04f0990d5d2431, type: 3}
   m_Name: BaseKnockbacker
-  m_EditorClassIdentifier: Assembly-CSharp::knockbacker
-  addModifier: 1
+  m_EditorClassIdentifier: Assembly-CSharp::Knockbacker
+  addModifier: 45.86
   reduceModifier: 1
   isReverse: 0
   addOriginDir: 0

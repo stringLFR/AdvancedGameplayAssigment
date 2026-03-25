@@ -55,4 +55,14 @@ public class AE_Move : ActionEffectBase
 
         Combat.actionEffectObjects.Add(step);
     }
+
+    public override void SetAssetPath(string path)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void DelegateHandler(ICombatObject Iobj)
+    {
+        throw new System.NotImplementedException();
+    }
 }

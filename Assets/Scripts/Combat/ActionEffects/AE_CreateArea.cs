@@ -10,7 +10,7 @@ public class AE_CreateArea : ActionEffectBase
 
     protected AsyncOperationHandle<GameObject> AreaPrefab;
 
-    public virtual void SetAssetPath(string path)
+    public override void SetAssetPath(string path)
     {
         AreaPrefab = Addressables.LoadAssetAsync<GameObject>(path);
         AreaPrefab.WaitForCompletion();
@@ -22,7 +22,7 @@ public class AE_CreateArea : ActionEffectBase
 
         if (a != null)
         {
-            a.OnSpawn(caster, this, ICombatDelegateTriggers.NONE);
+            //a.OnSpawn(caster, this, ICombatDelegateTriggers.NONE);
 
             a.Reactivate(mana, targetPos);
 
@@ -78,6 +78,11 @@ public class AE_CreateArea : ActionEffectBase
     }
 
     public override void TriggerActionEffect(float mana, DroneUnitBody caster, GameObject[] targetObjs)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void DelegateHandler(ICombatObject Iobj)
     {
         throw new System.NotImplementedException();
     }

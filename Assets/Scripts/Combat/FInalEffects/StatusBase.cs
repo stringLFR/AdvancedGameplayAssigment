@@ -35,6 +35,9 @@ public abstract class StatusBase
         if (targetHost.AppliedStatusDict.TryAdd(dictoKey(), this) == false)
         {
             didNotAttach = true;
+
+            CombatListener.AddLineToCombatText($"Status is already applied!");
+
             return;
         }
 
@@ -134,9 +137,9 @@ public class Status_Knockback : StatusBase
 
     private const float Speed = 5f;
 
-    private const float friction = 0.99f;
+    private const float friction = 100f;
 
-    private const float addModifier = 2f;
+    private const float addModifier = 10f;
 
     private const float damageModifier = 1f;
 
@@ -150,6 +153,7 @@ public class Status_Knockback : StatusBase
     protected override void SetupStatus()
     {
         manaDrainPerSec = 0.5f;
+        AddAdditionalKnockBackSpeed((Host.transform.position - controller.Caster.transform.position).normalized);
     }
 
     public void AddAdditionalKnockBackSpeed(Vector3 addedDir)

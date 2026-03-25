@@ -16,9 +16,9 @@ MonoBehaviour:
     NodeName: Rock Throw
     NodeInfo: Throws mana infuced rock at closes target
     MinScore: 50
-    ManaCost: 1
+    ManaCost: 4
     IsRoot: 1
-    Effect: 5
-    Node: 2
+    Effect: 6
+    Node: 3
     ActionType: 1
     Reactions: 0400000001000000

@@ -26,7 +26,11 @@ public class ICombatObject_Debuff : ICombatObject
     protected ICombatDelegateTriggers myDelegateTriggerType = ICombatDelegateTriggers.NONE;
 
     public ICombatDelegateTriggers MyDelegateTriggerType => myDelegateTriggerType;
-    protected virtual void SetupDebuff(DebuffsEnum targetDebuff)
+
+    public DroneUnitBody RespondActionTarget { get; set; }
+    public float RespondActionMana { get; set; }
+
+    public virtual void SetupDebuff(DebuffsEnum targetDebuff)
     {
         switch (targetDebuff)
         {
@@ -95,9 +99,9 @@ public class ICombatObject_Debuff : ICombatObject
         throw new NotImplementedException();
     }
 
-    public void MyRespondAction(ICombatObject obj, Vector3 targetPos, DroneUnitBody otherCaster = null, GameObject triggeredObject = null)
+    public void MyRespondAction(ICombatObject obj)
     {
-        throw new NotImplementedException();
+        Reactivate(obj.RespondActionMana, obj.RespondActionTarget);
     }
 
     public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin, ICombatDelegateTriggers delegateTrigger)

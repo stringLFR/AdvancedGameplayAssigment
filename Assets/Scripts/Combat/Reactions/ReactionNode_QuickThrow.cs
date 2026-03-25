@@ -5,24 +5,14 @@ using System.Runtime.CompilerServices;
 
 public class ReactionNode_QuickThrow : ActionNodeBase
 {
-    public void SetQuickTrhowPrefabPath(String PrefabPath)
+    public void SetQuickThrowPrefabPath(String PrefabPath)
     {
-        quickTrhowPrefabPath = PrefabPath;
+        quickThrowPrefabPath = PrefabPath;
 
-        if (effect is AE_ShotProjectile)
-        {
-            AE_ShotProjectile s = effect as AE_ShotProjectile;
-            s.SetAssetPath(quickTrhowPrefabPath);
-        }
-
-        if (effect is AE_SwingMelee)
-        {
-            AE_SwingMelee m = effect as AE_SwingMelee;
-            m.SetAssetPath(quickTrhowPrefabPath);
-        }
+        effect.SetAssetPath(quickThrowPrefabPath);
     }
 
-    private string quickTrhowPrefabPath;
+    private string quickThrowPrefabPath;
 
     public override ActionType GetActionType => actionType;
 
@@ -41,6 +31,9 @@ public class ReactionNode_QuickThrow : ActionNodeBase
     public override ActionEffectBase Output => effect;
 
     private bool hasTriggered = false;
+
+    private DroneUnitBody target;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override ActionEffectBase GetADSOutput()
     {
@@ -55,11 +48,16 @@ public class ReactionNode_QuickThrow : ActionNodeBase
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override float GetInputScore(CombatListener input)
     {
-        float score = caster.MyHP <= 0 ? 0f : UnityEngine.Random.Range(minimumInputActivationScore / 2, minimumInputActivationScore + minimumInputActivationScore / 2);
 
-        if (caster.MyHP <= 0) score = -1;
-        
-        return score;
+        //Need to tweak this a little to determine effective trigger range!
+
+        float rangedBasedOnScore = caster.MyHP <= 0 ? 0f : minimumInputActivationScore;
+
+        target = CombatListener.GetClosesTarget(caster.IsEnemy, caster.transform.position);
+
+        if (Vector3.Distance(target.transform.position, caster.transform.position) > rangedBasedOnScore) rangedBasedOnScore = -1;
+
+        return rangedBasedOnScore;
         
     }
 
@@ -71,8 +69,6 @@ public class ReactionNode_QuickThrow : ActionNodeBase
 
             if (holder == effect)
             {
-                DroneUnitBody target = CombatListener.GetClosesTarget(caster.IsEnemy, caster.transform.position);
-
                 if (target == null) return;
 
                 caster.ManaSpent(manaCost);

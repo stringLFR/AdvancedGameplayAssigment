@@ -27,7 +27,10 @@ public class ICombatObject_Buff : ICombatObject
 
     public ICombatDelegateTriggers MyDelegateTriggerType => myDelegateTriggerType;
 
-    protected virtual void SetupBuff(BuffsEnum targetBuff)
+    public DroneUnitBody RespondActionTarget { get; set; }
+    public float RespondActionMana { get; set; }
+
+    public virtual void SetupBuff(BuffsEnum targetBuff)
     {
         switch (targetBuff)
         {
@@ -99,9 +102,9 @@ public class ICombatObject_Buff : ICombatObject
         throw new NotImplementedException();
     }
 
-    public void MyRespondAction(ICombatObject obj, Vector3 targetPos, DroneUnitBody otherCaster = null, GameObject triggeredObject = null)
+    public void MyRespondAction(ICombatObject obj)
     {
-        throw new NotImplementedException();
+        Reactivate(obj.RespondActionMana, obj.RespondActionTarget);
     }
 
     public virtual void OnSpawn(DroneUnitBody caster, ActionEffectBase origin, ICombatDelegateTriggers delegateTrigger)

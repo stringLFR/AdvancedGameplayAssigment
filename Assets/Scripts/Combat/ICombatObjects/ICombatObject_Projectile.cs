@@ -53,9 +53,18 @@ public class ICombatObject_Projectile : ICombatObject
         set { } 
     }
 
+    public DroneUnitBody RespondActionTarget { get; set; }
+    public float RespondActionMana { get; set; }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void CombatUpdate()
     {
+        if (prefab == null)
+        {
+            isActive = false;
+            return;
+        }
+
         bool hasMana = prefab.moveProjectile();
 
         if (hasMana == false)
@@ -114,10 +123,16 @@ public class ICombatObject_Projectile : ICombatObject
     {
         if (triggeredDrone != Caster)
         {
-            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_DRONEHIT) TriggerDelegate();
+            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_DRONEHIT)
+            {
+                RespondActionTarget = triggeredDrone;
+                TriggerDelegate();
+            }
 
             return true;
         }
+        RespondActionTarget = null;
+
         return false;
     }
 
@@ -126,9 +141,9 @@ public class ICombatObject_Projectile : ICombatObject
         throw new System.NotImplementedException();
     }
 
-    public void MyRespondAction(ICombatObject obj, Vector3 targetPos, DroneUnitBody otherCaster = null, GameObject triggeredObject = null)
+    public void MyRespondAction(ICombatObject obj)
     {
-        throw new System.NotImplementedException();
+        Reactivate(obj.RespondActionMana, obj.RespondActionTarget.transform.position);
     }
 
     

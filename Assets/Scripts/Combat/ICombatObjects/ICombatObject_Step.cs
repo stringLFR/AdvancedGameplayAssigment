@@ -29,6 +29,9 @@ public class ICombatObject_Step : ICombatObject
 
     public ICombatDelegateTriggers MyDelegateTriggerType => myDelegateTriggerType;
 
+    public DroneUnitBody RespondActionTarget { get; set; }
+    public float RespondActionMana { get; set; }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public virtual void CombatUpdate()
     {
@@ -142,9 +145,9 @@ public class ICombatObject_Step : ICombatObject
         throw new System.NotImplementedException();
     }
 
-    public void MyRespondAction(ICombatObject obj, Vector3 targetPos, DroneUnitBody otherCaster = null, GameObject triggeredObject = null)
+    public void MyRespondAction(ICombatObject obj)
     {
-        throw new NotImplementedException();
+        Reactivate(obj.RespondActionMana, obj.RespondActionTarget.transform.position);
     }
 
 }

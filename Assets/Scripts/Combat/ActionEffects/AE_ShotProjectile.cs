@@ -13,7 +13,7 @@ public class AE_ShotProjectile : ActionEffectBase
 
     protected AsyncOperationHandle<GameObject> projectilePrefab;
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
-    public virtual void SetAssetPath(string path)
+    public override void SetAssetPath(string path)
     {
         projectilePrefab = Addressables.LoadAssetAsync<GameObject>(path);
         projectilePrefab.WaitForCompletion();
@@ -26,7 +26,7 @@ public class AE_ShotProjectile : ActionEffectBase
 
         if (p != null)
         {
-            p.OnSpawn(caster, this,ICombatDelegateTriggers.NONE);
+            //p.OnSpawn(caster, this,ICombatDelegateTriggers.NONE);
 
             p.Reactivate(mana, targetPos);
 
@@ -84,5 +84,10 @@ public class AE_ShotProjectile : ActionEffectBase
     public override void TriggerActionEffect(float mana, DroneUnitBody caster, GameObject[] targetObjs)
     {
         throw new System.NotImplementedException();
+    }
+
+    public override void DelegateHandler(ICombatObject Iobj)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -19,6 +19,6 @@ MonoBehaviour:
     ManaCost: 4
     IsRoot: 1
     Effect: 6
-    Node: 3
+    Node: 2
     ActionType: 1
     Reactions: 0400000001000000

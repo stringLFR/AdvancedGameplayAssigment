@@ -44,7 +44,7 @@ public class AE_SelfDebuff : ActionEffectBase
 
     public override void TriggerActionEffect(float mana, DroneUnitBody caster, Vector3 targetPos)
     {
-        throw new System.NotImplementedException();
+        SetUpDebuff(caster, mana);
     }
 
     public override void TriggerActionEffect(float mana, DroneUnitBody caster, Vector3[] targetPositions)

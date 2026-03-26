@@ -51,6 +51,9 @@ public class ICombatObject_Status : ICombatObject
             case StatusEnum.Hacked:
                 satusEffect = new Status_Hacked();
                 break;
+            case StatusEnum.Manaburn:
+                satusEffect = new Status_ManaBurn();
+                break;
         }
 
         satusEffect.InitStatus(this);

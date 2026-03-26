@@ -4,7 +4,9 @@ using UnityEngine;
 
 public enum effectType//This is used to chose what child class of ActionEffectBase to create!
 {
-    NONE, ShotProjectile, Move, SummonPbject, CreateArea, SwingMelee, KnockBackCombo, PercingCombo, StunningCombo, HackingCombo,
+    NONE, ShotProjectile, Move, SummonPbject, CreateArea, SwingMelee, KnockBackCombo, PercingCombo, StunningCombo, HackingCombo, ManaburnCombo, ArmorBreakCombo, 
+    ManaSusceptibilityCombo, CriticalVulnerabilityCombo, StatusVulnerabilityCombo, CriticalExploitCombo, IneptitiudeCombo, DrainCombo, ProwessCombo, ReapingCombo, 
+    DefenciveCombo, AnitVulnerabilityCombo, NegationCombo,
 }
 
 

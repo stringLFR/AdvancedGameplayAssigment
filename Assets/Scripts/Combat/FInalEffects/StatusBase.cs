@@ -88,7 +88,7 @@ public abstract class StatusBase
 
 public enum StatusEnum
 {
-    None,Stunned,Kncokback,Leaking,Negation,Hacked,
+    None,Stunned,Kncokback,Leaking,Negation,Hacked,Manaburn,
 }
 
 //Stuns, Do not need mana to sustain!

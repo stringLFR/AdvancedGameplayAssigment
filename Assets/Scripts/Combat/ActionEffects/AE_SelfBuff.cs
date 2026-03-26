@@ -47,7 +47,7 @@ public class AE_SelfBuff : ActionEffectBase
 
     public override void TriggerActionEffect(float mana, DroneUnitBody caster, Vector3 targetPos)
     {
-        throw new System.NotImplementedException();
+        SetUpBuff(caster, mana);
     }
 
     public override void TriggerActionEffect(float mana, DroneUnitBody caster, Vector3[] targetPositions)

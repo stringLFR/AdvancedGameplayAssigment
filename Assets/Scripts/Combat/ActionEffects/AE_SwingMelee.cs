@@ -99,6 +99,8 @@ public class AE_KnockBackCombo : AE_SwingMelee
 
     public override void DelegateHandler(ICombatObject Iobj)
     {
+        if (Iobj.RespondActionTarget.AppliedStatusDict.TryGetValue(Status_Knockback.KnockbackKey, out StatusBase status) == true) return;
+
         ICombatObject_Status m = knockBacks.Find(p => p.IsActive == false);
 
         if (m != null)
@@ -162,6 +164,8 @@ public class AE_PercingCombo : AE_SwingMelee
 
     public override void DelegateHandler(ICombatObject Iobj)
     {
+        if (Iobj.RespondActionTarget.AppliedStatusDict.TryGetValue(Status_Leaking.LeakingKey, out StatusBase status) == true) return;
+
         ICombatObject_Status m = Leakings.Find(p => p.IsActive == false);
 
         if (m != null)
@@ -225,6 +229,8 @@ public class AE_StunningCombo : AE_SwingMelee
 
     public override void DelegateHandler(ICombatObject Iobj)
     {
+        if (Iobj.RespondActionTarget.AppliedStatusDict.TryGetValue(Status_Stunned.StunnedKey, out StatusBase status) == true) return;
+
         ICombatObject_Status m = Stunned.Find(p => p.IsActive == false);
 
         if (m != null)
@@ -288,6 +294,8 @@ public class AE_HackingCombo : AE_SwingMelee
 
     public override void DelegateHandler(ICombatObject Iobj)
     {
+        if (Iobj.RespondActionTarget.AppliedStatusDict.TryGetValue(Status_Hacked.HackedKey, out StatusBase status) == true) return;
+
         ICombatObject_Status m = Hacked.Find(p => p.IsActive == false);
 
         if (m != null)
@@ -351,6 +359,8 @@ public class AE_ManaburnCombo : AE_SwingMelee
 
     public override void DelegateHandler(ICombatObject Iobj)
     {
+        if (Iobj.RespondActionTarget.AppliedStatusDict.TryGetValue(Status_ManaBurn.ManaBurnKey, out StatusBase status) == true) return;
+
         ICombatObject_Status m = burning.Find(p => p.IsActive == false);
 
         if (m != null)

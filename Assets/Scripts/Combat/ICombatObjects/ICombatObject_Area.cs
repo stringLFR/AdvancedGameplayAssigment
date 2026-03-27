@@ -79,19 +79,13 @@ public class ICombatObject_Area : ICombatObject, AreaController
 
     public virtual bool FinalEffectReturnValue(DroneUnitBody triggeredDrone)
     {
-        if (triggeredDrone != Caster)
+        if (myDelegateTriggerType == ICombatDelegateTriggers.ON_DRONEHIT)
         {
-            if (myDelegateTriggerType == ICombatDelegateTriggers.ON_DRONEHIT)
-            {
-                RespondActionTarget = triggeredDrone;
-                TriggerDelegate();
-            }
-
-            return true;
+            RespondActionTarget = triggeredDrone;
+            TriggerDelegate();
         }
-        RespondActionTarget = null;
 
-        return false;
+        return true;
     }
 
     public bool FinalEffectReturnValue(GameObject triggeredObject)

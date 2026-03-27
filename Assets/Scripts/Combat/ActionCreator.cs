@@ -8,7 +8,7 @@ public enum NodeType //This is used to chose what child class of ActionNodeBase 
 
 public enum MainActionTypes//This is used to chose what child class of MainActionBase to create!
 {
-    NONE, RunToPoint,
+    NONE, TargetPoint,
 }
 
 public static class ActionCreator
@@ -17,7 +17,7 @@ public static class ActionCreator
     {
         switch (stats.mainActionType)
         {
-            case MainActionTypes.RunToPoint:
+            case MainActionTypes.TargetPoint:
 
                 MainAction_RunToPoint runToPoint = new MainAction_RunToPoint(CreateActionEffect(stats.Effect),stats.MainActionName + " " + userName, stats.MainActionDescription ,stats.manaCost, stats.actionType, stats.Effect);
 
@@ -171,6 +171,85 @@ public static class ActionCreator
                 AE_NegationCombo aE_NegationCombo = new AE_NegationCombo();
 
                 return aE_NegationCombo;
+            case effectType.KnockBackZone:
+
+                AE_KnockBackZone aE_KnockBackZone = new AE_KnockBackZone();
+
+                return aE_KnockBackZone;
+            case effectType.ShrapnelZone:
+                break;
+            case effectType.HackingZone:
+                break;
+            case effectType.ManaBurnZone:
+                break;
+            case effectType.NegationZone:
+                break;
+            case effectType.StunningZone:
+                break;
+            case effectType.ArmorDownZone:
+                break;
+            case effectType.ManaShieldDownZone:
+                break;
+            case effectType.CritInflictZone:
+                break;
+            case effectType.StatusInflictZone:
+                break;
+            case effectType.MartialDownZone:
+                break;
+            case effectType.MagicalDownZone:
+                break;
+            case effectType.ManaDownZone:
+                break;
+            case effectType.DecayZone:
+                break;
+            case effectType.MartialUpZone:
+                break;
+            case effectType.MagicalUpZone:
+                break;
+            case effectType.ArmorUpZone:
+                break;
+            case effectType.ManaShieldUpZone:
+                break;
+            case effectType.CriticalProtectionZone:
+                break;
+            case effectType.StatusProtectionZone:
+                break;
+            case effectType.ManaUpZone:
+                break;
+            case effectType.HealthUpZone:
+                break;
+            case effectType.KnockBackShoot:
+                break;
+            case effectType.PiercingShoot:
+                break;
+            case effectType.HackShoot:
+                break;
+            case effectType.ManaBurnShoot:
+                break;
+            case effectType.ArmorBreakShoot:
+                break;
+            case effectType.ManaSusceptibilityShoot:
+                break;
+            case effectType.CriticalVulnerabilityShoot:
+                break;
+            case effectType.StatusVulnerabilityShoot:
+                break;
+            case effectType.CriticalExploitShoot:
+                break;
+            case effectType.IneptitiudeShoot:
+                break;
+            case effectType.DrainShoot:
+                break;
+            case effectType.ProwessShoot:
+                break;
+            case effectType.ReapingShoot:
+                break;
+            case effectType.DefenciveShoot:
+                break;
+            case effectType.AnitVulnerabilityShoot:
+                break;
+            case effectType.NegationShoot:
+                break;
         }
 
         return null;

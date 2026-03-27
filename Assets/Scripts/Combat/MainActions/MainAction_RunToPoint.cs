@@ -58,24 +58,21 @@ public class MainAction_RunToPoint : MainActionBase
 
             if (Input.GetMouseButtonDown(0))
             {
-                if (effect is AE_Move)
+                d.ManaSpent(manaCost);
+
+                if (d.MyMana < 0)
                 {
-                    d.ManaSpent(manaCost);
-
-                    if (d.MyMana < 0)
-                    {
-                        CombatListener.AddLineToCombatText($"{d.DroneUnit.DroneName} Ran out of mana!");
-                        break;
-                    }
-
-                    effect.TriggerActionEffect(manaCost, d, MousePoint.instance.transform.position);
-
-                    CombatListener.AddLineToCombatText(d.DroneUnit.DroneName + " Used MainAction_RunToPoint!");
-
-                    ActivateADS(this);
-
+                    CombatListener.AddLineToCombatText($"{d.DroneUnit.DroneName} Ran out of mana!");
                     break;
                 }
+
+                effect.TriggerActionEffect(manaCost, d, MousePoint.instance.transform.position);
+
+                CombatListener.AddLineToCombatText(d.DroneUnit.DroneName + $" Used MainAction {mainActionName}!");
+
+                ActivateADS(this);
+
+                break;
             }
 
 

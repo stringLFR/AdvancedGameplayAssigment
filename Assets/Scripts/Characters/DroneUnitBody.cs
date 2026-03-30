@@ -41,6 +41,35 @@ public sealed class DroneUnitBody : MonoBehaviour
     public int HealthRegeneration = 0; //Regain value based amount of HP on turn start!
     public int StatusProtection = 0; //Makes status damages taken less, based on value!
 
+    public int GetTargetBuffValue(BuffsEnum target)
+    {
+        switch (target)
+        {
+            case BuffsEnum.Overdrive:
+                return Overdrive;
+            case BuffsEnum.MartialProwess:
+                return MartialProwess;
+            case BuffsEnum.MagicalProwess:
+                return MagicalProwess;
+            case BuffsEnum.ArmorPolish:
+                return ArmorPolish;
+            case BuffsEnum.ManaReinforcement:
+                return ManaReinforcement;
+            case BuffsEnum.CriticalProtection:
+                return CriticalProtection;
+            case BuffsEnum.Multihit:
+                return MultiHits;
+            case BuffsEnum.ManaRegeneration:
+                return ManaRegeneration;
+            case BuffsEnum.HealthRegeneration:
+                return HealthRegeneration;
+            case BuffsEnum.StatusProtection:
+                return StatusProtection;
+        }
+
+        return 0;
+    }
+
     #endregion
 
     #region Debuffs
@@ -54,6 +83,54 @@ public sealed class DroneUnitBody : MonoBehaviour
     public int StatusVulnerability = 0; //Makes status damages taken worse. extra damage based on value!
     public int HealthDrain = 0; //lose value based amount of HP on turn start!
     public int ManaDrain = 0; //Removes mana on turn start!
+
+    public int GetTargetDebuffValue(DebuffsEnum target)
+    {
+        switch (target)
+        {
+            case DebuffsEnum.ArmorBreak:
+                return ArmorBreak;
+            case DebuffsEnum.ManaSusceptibility:
+                return ManaSusceptibility;
+            case DebuffsEnum.MartialIneptitiude:
+                return MartialIneptitiude;
+            case DebuffsEnum.MagicalIneptitiude:
+                return MagicalIneptitiude;
+            case DebuffsEnum.CriticalVulnerability:
+                return CriticalVulnerability;
+            case DebuffsEnum.CriticalExploit:
+                return CriticalExploit;
+            case DebuffsEnum.StatusVulnerability:
+                return StatusVulnerability;
+            case DebuffsEnum.HealthDrain:
+                return HealthDrain;
+            case DebuffsEnum.ManaDrain:
+                return ManaDrain;
+        }
+
+        return 0;
+    }
+
+    public bool GetTargetStatus(StatusEnum target)
+    {
+        switch (target)
+        {
+            case StatusEnum.Stunned:
+                return AppliedStatusDict.TryGetValue(Status_Stunned.StunnedKey, out StatusBase Stunned);
+            case StatusEnum.Kncokback:
+                return AppliedStatusDict.TryGetValue(Status_Knockback.KnockbackKey, out StatusBase Kncokback);
+            case StatusEnum.Leaking:
+                return AppliedStatusDict.TryGetValue(Status_Leaking.LeakingKey, out StatusBase Leaking);
+            case StatusEnum.Negation:
+                return AppliedStatusDict.TryGetValue(Status_Negation.NegationKey, out StatusBase Negation);
+            case StatusEnum.Hacked:
+                return AppliedStatusDict.TryGetValue(Status_Hacked.HackedKey, out StatusBase Hacked);
+            case StatusEnum.Manaburn:
+                return AppliedStatusDict.TryGetValue(Status_ManaBurn.ManaBurnKey, out StatusBase Manaburn);
+        }
+
+        return false;
+    }
 
     #endregion
 

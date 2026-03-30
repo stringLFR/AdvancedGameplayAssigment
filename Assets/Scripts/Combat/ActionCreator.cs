@@ -3,12 +3,12 @@ using UnityEngine;
 
 public enum NodeType //This is used to chose what child class of ActionNodeBase to create!
 {
-    NONE, RockThrow, QuickSlash,QuickSplash,
+    NONE, QuickShoot, QuickSlash,QuickSplash,
 }
 
 public enum MainActionTypes//This is used to chose what child class of MainActionBase to create!
 {
-    NONE, TargetPoint,
+    NONE, RunToPoint,
 }
 
 public static class ActionCreator
@@ -17,11 +17,14 @@ public static class ActionCreator
     {
         switch (stats.mainActionType)
         {
-            case MainActionTypes.TargetPoint:
+            case MainActionTypes.NONE:
+                break;
+            case MainActionTypes.RunToPoint:
 
-                MainAction_RunToPoint runToPoint = new MainAction_RunToPoint(CreateActionEffect(stats.Effect),stats.MainActionName + " " + userName, stats.MainActionDescription ,stats.manaCost, stats.actionType, stats.Effect);
+                MainAction_TargetPoint runToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName, stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
 
                 return runToPoint;
+            
         }
         return null;
     }
@@ -32,21 +35,20 @@ public static class ActionCreator
         {
             case NodeType.NONE:
                 break;
-            case NodeType.RockThrow:
+            case NodeType.QuickShoot:
 
                 ReactionNode_QuickThrow quickThrow = new ReactionNode_QuickThrow();
-                quickThrow.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
+                quickThrow.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions,stats.IsTeamworkAction);
                 quickThrow.SetQuickThrowPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
                 return quickThrow;
-
             case NodeType.QuickSlash:
                 ReactionNode_QuickThrow quickSlash = new ReactionNode_QuickThrow();
-                quickSlash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
+                quickSlash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions, stats.IsTeamworkAction);
                 quickSlash.SetQuickThrowPrefabPath("Assets/Prefabs/QuckSlash.prefab");
                 return quickSlash;
             case NodeType.QuickSplash:
                 ReactionNode_QuickThrow quickSplash = new ReactionNode_QuickThrow();
-                quickSplash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions);
+                quickSplash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions, stats.IsTeamworkAction);
                 quickSplash.SetQuickThrowPrefabPath("Assets/Prefabs/Areas/QuickSplash.prefab");
                 return quickSplash;
         }

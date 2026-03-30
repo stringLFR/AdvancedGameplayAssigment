@@ -23,7 +23,7 @@ public class AE_SelfBuff : ActionEffectBase
         {
             //b.OnSpawn(caster, this, ICombatDelegateTriggers.NONE);
 
-            b.Reactivate(mana);
+            b.Reactivate(mana, caster);
 
             Combat.actionEffectObjects.Add(b);
 
@@ -35,7 +35,7 @@ public class AE_SelfBuff : ActionEffectBase
         buffs.Add(bNew);
 
         bNew.OnSpawn(caster, this, ICombatDelegateTriggers.NONE);
-        bNew.Reactivate(mana);
+        bNew.Reactivate(mana, caster);
 
         Combat.actionEffectObjects.Add(bNew);
     }

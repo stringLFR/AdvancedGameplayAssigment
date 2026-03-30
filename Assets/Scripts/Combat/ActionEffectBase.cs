@@ -25,6 +25,7 @@ public enum effectType//This is used to chose what child class of ActionEffectBa
 
 public abstract class ActionEffectBase
 {
+    public DroneUnitBody TeamWorkTarget { get; set; }
     public abstract void DelegateHandler(ICombatObject Iobj);
     public abstract void SetAssetPath(string path);
     public abstract void TriggerActionEffect(float mana,DroneUnitBody caster);

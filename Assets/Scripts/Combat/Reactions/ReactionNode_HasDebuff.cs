@@ -1,18 +1,22 @@
 using UnityEngine;
 using actions;
 using System;
-using System.Runtime.CompilerServices;
 
-public class ReactionNode_QuickThrow : ActionNodeBase
+public class ReactionNode_HasDebuff : ActionNodeBase
 {
-    public void SetQuickThrowPrefabPath(String PrefabPath)
+    public void SetHasDebuffPrefabPath(String PrefabPath)
     {
-        quickThrowPrefabPath = PrefabPath;
+        HasDebuffPrefabPath = PrefabPath;
 
-        effect.SetAssetPath(quickThrowPrefabPath);
+        effect.SetAssetPath(HasDebuffPrefabPath);
     }
 
-    private string quickThrowPrefabPath;
+    public void SetTargetDebuff(DebuffsEnum target)
+    {
+        targetDebuff = target;
+    }
+
+    private string HasDebuffPrefabPath;
 
     public override ActionType GetActionType => actionType;
 
@@ -30,11 +34,12 @@ public class ReactionNode_QuickThrow : ActionNodeBase
 
     public override ActionEffectBase Output => effect;
 
+    private DebuffsEnum targetDebuff;
+
     private bool hasTriggered = false;
 
     private DroneUnitBody target;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public override ActionEffectBase GetADSOutput()
     {
         if (hasTriggered == false && isTeamworkAction == false)
@@ -45,18 +50,14 @@ public class ReactionNode_QuickThrow : ActionNodeBase
 
         return null;
     }
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
+
     public override float GetInputScore(CombatListener input)
     {
-
-        float rangedBasedOnScore = caster.MyHP <= 0 ? 0f : minimumInputActivationScore + 1;
-
         target = CombatListener.GetClosesTarget(caster.IsEnemy, caster.transform.position);
 
-        if (Vector3.Distance(target.transform.position, caster.transform.position) > rangedBasedOnScore) rangedBasedOnScore = -1;
+        if (target.GetTargetDebuffValue(targetDebuff) > 0) return caster.MyHP <= 0 ? 0f : minimumInputActivationScore + 1;
 
-        return rangedBasedOnScore;
-        
+        return 0;
     }
 
     public override void HandleADSOutputChain(Func<ActionEffectBase> ancestralOutputChain, int maxChainIndex, int chainIndex)
@@ -102,7 +103,7 @@ public class ReactionNode_QuickThrow : ActionNodeBase
             }
         }
     }
-    [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
+
     public override void WhenPutOnADSStack(CombatListener input, ActionEffectBase output)
     {
         CombatListener.AddLineToCombatText($"{caster.DroneUnit.DroneName} will react with {nameKey}!");

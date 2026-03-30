@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: TestMove 3
   m_EditorClassIdentifier: Assembly-CSharp::MainActionSO
   mainActionStats:
-    MainActionName: Run to point
+    MainActionName: t
     MainActionDescription: Moves towards traversable point. No range limit
-    manaCost: 1
+    manaCost: 4
     Effect: 1
-    mainActionType: 2
+    mainActionType: 5
     actionType: 4

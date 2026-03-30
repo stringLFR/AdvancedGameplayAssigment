@@ -18,7 +18,9 @@ MonoBehaviour:
     MinScore: 50
     ManaCost: 4
     IsRoot: 1
-    Effect: 6
-    Node: 2
+    Effect: 45
+    Node: 1
     ActionType: 1
     Reactions: 0400000001000000
+    IsTeamworkAction: 0
+    TargetAlly: 0

@@ -51,7 +51,9 @@ public class ReactionNode_QuickThrow : ActionNodeBase
 
         float rangedBasedOnScore = caster.MyHP <= 0 ? 0f : minimumInputActivationScore + 1;
 
-        target = CombatListener.GetClosesTarget(caster.IsEnemy, caster.transform.position);
+        bool targetBool = targetAlly == false ? caster.IsEnemy : (caster.IsEnemy == false ? true : false);
+
+        target = CombatListener.GetClosesTarget(targetBool, caster.transform.position);
 
         if (Vector3.Distance(target.transform.position, caster.transform.position) > rangedBasedOnScore) rangedBasedOnScore = -1;
 

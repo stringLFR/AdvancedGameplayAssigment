@@ -51,7 +51,9 @@ public class ReactionNode_HasStatus : ActionNodeBase
 
     public override float GetInputScore(CombatListener input)
     {
-        target = CombatListener.GetClosesTarget(caster.IsEnemy, caster.transform.position);
+        bool targetBool = targetAlly == false ? caster.IsEnemy : (caster.IsEnemy == false ? true : false);
+
+        target = CombatListener.GetClosesTarget(targetBool, caster.transform.position);
 
         if (target.GetTargetStatus(targetStatus) == true) return caster.MyHP <= 0 ? 0f : minimumInputActivationScore + 1;
 

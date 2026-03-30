@@ -318,19 +318,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: playerMembers.droneUnits.Array.data[0].myMainActions.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: playerMembers.droneUnits.Array.data[1].myMainActions.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: playerMembers.droneUnits.Array.data[2].myMainActions.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: playerMembers.droneUnits.Array.data[3].myMainActions.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: playerMembers.droneUnits.Array.data[0].myReactionNodes.Array.size
@@ -353,21 +353,65 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: fa6448b35ff21b54aa063d74d1e53be3, type: 2}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: 'playerMembers.droneUnits.Array.data[0].myMainActions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a63a8832761aff5468a5c0c9d936f12d, type: 2}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: 'playerMembers.droneUnits.Array.data[0].myMainActions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 35444ee8835491845974b5e1b3f7459f, type: 2}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: 'playerMembers.droneUnits.Array.data[0].myMainActions.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: fe1ffc882d802c14e8c7a2e6b2aa8e70, type: 2}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: 'playerMembers.droneUnits.Array.data[1].myMainActions.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: fa6448b35ff21b54aa063d74d1e53be3, type: 2}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: 'playerMembers.droneUnits.Array.data[1].myMainActions.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: fa6448b35ff21b54aa063d74d1e53be3, type: 2}
+      objectReference: {fileID: 11400000, guid: a63a8832761aff5468a5c0c9d936f12d, type: 2}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: 'playerMembers.droneUnits.Array.data[1].myMainActions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 35444ee8835491845974b5e1b3f7459f, type: 2}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: 'playerMembers.droneUnits.Array.data[1].myMainActions.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: fe1ffc882d802c14e8c7a2e6b2aa8e70, type: 2}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: 'playerMembers.droneUnits.Array.data[2].myMainActions.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: fa6448b35ff21b54aa063d74d1e53be3, type: 2}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: 'playerMembers.droneUnits.Array.data[2].myMainActions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a63a8832761aff5468a5c0c9d936f12d, type: 2}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: 'playerMembers.droneUnits.Array.data[2].myMainActions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 35444ee8835491845974b5e1b3f7459f, type: 2}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: 'playerMembers.droneUnits.Array.data[2].myMainActions.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: fe1ffc882d802c14e8c7a2e6b2aa8e70, type: 2}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: 'playerMembers.droneUnits.Array.data[3].myMainActions.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: fa6448b35ff21b54aa063d74d1e53be3, type: 2}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: 'playerMembers.droneUnits.Array.data[3].myMainActions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a63a8832761aff5468a5c0c9d936f12d, type: 2}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: 'playerMembers.droneUnits.Array.data[3].myMainActions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 35444ee8835491845974b5e1b3f7459f, type: 2}
+    - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
+      propertyPath: 'playerMembers.droneUnits.Array.data[3].myMainActions.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: fe1ffc882d802c14e8c7a2e6b2aa8e70, type: 2}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: 'playerMembers.droneUnits.Array.data[0].myReactionNodes.Array.data[0]'
       value: 

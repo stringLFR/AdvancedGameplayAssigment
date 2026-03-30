@@ -3,12 +3,12 @@ using UnityEngine;
 
 public enum NodeType //This is used to chose what child class of ActionNodeBase to create!
 {
-    NONE, QuickShoot, QuickSlash,QuickSplash,
+    NONE, QuickShoot, QuickSlash,QuickSplash, 
 }
 
 public enum MainActionTypes//This is used to chose what child class of MainActionBase to create!
 {
-    NONE, RunToPoint,
+    NONE, RunToPoint, ShootToPoint, AreaToPoint, MeleeToPoint, ShootsToPoints, AreasToPoints, strikesToPoints, areaAtCaster, shootAtCaster,meleeAtCaster,
 }
 
 public static class ActionCreator
@@ -21,10 +21,76 @@ public static class ActionCreator
                 break;
             case MainActionTypes.RunToPoint:
 
-                MainAction_TargetPoint runToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName, stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                MainAction_TargetPoint runToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
 
                 return runToPoint;
-            
+            case MainActionTypes.ShootToPoint:
+
+                MainAction_TargetPoint shootToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                shootToPoint.SetTargetPointPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
+
+                return shootToPoint;
+            case MainActionTypes.AreaToPoint:
+
+                MainAction_TargetPoint areaToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                areaToPoint.SetTargetPointPrefabPath("Assets/Prefabs/Areas/QuickSplash.prefab");
+
+                return areaToPoint;
+            case MainActionTypes.MeleeToPoint:
+
+                MainAction_TargetPoint meleeToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                meleeToPoint.SetTargetPointPrefabPath("Assets/Prefabs/QuckSlash.prefab");
+
+                return meleeToPoint;
+            case MainActionTypes.strikesToPoints:
+
+                MainAction_TargetManyPoints meleeToPoints = new MainAction_TargetManyPoints(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                meleeToPoints.SetTargetManyPrefabPath("Assets/Prefabs/QuckSlash.prefab");
+                meleeToPoints.Init(10f);
+
+                return meleeToPoints;
+            case MainActionTypes.AreasToPoints:
+
+                MainAction_TargetManyPoints areaToPoints = new MainAction_TargetManyPoints(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                areaToPoints.SetTargetManyPrefabPath("Assets/Prefabs/Areas/QuickSplash.prefab");
+                areaToPoints.Init(10f);
+
+                break;
+            case MainActionTypes.ShootsToPoints:
+
+                MainAction_TargetManyPoints shootsToPoints = new MainAction_TargetManyPoints(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                shootsToPoints.SetTargetManyPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
+                shootsToPoints.Init(10f);
+
+                return shootsToPoints;
+            case MainActionTypes.areaAtCaster:
+
+                MainAction_TargetSelf areaAtSelf = new MainAction_TargetSelf(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                areaAtSelf.SetTargetSelfPrefabPath("Assets/Prefabs/Areas/QuickSplash.prefab");
+
+                return areaAtSelf;
+            case MainActionTypes.shootAtCaster:
+
+                MainAction_TargetSelf shootAtSelf = new MainAction_TargetSelf(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                shootAtSelf.SetTargetSelfPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
+
+                return shootAtSelf;
+            case MainActionTypes.meleeAtCaster:
+
+                MainAction_TargetSelf meleeAtSelf = new MainAction_TargetSelf(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                meleeAtSelf.SetTargetSelfPrefabPath("Assets/Prefabs/QuckSlash.prefab");
+
+                return meleeAtSelf;
         }
         return null;
     }
@@ -38,17 +104,20 @@ public static class ActionCreator
             case NodeType.QuickShoot:
 
                 ReactionNode_QuickThrow quickThrow = new ReactionNode_QuickThrow();
-                quickThrow.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions,stats.IsTeamworkAction);
+                quickThrow.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), 
+                    stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions,stats.IsTeamworkAction, stats.TargetAlly);
                 quickThrow.SetQuickThrowPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
                 return quickThrow;
             case NodeType.QuickSlash:
                 ReactionNode_QuickThrow quickSlash = new ReactionNode_QuickThrow();
-                quickSlash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions, stats.IsTeamworkAction);
+                quickSlash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), 
+                    stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions, stats.IsTeamworkAction, stats.TargetAlly);
                 quickSlash.SetQuickThrowPrefabPath("Assets/Prefabs/QuckSlash.prefab");
                 return quickSlash;
             case NodeType.QuickSplash:
                 ReactionNode_QuickThrow quickSplash = new ReactionNode_QuickThrow();
-                quickSplash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions, stats.IsTeamworkAction);
+                quickSplash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), 
+                    stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions, stats.IsTeamworkAction, stats.TargetAlly);
                 quickSplash.SetQuickThrowPrefabPath("Assets/Prefabs/Areas/QuickSplash.prefab");
                 return quickSplash;
         }
@@ -179,79 +248,190 @@ public static class ActionCreator
 
                 return aE_KnockBackZone;
             case effectType.ShrapnelZone:
-                break;
+
+                AE_ShrapnelZone aE_ShrapnelZone = new AE_ShrapnelZone();
+
+                return aE_ShrapnelZone;
             case effectType.HackingZone:
-                break;
+
+                AE_HackingZone aE_HackingZone = new AE_HackingZone();
+
+                return aE_HackingZone;
             case effectType.ManaBurnZone:
-                break;
+
+                AE_ManaBurnZone aE_ManaBurnZone = new AE_ManaBurnZone();
+
+                return aE_ManaBurnZone;
             case effectType.NegationZone:
-                break;
+
+                AE_NegationZone aE_NegationZone = new AE_NegationZone();
+
+                return aE_NegationZone;
             case effectType.StunningZone:
-                break;
+
+                AE_StunningZone aE_StunningZone = new AE_StunningZone();
+
+                return aE_StunningZone;
             case effectType.ArmorDownZone:
-                break;
+
+                AE_ArmorDownZone aE_ArmorDownZone = new AE_ArmorDownZone();
+
+                return aE_ArmorDownZone;
             case effectType.ManaShieldDownZone:
-                break;
+
+                AE_ManaShieldDownZone aE_ManaShieldDownZone = new AE_ManaShieldDownZone();
+
+                return aE_ManaShieldDownZone;
             case effectType.CritInflictZone:
-                break;
+
+                AE_CritInflictZone aE_CritInflictZone = new AE_CritInflictZone();
+
+                return aE_CritInflictZone;
             case effectType.StatusInflictZone:
-                break;
+
+                AE_StatusInflictZone aE_StatusInflictZones = new AE_StatusInflictZone();
+
+                return aE_StatusInflictZones;
             case effectType.MartialDownZone:
-                break;
+
+                AE_MartialDownZone aE_MartialDownZone = new AE_MartialDownZone();
+
+                return aE_MartialDownZone;
             case effectType.MagicalDownZone:
-                break;
+
+                AE_MagicalDownZone aE_MagicalDownZone = new AE_MagicalDownZone();
+
+                return aE_MagicalDownZone;
             case effectType.ManaDownZone:
-                break;
+
+                AE_ManaDownZone aE_ManaDownZone = new AE_ManaDownZone();
+
+                return aE_ManaDownZone;
             case effectType.DecayZone:
-                break;
+
+                AE_DecayZone aE_DecayZone = new AE_DecayZone(); 
+
+                return aE_DecayZone;
             case effectType.MartialUpZone:
-                break;
+
+                AE_MartialUpZone aE_MartialUpZone = new AE_MartialUpZone();
+
+                return aE_MartialUpZone;
             case effectType.MagicalUpZone:
-                break;
+
+                AE_MagicalUpZone aE_MagicalUpZone = new AE_MagicalUpZone();
+
+                return aE_MagicalUpZone;
             case effectType.ArmorUpZone:
-                break;
+
+                AE_ArmorUpZone aE_ArmorUpZone = new AE_ArmorUpZone();
+
+                return aE_ArmorUpZone;
             case effectType.ManaShieldUpZone:
-                break;
+
+                AE_ManaShieldUpZone aE_ManaShieldUpZone = new AE_ManaShieldUpZone();
+
+                return aE_ManaShieldUpZone;
             case effectType.CriticalProtectionZone:
-                break;
+
+                AE_CriticalProtectionZone aE_CriticalProtectionZone = new AE_CriticalProtectionZone();
+
+                return aE_CriticalProtectionZone;
             case effectType.StatusProtectionZone:
-                break;
+
+                AE_StatusProtectionZone aE_StatusProtectionZone = new AE_StatusProtectionZone();
+
+                return aE_StatusProtectionZone;
             case effectType.ManaUpZone:
-                break;
+
+                AE_ManaUpZone aE_ManaUpZone = new AE_ManaUpZone();
+
+                return aE_ManaUpZone;
             case effectType.HealthUpZone:
-                break;
+
+                AE_HealthUpZone aE_HealthUpZone = new AE_HealthUpZone();
+
+                return aE_HealthUpZone;
             case effectType.KnockBackShoot:
-                break;
+
+                AE_KnockBackShoot aE_KnockBackShoot = new AE_KnockBackShoot();
+
+                return aE_KnockBackShoot;
             case effectType.PiercingShoot:
-                break;
+
+                AE_PiercingShoot aE_PiercingShoot = new AE_PiercingShoot();
+
+                return aE_PiercingShoot;
             case effectType.HackShoot:
-                break;
+
+                AE_HackShoot aE_HackShoot = new AE_HackShoot();
+
+                return aE_HackShoot;
             case effectType.ManaBurnShoot:
-                break;
+
+                AE_ManaBurnShoot aE_ManaBurnShoot = new AE_ManaBurnShoot();
+
+                return aE_ManaBurnShoot;
             case effectType.ArmorBreakShoot:
-                break;
+
+                AE_ArmorBreakShoot aE_ArmorBreakShoot = new AE_ArmorBreakShoot();
+
+                return aE_ArmorBreakShoot;
             case effectType.ManaSusceptibilityShoot:
-                break;
+
+                AE_ManaSusceptibilityShoot aE_ManaSusceptibilityShoot = new AE_ManaSusceptibilityShoot();
+
+                return aE_ManaSusceptibilityShoot;
             case effectType.CriticalVulnerabilityShoot:
-                break;
+
+                AE_CriticalVulnerabilityShoot aE_CriticalVulnerabilityShoot = new AE_CriticalVulnerabilityShoot();
+
+                return aE_CriticalVulnerabilityShoot;
             case effectType.StatusVulnerabilityShoot:
-                break;
+
+                AE_StatusVulnerabilityShoot aE_StatusVulnerabilityShoot = new AE_StatusVulnerabilityShoot();
+
+                return aE_StatusVulnerabilityShoot;
             case effectType.CriticalExploitShoot:
-                break;
+
+                AE_CriticalExploitShoot aE_CriticalExploitShoot = new AE_CriticalExploitShoot();
+
+                return aE_CriticalExploitShoot;
             case effectType.IneptitiudeShoot:
-                break;
+
+                AE_IneptitiudeShoot aE_IneptitiudeShoot = new AE_IneptitiudeShoot();
+
+                return aE_IneptitiudeShoot;
             case effectType.DrainShoot:
-                break;
+
+                AE_DrainShoot aE_DrainShoot = new AE_DrainShoot();
+
+                return aE_DrainShoot;
             case effectType.ProwessShoot:
-                break;
+
+                AE_ProwessShoot aE_ProwessShoot = new AE_ProwessShoot();
+
+                return aE_ProwessShoot;
             case effectType.ReapingShoot:
-                break;
+
+                AE_ReapingShoot aE_ReapingShoot = new AE_ReapingShoot();
+
+                return aE_ReapingShoot;
             case effectType.DefenciveShoot:
-                break;
+
+                AE_DefenciveShoot aE_DefenciveShoot = new AE_DefenciveShoot();
+
+                return aE_DefenciveShoot;
             case effectType.AnitVulnerabilityShoot:
-                break;
+
+                AE_AnitVulnerabilityShoot aE_AnitVulnerabilityShoot = new AE_AnitVulnerabilityShoot();
+
+                return aE_AnitVulnerabilityShoot;
             case effectType.NegationShoot:
-                break;
+
+                AE_NegationShoot aE_NegationShoot = new AE_NegationShoot();
+
+                return aE_NegationShoot;
         }
 
         return null;

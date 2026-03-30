@@ -24,6 +24,7 @@ namespace actions
         public ActionType ActionType;
         public ActionType[] Reactions;
         public bool IsTeamworkAction;
+        public bool TargetAlly;
     }
 
     public abstract class ActionNodeBase : IADSNode<CombatListener, ActionEffectBase>
@@ -41,17 +42,20 @@ namespace actions
         protected int manaCost;
         protected int memoryCost;
         protected bool isTeamworkAction;
+        protected bool targetAlly;
 
 
         public virtual void Init(
-            string name, 
+            string name,
             string info,
-            bool isRoot, 
-            ActionEffectBase myEffect, 
+            bool isRoot,
+            ActionEffectBase myEffect,
             float minScore,
             int mana,
             ActionType action,
-            ActionType[] reaction,bool isTeamwork
+            ActionType[] reaction,
+            bool isTeamwork,
+            bool TargetAlly
             )
         {
             root = isRoot;
@@ -63,6 +67,7 @@ namespace actions
             actionType = action;
             reactions = reaction;
             isTeamworkAction = isTeamwork;
+            targetAlly = TargetAlly;
         }
         public virtual void SetupNode(DroneUnitBody myCaster, string[] parents)
         {

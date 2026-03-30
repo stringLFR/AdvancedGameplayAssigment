@@ -139,16 +139,16 @@ public class ICombatObject_Area : ICombatObject, AreaController
 
     public virtual void CheckProjectile(Projectile p)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     public virtual void CheckMelee(Melee m)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     public virtual void CheckSummon(SummonObject s)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 }

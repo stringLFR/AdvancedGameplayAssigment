@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour
     private float baseDamage = 1f, manaDrainPerSec = 1f;
     [SerializeField]
     Vector3 pa_Tangent, pb_Tangent, pa_Tangent_Rand, pb_Tangent_Rand;
-    [SerializeField, Range(0,1)]
+    [SerializeField, Range(0, 10)]
     private float progressSpeed = 1f;
     [SerializeField]
     private MeleeSynergy[] meleeSynergy;

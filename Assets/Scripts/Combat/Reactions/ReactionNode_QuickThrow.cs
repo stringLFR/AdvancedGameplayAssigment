@@ -49,7 +49,7 @@ public class ReactionNode_QuickThrow : ActionNodeBase
     public override float GetInputScore(CombatListener input)
     {
 
-        float rangedBasedOnScore = caster.MyHP <= 0 ? 0f : minimumInputActivationScore + 1;
+        float rangedBasedOnScore = caster.MyHP <= 0 ? 0f : minimumInputActivationScore + UnityEngine.Random.Range(minimumInputActivationScore/2, minimumInputActivationScore + minimumInputActivationScore/2);
 
         bool targetBool = targetAlly == false ? caster.IsEnemy : (caster.IsEnemy == false ? true : false);
 

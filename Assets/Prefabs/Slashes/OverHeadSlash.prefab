@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6920419750730960671
+--- !u!1 &1762780507130435981
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,49 +8,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3331235372024419242}
-  - component: {fileID: 7362240390453724941}
-  - component: {fileID: 2388021962909402335}
-  - component: {fileID: 1615773501974848479}
-  - component: {fileID: 5225513940650871245}
-  - component: {fileID: 5533314768712509418}
+  - component: {fileID: 8483186366945629355}
+  - component: {fileID: 2331941445768216468}
+  - component: {fileID: 8048866842958663342}
+  - component: {fileID: 9197096124947860621}
+  - component: {fileID: 8171793683178026610}
+  - component: {fileID: 7305633018469547328}
   m_Layer: 0
-  m_Name: QuckSlash
+  m_Name: OverHeadSlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3331235372024419242
+--- !u!4 &8483186366945629355
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6920419750730960671}
+  m_GameObject: {fileID: 1762780507130435981}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5257311, y: 0, z: 0, w: 0.85065085}
-  m_LocalPosition: {x: -1.0000026, y: 0.38333333, z: 1}
+  m_LocalRotation: {x: 1, y: -0, z: 0, w: 0}
+  m_LocalPosition: {x: -1.0000026, y: 3.2833335, z: 0}
   m_LocalScale: {x: 1, y: 0, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7362240390453724941
+--- !u!33 &2331941445768216468
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6920419750730960671}
+  m_GameObject: {fileID: 1762780507130435981}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &2388021962909402335
+--- !u!23 &8048866842958663342
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6920419750730960671}
+  m_GameObject: {fileID: 1762780507130435981}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -92,13 +92,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &1615773501974848479
+--- !u!136 &9197096124947860621
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6920419750730960671}
+  m_GameObject: {fileID: 1762780507130435981}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -115,13 +115,13 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5225513940650871245
+--- !u!114 &8171793683178026610
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6920419750730960671}
+  m_GameObject: {fileID: 1762780507130435981}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e508d9835a1223458cdcf7b0648722a, type: 3}
@@ -133,10 +133,10 @@ MonoBehaviour:
   isMagical: 0
   isDamaging: 1
   data:
-  - BezierStartOffset: {x: 0, y: 0.5, z: 1}
-    BezierEndOffset: {x: 1, y: 1.5, z: -1}
-    BezierStartTangent: {x: 2, y: 0, z: 0}
-    BezierEndOTanget: {x: -2, y: 0, z: -1}
+  - BezierStartOffset: {x: 0, y: 3.4, z: 0}
+    BezierEndOffset: {x: 0.68, y: 0, z: 0}
+    BezierStartTangent: {x: 1.23, y: 0.73, z: 0}
+    BezierEndOTanget: {x: -3, y: 0, z: 0}
     BezierStartRotate: {x: 0, y: 1, z: 0}
     BezierEndRotate: {x: 0, y: 1, z: 0}
     BezierStartTangentRotate: {x: 0, y: 0, z: 0}
@@ -147,20 +147,20 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
+        inSlope: 6.2443495
+        outSlope: 6.2443495
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.011387745
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
+        inSlope: -0.8316967
+        outSlope: -0.8316967
+        tangentMode: 0
         weightedMode: 0
-        inWeight: 0
+        inWeight: 0.029396236
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -178,22 +178,13 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.48914248
-        value: 1.7787365
-        inSlope: 1.8858285
-        outSlope: 1.8858285
+        time: 1
+        value: 2.0013275
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.3626787
-        outWeight: 0.25538474
-      - serializedVersion: 3
-        time: 1.004931
-        value: 1.4995985
-        inSlope: -2.2298996
-        outSlope: -2.2298996
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.293669
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -204,20 +195,20 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
+        inSlope: 0.015299941
+        outSlope: 0.015299941
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.30833372
       - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
+        time: 1.0121002
+        value: 2.0025635
+        inSlope: 0.0049781934
+        outSlope: 0.0049781934
+        tangentMode: 0
         weightedMode: 0
-        inWeight: 0
+        inWeight: 0.099088095
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -228,13 +219,13 @@ MonoBehaviour:
   progressSpeed: 1
   time: 0
   gizmosAccuracy: 0.05
---- !u!54 &5533314768712509418
+--- !u!54 &7305633018469547328
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6920419750730960671}
+  m_GameObject: {fileID: 1762780507130435981}
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0

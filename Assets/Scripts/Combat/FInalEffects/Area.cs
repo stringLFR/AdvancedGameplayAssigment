@@ -17,7 +17,7 @@ public class Area : MonoBehaviour
     [SerializeField]
     private float baseDamage = 1f, manaDrainPerSec = 1f;
 
-    [SerializeField, Range(0, 1)]
+    [SerializeField, Range(0, 10)]
     private float progressSpeed = 1f;
 
     [SerializeField]

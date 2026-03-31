@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: TestMove 3
   m_EditorClassIdentifier: Assembly-CSharp::MainActionSO
   mainActionStats:
-    MainActionName: t
+    MainActionName: shoot
     MainActionDescription: Moves towards traversable point. No range limit
     manaCost: 4
     Effect: 1
-    mainActionType: 5
+    mainActionType: 2
     actionType: 4
+    assetPath: Assets/Prefabs/Projectiles/Rock.prefab

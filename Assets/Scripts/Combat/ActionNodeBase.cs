@@ -25,6 +25,8 @@ namespace actions
         public ActionType[] Reactions;
         public bool IsTeamworkAction;
         public bool TargetAlly;
+        public string assetPath;
+        public int EnumTarget; //This is used for status/buff/debuff target reactions!
     }
 
     public abstract class ActionNodeBase : IADSNode<CombatListener, ActionEffectBase>

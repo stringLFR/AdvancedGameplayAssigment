@@ -3,12 +3,12 @@ using UnityEngine;
 
 public enum NodeType //This is used to chose what child class of ActionNodeBase to create!
 {
-    NONE, QuickShoot, QuickSlash,QuickSplash, 
+    NONE, QuickThrow, HasTatus, HasBuff, HasDebuff,
 }
 
 public enum MainActionTypes//This is used to chose what child class of MainActionBase to create!
 {
-    NONE, RunToPoint, ShootToPoint, AreaToPoint, MeleeToPoint, ShootsToPoints, AreasToPoints, strikesToPoints, areaAtCaster, shootAtCaster,meleeAtCaster,
+    NONE, noAssetToPoint, AssetToPoint, assetToManyPoints, assetOnSelf,
 }
 
 public static class ActionCreator
@@ -19,78 +19,34 @@ public static class ActionCreator
         {
             case MainActionTypes.NONE:
                 break;
-            case MainActionTypes.RunToPoint:
+            case MainActionTypes.noAssetToPoint:
 
                 MainAction_TargetPoint runToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
                     stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
 
                 return runToPoint;
-            case MainActionTypes.ShootToPoint:
+            case MainActionTypes.AssetToPoint:
 
-                MainAction_TargetPoint shootToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                MainAction_TargetPoint AssetToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
                     stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
-                shootToPoint.SetTargetPointPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
+                AssetToPoint.SetTargetPointPrefabPath(stats.assetPath);
 
-                return shootToPoint;
-            case MainActionTypes.AreaToPoint:
+                return AssetToPoint;
+            case MainActionTypes.assetToManyPoints:
 
-                MainAction_TargetPoint areaToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                MainAction_TargetManyPoints assetToManyPoints = new MainAction_TargetManyPoints(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
                     stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
-                areaToPoint.SetTargetPointPrefabPath("Assets/Prefabs/Areas/QuickSplash.prefab");
+                assetToManyPoints.SetTargetManyPrefabPath(stats.assetPath);
+                assetToManyPoints.Init(10f);
 
-                return areaToPoint;
-            case MainActionTypes.MeleeToPoint:
+                return assetToManyPoints;
+            case MainActionTypes.assetOnSelf:
 
-                MainAction_TargetPoint meleeToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
+                MainAction_TargetSelf assetOnSelf = new MainAction_TargetSelf(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
                     stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
-                meleeToPoint.SetTargetPointPrefabPath("Assets/Prefabs/QuckSlash.prefab");
+                assetOnSelf.SetTargetSelfPrefabPath(stats.assetPath);
 
-                return meleeToPoint;
-            case MainActionTypes.strikesToPoints:
-
-                MainAction_TargetManyPoints meleeToPoints = new MainAction_TargetManyPoints(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
-                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
-                meleeToPoints.SetTargetManyPrefabPath("Assets/Prefabs/QuckSlash.prefab");
-                meleeToPoints.Init(10f);
-
-                return meleeToPoints;
-            case MainActionTypes.AreasToPoints:
-
-                MainAction_TargetManyPoints areaToPoints = new MainAction_TargetManyPoints(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
-                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
-                areaToPoints.SetTargetManyPrefabPath("Assets/Prefabs/Areas/QuickSplash.prefab");
-                areaToPoints.Init(10f);
-
-                break;
-            case MainActionTypes.ShootsToPoints:
-
-                MainAction_TargetManyPoints shootsToPoints = new MainAction_TargetManyPoints(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
-                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
-                shootsToPoints.SetTargetManyPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
-                shootsToPoints.Init(10f);
-
-                return shootsToPoints;
-            case MainActionTypes.areaAtCaster:
-
-                MainAction_TargetSelf areaAtSelf = new MainAction_TargetSelf(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
-                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
-                areaAtSelf.SetTargetSelfPrefabPath("Assets/Prefabs/Areas/QuickSplash.prefab");
-
-                return areaAtSelf;
-            case MainActionTypes.shootAtCaster:
-
-                MainAction_TargetSelf shootAtSelf = new MainAction_TargetSelf(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
-                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
-                shootAtSelf.SetTargetSelfPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
-
-                return shootAtSelf;
-            case MainActionTypes.meleeAtCaster:
-
-                MainAction_TargetSelf meleeAtSelf = new MainAction_TargetSelf(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
-                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
-                meleeAtSelf.SetTargetSelfPrefabPath("Assets/Prefabs/QuckSlash.prefab");
-
-                return meleeAtSelf;
+                return assetOnSelf;
         }
         return null;
     }
@@ -101,25 +57,40 @@ public static class ActionCreator
         {
             case NodeType.NONE:
                 break;
-            case NodeType.QuickShoot:
+            case NodeType.QuickThrow:
 
                 ReactionNode_QuickThrow quickThrow = new ReactionNode_QuickThrow();
-                quickThrow.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), 
-                    stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions,stats.IsTeamworkAction, stats.TargetAlly);
-                quickThrow.SetQuickThrowPrefabPath("Assets/Prefabs/Projectiles/Rock.prefab");
+                quickThrow.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect),
+                    stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions, stats.IsTeamworkAction, stats.TargetAlly);
+                quickThrow.SetQuickThrowPrefabPath(stats.assetPath);
                 return quickThrow;
-            case NodeType.QuickSlash:
-                ReactionNode_QuickThrow quickSlash = new ReactionNode_QuickThrow();
-                quickSlash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), 
+            case NodeType.HasTatus:
+
+                ReactionNode_HasStatus HasTatus = new ReactionNode_HasStatus();
+                HasTatus.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect),
                     stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions, stats.IsTeamworkAction, stats.TargetAlly);
-                quickSlash.SetQuickThrowPrefabPath("Assets/Prefabs/QuckSlash.prefab");
-                return quickSlash;
-            case NodeType.QuickSplash:
-                ReactionNode_QuickThrow quickSplash = new ReactionNode_QuickThrow();
-                quickSplash.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect), 
+                HasTatus.SetHasStatusPrefabPath(stats.assetPath);
+                HasTatus.SetTargetStatus((StatusEnum)stats.EnumTarget);
+
+                break;
+            case NodeType.HasBuff:
+
+                ReactionNode_HasBuff HasBuff = new ReactionNode_HasBuff();
+                HasBuff.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect),
                     stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions, stats.IsTeamworkAction, stats.TargetAlly);
-                quickSplash.SetQuickThrowPrefabPath("Assets/Prefabs/Areas/QuickSplash.prefab");
-                return quickSplash;
+                HasBuff.SetHasBuffPrefabPath(stats.assetPath);
+                HasBuff.SetTargetBuff((BuffsEnum)stats.EnumTarget);
+
+                break;
+            case NodeType.HasDebuff:
+
+                ReactionNode_HasDebuff HasDebuff = new ReactionNode_HasDebuff();
+                HasDebuff.Init(stats.NodeName + " " + userName, stats.NodeInfo, stats.IsRoot, CreateActionEffect(stats.Effect),
+                    stats.MinScore, stats.ManaCost, stats.ActionType, stats.Reactions, stats.IsTeamworkAction, stats.TargetAlly);
+                HasDebuff.SetHasDebuffPrefabPath(stats.assetPath);
+                HasDebuff.SetTargetDebuff((DebuffsEnum)stats.EnumTarget);
+
+                break;
         }
 
         return null;

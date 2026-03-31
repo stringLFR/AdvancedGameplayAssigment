@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: TestMove 1
   m_EditorClassIdentifier: Assembly-CSharp::MainActionSO
   mainActionStats:
-    MainActionName: Run to point
+    MainActionName: area
     MainActionDescription: Moves towards traversable point. No range limit
     manaCost: 1
     Effect: 4
     mainActionType: 3
     actionType: 4
+    assetPath: Assets/Prefabs/Areas/QuickSplash.prefab

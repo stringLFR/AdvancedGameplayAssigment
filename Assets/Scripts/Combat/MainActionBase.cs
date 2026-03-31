@@ -14,6 +14,7 @@ public struct MainActionStats
     public effectType Effect;
     public MainActionTypes mainActionType;
     public ActionType actionType;
+    public string assetPath;
 }
 
 public abstract class MainActionBase

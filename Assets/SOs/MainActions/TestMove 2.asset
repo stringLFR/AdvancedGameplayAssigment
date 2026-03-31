@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: TestMove 2
   m_EditorClassIdentifier: Assembly-CSharp::MainActionSO
   mainActionStats:
-    MainActionName: Run to point
+    MainActionName: melee
     MainActionDescription: Moves towards traversable point. No range limit
     manaCost: 1
-    Effect: 5
-    mainActionType: 4
+    Effect: 6
+    mainActionType: 2
     actionType: 4
+    assetPath: Assets/Prefabs/QuckSlash.prefab

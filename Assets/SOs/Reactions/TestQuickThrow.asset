@@ -24,3 +24,5 @@ MonoBehaviour:
     Reactions: 0400000001000000
     IsTeamworkAction: 0
     TargetAlly: 0
+    assetPath: Assets/Prefabs/Projectiles/Rock.prefab
+    EnumTarget: 0

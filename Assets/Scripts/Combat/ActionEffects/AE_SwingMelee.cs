@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -9,6 +10,32 @@ public class AE_SwingMelee : ActionEffectBase
     protected List<ICombaatObject_Melee> slashes = new List<ICombaatObject_Melee>();
 
     protected AsyncOperationHandle<GameObject> meleePrefab;
+
+    protected const float warpSpeed = 5.0f;
+
+    protected const float warpMaxLerpValue = 0.75f;
+
+    protected IEnumerator WarpStep(Vector3 targetPos, DroneUnitBody caster)
+    {
+        float t = 0;
+
+        while (true)
+        {
+            t += Time.deltaTime * warpSpeed;
+
+            Vector3 lerpValue = Vector3.Lerp(caster.transform.position, targetPos,t);
+
+            caster.transform.position = lerpValue;
+
+            if (t >= warpMaxLerpValue)
+            {
+                break;
+            }
+            yield return null;
+        }
+
+        yield return null;
+    }
 
     public override void SetAssetPath(string path)
     {
@@ -54,9 +81,8 @@ public class AE_SwingMelee : ActionEffectBase
             CombatListener.travelers.Remove(body);
         }
 
-        caster.ProcedualCore.Agent.Move((targetPos - caster.transform.position).normalized);
-
         caster.ProcedualCore.ManualNavRotTarget = targetPos;
+        caster.StartCoroutine(WarpStep(targetPos,caster));
 
         SetUpMelee(caster, mana);
     }

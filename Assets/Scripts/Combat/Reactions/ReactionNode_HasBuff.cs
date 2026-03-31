@@ -57,7 +57,7 @@ public class ReactionNode_HasBuff : ActionNodeBase
 
         target = CombatListener.GetClosesTarget(targetBool, caster.transform.position);
 
-        if (target.GetTargetBuffValue(targetBuff) > 0) return caster.MyHP <= 0 ? 0f : minimumInputActivationScore + 1;
+        if (target.GetTargetBuffValue(targetBuff) > 0) return caster.MyHP <= 0 ? 0f : minimumInputActivationScore + UnityEngine.Random.Range(minimumInputActivationScore / 2, minimumInputActivationScore + minimumInputActivationScore / 2);
 
         return 0;
     }

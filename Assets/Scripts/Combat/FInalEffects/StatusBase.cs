@@ -133,13 +133,13 @@ public class Status_Knockback : StatusBase
 
     public Vector3 KnockbackDirection => kockbackDirection;
 
-    private const float minimumKnockBackSpeed = 5f;
+    private const float minimumKnockBackSpeed = 2.5f;
 
-    private const float Speed = 5f;
+    private const float Speed = 50f;
 
-    private const float friction = 100f;
+    private const float friction = 99f;
 
-    private const float addModifier = 10f;
+    private const float addModifier = 5f;
 
     private const float damageModifier = 1f;
 
@@ -173,7 +173,7 @@ public class Status_Knockback : StatusBase
             return false;
         }
 
-        Host.ProcedualCore.Agent.Move(kockbackDirection * Time.deltaTime * Speed);
+        Host.transform.position = Vector3.LerpUnclamped(Host.transform.position, Host.transform.position + kockbackDirection, Time.deltaTime * Speed);
 
         kockbackDirection *= Time.deltaTime * friction;
 

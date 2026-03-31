@@ -19,4 +19,4 @@ MonoBehaviour:
     Effect: 6
     mainActionType: 2
     actionType: 4
-    assetPath: Assets/Prefabs/QuckSlash.prefab
+    assetPath: Assets/Prefabs/Slashes/OverHeadSlash.prefab

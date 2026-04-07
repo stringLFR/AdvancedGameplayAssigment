@@ -19,3 +19,6 @@ MonoBehaviour:
     Effect: 2
     mainActionType: 1
     actionType: 4
+    reactionTypes: 
+    assetPath: 
+    AIDecisionType: 0

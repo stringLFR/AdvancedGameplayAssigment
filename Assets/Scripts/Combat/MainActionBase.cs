@@ -14,14 +14,19 @@ public struct MainActionStats
     public effectType Effect;
     public MainActionTypes mainActionType;
     public ActionType actionType;
+    public ActionType[] reactionTypes;
     public string assetPath;
+    public AIDecisionType AIDecisionType;
 }
 
 public abstract class MainActionBase
 {
     public abstract string MainActionName { get; }
     public abstract ActionType ActionType { get; }
+    public abstract ActionType[] ReactionTypes { get; }
     public abstract effectType EffectType { get; }
+
+    public abstract AIDecisionType AIDecisionType { get; }
     public abstract int ManaCost { get; }
 
     public abstract string MainActionInfo { get; }

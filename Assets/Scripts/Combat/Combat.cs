@@ -2,6 +2,7 @@ using ActionFlowStack;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
@@ -92,6 +93,7 @@ public sealed class Combat : MonoBehaviour
         turnOrder = new Queue<DroneUnitBody>();
         playerController = new PlayerController(this);
         aiController = new AIController(this);
+        aiController.InitAI();
 
         PlayerHud.SetActive(false);
 
@@ -126,6 +128,35 @@ public sealed class Combat : MonoBehaviour
 
         //Stack array! No HEap alloc!
         //Span<int> arr = stackalloc int[4];
+        SetupAIDecisions();
+    }
+
+    private void SetupAIDecisions()
+    {
+        foreach(DroneUnitBody enemy in enemyTeam)
+        {
+            foreach(MainActionBase action in enemy.MainActions)
+            {
+                MainActionBase[] nodes = enemy.MainActions.FindAll(c => c.ReactionTypes.Contains(action.ActionType) == true && c.MainActionName != action.MainActionName).ToArray();
+
+                string[] names = new string[nodes.Length];
+
+                for (int i = 0; i < nodes.Length; i++) names[i] = nodes[i].MainActionName;
+
+                AI_DecisionBase aiBase = null;
+
+                switch (action.AIDecisionType)
+                {
+                    case AIDecisionType.NONE:
+
+                        return; 
+                }
+
+                aiBase.InitAIDecision(action, enemy, aiController);
+                aiBase.AddParents(names);
+                aiController.MyADS.AddADSNode(aiBase);
+            }
+        }
     }
 
     public void GetNextTurnHolder()

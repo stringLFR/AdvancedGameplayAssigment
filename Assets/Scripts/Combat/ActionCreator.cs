@@ -22,20 +22,20 @@ public static class ActionCreator
             case MainActionTypes.noAssetToPoint:
 
                 MainAction_TargetPoint runToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
-                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.reactionTypes, stats.Effect, stats.AIDecisionType);
 
                 return runToPoint;
             case MainActionTypes.AssetToPoint:
 
                 MainAction_TargetPoint AssetToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
-                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.reactionTypes, stats.Effect, stats.AIDecisionType);
                 AssetToPoint.SetTargetPointPrefabPath(stats.assetPath);
 
                 return AssetToPoint;
             case MainActionTypes.assetToManyPoints:
 
                 MainAction_TargetManyPoints assetToManyPoints = new MainAction_TargetManyPoints(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
-                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.reactionTypes, stats.Effect, stats.AIDecisionType);
                 assetToManyPoints.SetTargetManyPrefabPath(stats.assetPath);
                 assetToManyPoints.Init(10f);
 
@@ -43,7 +43,7 @@ public static class ActionCreator
             case MainActionTypes.assetOnSelf:
 
                 MainAction_TargetSelf assetOnSelf = new MainAction_TargetSelf(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
-                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.Effect);
+                    stats.MainActionDescription, stats.manaCost, stats.actionType, stats.reactionTypes, stats.Effect, stats.AIDecisionType);
                 assetOnSelf.SetTargetSelfPrefabPath(stats.assetPath);
 
                 return assetOnSelf;

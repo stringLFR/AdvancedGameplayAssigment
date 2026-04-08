@@ -7,7 +7,7 @@ using System;
 
 public enum AIDecisionType //Only works with AIController!
 {
-    NONE,
+    NONE, Find_MostWounded, Find_MostHealthy, Find_MostBuffed, Find_MostDebuffed, Find_StatusInflicted,
 }
 
 public class AIController : ControllerBase, IADSCreator<CombatListener,MainActionBase>
@@ -30,6 +30,8 @@ public class AIController : ControllerBase, IADSCreator<CombatListener,MainActio
 
     public DroneUnitBody TurnHolder => turnHolder;
 
+    public AI_DecisionBase lastDecisionOnStack;
+
     public void InitAI()
     {
         AIADS = CreateADS(5, 50);
@@ -50,14 +52,19 @@ public class AIController : ControllerBase, IADSCreator<CombatListener,MainActio
     private IEnumerator CalculateAction(DroneUnitBody user)
     {
         overdrives = 0;
+        lastDecisionOnStack = null;
+        turnHolder = user;
         Debug.Log("corutine Start");
         yield return new WaitForSeconds(1);
 
-        //AIADS.CreateAncestryStack();
+        AIADS.CreateAncestryStack();
 
-        //AIADS.ActivateAncestryChain();
+        AIADS.ActivateAncestryChain();
+
+        yield return new WaitForSeconds(1);
 
         isdone = true;
+        turnHolder = null;
         Debug.Log("corutine end");
     }
 
@@ -99,6 +106,7 @@ public abstract class AI_DecisionBase : IADSNode<CombatListener, MainActionBase>
     protected AIController controller;
     protected string[] parents = null;
     protected float minScore;
+    protected Vector3 myTargetPos; 
 
     public string NameKey => nameKey;
 
@@ -111,6 +119,8 @@ public abstract class AI_DecisionBase : IADSNode<CombatListener, MainActionBase>
     public CombatListener Input => CombatListener.instance;
 
     public MainActionBase Output => myAction;
+
+    public Vector3 MyTargetPos => myTargetPos;
 
 
     public void InitAIDecision(MainActionBase mainAction, DroneUnitBody unit, AIController aIController)
@@ -138,12 +148,19 @@ public abstract class AI_DecisionBase : IADSNode<CombatListener, MainActionBase>
 
     public virtual float GetInputScore(CombatListener input)
     {
-        return GetInputValue(input);
+        float priorityScore = 0;
+        float baseInput = GetInputValue(input);
+
+        if (controller.lastDecisionOnStack != null && controller.lastDecisionOnStack.MyTargetPos == myTargetPos) priorityScore = 0.25f;
+
+        return ((baseInput + priorityScore) * 100) / Vector3.Distance(user.transform.position, myTargetPos);
     }
 
     public virtual void HandleADSOutputChain(Func<MainActionBase> ancestralOutputChain, int maxChainIndex, int chainIndex)
     {
         if (user.Overdrive < chainIndex) return;
+
+        controller.AITargetPos = myTargetPos;
 
         myAction.Activate(controller, user);
 
@@ -152,6 +169,212 @@ public abstract class AI_DecisionBase : IADSNode<CombatListener, MainActionBase>
 
     public virtual void WhenPutOnADSStack(CombatListener input, MainActionBase output)
     {
-        
+        controller.lastDecisionOnStack = this;
+    }
+}
+
+public class AI_Decision_Find_MostWounded : AI_DecisionBase
+{
+    protected override float GetInputValue(CombatListener input)
+    {
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray();
+
+        int mostWoundedIndex = -1;
+        int currentHP = int.MaxValue;
+        int index = -1;
+
+        foreach (var hp in targetTeam)
+        {
+            index++;
+            if (hp.MyHP >= currentHP)
+            {
+                continue;
+            }
+            currentHP = hp.MyHP;
+            mostWoundedIndex = index;
+        }
+
+        if (mostWoundedIndex < 0) return -1;
+
+        myTargetPos = targetTeam[mostWoundedIndex].transform.position;
+
+        return targetTeam[mostWoundedIndex].MyMaxHP - (targetTeam[mostWoundedIndex].MyHP / targetTeam[mostWoundedIndex].MyMaxHP);
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+
+public class AI_Decision_Find_MostHealthy : AI_DecisionBase
+{
+    protected override float GetInputValue(CombatListener input)
+    {
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray();
+
+        int mostHealthyIndex = -1;
+        int currentHP = int.MinValue;
+        int index = -1;
+
+        foreach (var hp in targetTeam)
+        {
+            index++;
+            if (hp.MyHP <= currentHP)
+            {
+                continue;
+            }
+            currentHP = hp.MyHP;
+            mostHealthyIndex = index;
+        }
+
+        if (mostHealthyIndex < 0) return -1;
+
+        myTargetPos = targetTeam[mostHealthyIndex].transform.position;
+
+        return (targetTeam[mostHealthyIndex].MyHP / targetTeam[mostHealthyIndex].MyMaxHP);
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+
+public class AI_Decision_Find_MostBuffed : AI_DecisionBase
+{
+    protected override float GetInputValue(CombatListener input)
+    {
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray();
+
+        int mostBuffedIndex = -1;
+        int currentBuffValue = int.MinValue;
+        int index = -1;
+
+        foreach (var hp in targetTeam)
+        {
+            index++;
+            if (hp.GetTargetBuffValue((BuffsEnum)myAction.EnumTarget) <= currentBuffValue)
+            {
+                continue;
+            }
+            currentBuffValue = hp.GetTargetBuffValue((BuffsEnum)myAction.EnumTarget);
+            mostBuffedIndex = index;
+        }
+
+        if (mostBuffedIndex < 0) return -1;
+
+        myTargetPos = targetTeam[mostBuffedIndex].transform.position;
+
+        return currentBuffValue / currentBuffValue + 1;
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+
+public class AI_Decision_Find_MostDebuffed : AI_DecisionBase
+{
+    protected override float GetInputValue(CombatListener input)
+    {
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray();
+
+        int mostDebuffedIndex = -1;
+        int currentDebuffValue = int.MinValue;
+        int index = -1;
+
+        foreach (var hp in targetTeam)
+        {
+            index++;
+            if (hp.GetTargetDebuffValue((DebuffsEnum)myAction.EnumTarget) <= currentDebuffValue)
+            {
+                continue;
+            }
+            currentDebuffValue = hp.GetTargetDebuffValue((DebuffsEnum)myAction.EnumTarget);
+            mostDebuffedIndex = index;
+        }
+
+        if (mostDebuffedIndex < 0) return -1;
+
+        myTargetPos = targetTeam[mostDebuffedIndex].transform.position;
+
+        return currentDebuffValue / currentDebuffValue + 1;
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+
+public class AI_Decision_Find_StatusInflicted : AI_DecisionBase
+{
+    protected override float GetInputValue(CombatListener input)
+    {
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray();
+
+        int mostStatusIndex = -1;
+        int index = -1;
+
+        foreach (var hp in targetTeam)
+        {
+            index++;
+            if (!hp.GetTargetStatus((StatusEnum)myAction.EnumTarget))
+            {
+                continue;
+            }
+            mostStatusIndex = index;
+        }
+
+        if (mostStatusIndex < 0) return -1;
+
+        myTargetPos = targetTeam[mostStatusIndex].transform.position;
+
+        float returnValue = 0f;
+
+        switch ((StatusEnum)myAction.EnumTarget)
+        {
+            case StatusEnum.None:
+                break;
+            case StatusEnum.Stunned:
+
+                returnValue = 0.7f;
+
+                break;
+            case StatusEnum.Kncokback:
+
+                returnValue = 0.8f;
+
+                break;
+            case StatusEnum.Leaking:
+
+                returnValue = 0.99f;
+
+                break;
+            case StatusEnum.Negation:
+
+                returnValue = 0.51f;
+
+                break;
+            case StatusEnum.Hacked:
+
+                returnValue = 0.9f;
+
+                break;
+            case StatusEnum.Manaburn:
+
+                returnValue = 0.6f;
+
+                break;
+        }
+
+        return returnValue;
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
     }
 }

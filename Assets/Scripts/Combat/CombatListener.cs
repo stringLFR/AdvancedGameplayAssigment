@@ -27,7 +27,7 @@ public sealed class CombatListener
 
     public static HashSet<DroneUnitBody> travelers = new HashSet<DroneUnitBody>();
 
-    private static Combat Combat = null;
+    public static Combat Combat = null;
 
     private static List<string> pastLines = new List<string>();
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!

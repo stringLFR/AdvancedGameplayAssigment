@@ -7,7 +7,12 @@ namespace actions
 {
     public enum ActionType
     {
-        P_MELEE, P_RANGED, M_MELEE, M_RANGED,MOVEMENT,
+        P_MELEE, P_MELEE_Debuff, P_MELEE_Buff, P_MELEE_Status, P_MELEE_Heal,
+        P_RANGED, P_RANGED_Debuff, P_RANGED_Buff, P_RANGED_Status, P_RANGED_Heal,
+        M_MELEE, M_MELEE_Debuff, M_MELEE_Buff, M_MELEE_Status, M_MELEE_Heal,
+        M_RANGED, M_RANGED_Debuff, M_RANGED_Buff, M_RANGED_Status, M_RANGED_Heal,
+        MOVEMENT, SummonObject, Knockbacker,
+        Self_Buff, Self_Debuff, Self_Status,
     }
     
 

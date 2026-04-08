@@ -14,6 +14,7 @@ public class MainAction_TargetPoint : MainActionBase
     private effectType effectType;
     private AIDecisionType aIDecisionType;
     private ActionEffectBase effect;
+    private int enumTarget;
 
 
     public void SetTargetPointPrefabPath(String PrefabPath)
@@ -39,7 +40,9 @@ public class MainAction_TargetPoint : MainActionBase
 
     public override AIDecisionType AIDecisionType => aIDecisionType;
 
-    public MainAction_TargetPoint(ActionEffectBase ae, string n, string i, int m, ActionType a, ActionType[] reacts, effectType e, AIDecisionType t)
+    public override int EnumTarget => enumTarget;
+
+    public MainAction_TargetPoint(ActionEffectBase ae, string n, string i, int m, ActionType a, ActionType[] reacts, effectType e, AIDecisionType t, int enumT)
     {
         effect = ae;
         mainActionName = n;
@@ -49,6 +52,7 @@ public class MainAction_TargetPoint : MainActionBase
         effectType = e;
         reactsTo = reacts;
         aIDecisionType = t;
+        enumTarget = enumT;
     }
 
     public override void Activate(ControllerBase controller, DroneUnitBody user)
@@ -132,6 +136,7 @@ public class MainAction_TargetManyPoints : MainActionBase
     private effectType effectType;
     private AIDecisionType aIDecisionType;
     private ActionEffectBase effect;
+    private int enumTarget;
 
 
     public void SetTargetManyPrefabPath(String PrefabPath)
@@ -164,7 +169,9 @@ public class MainAction_TargetManyPoints : MainActionBase
 
     public override AIDecisionType AIDecisionType => aIDecisionType;
 
-    public MainAction_TargetManyPoints(ActionEffectBase ae, string n, string i, int m, ActionType a, ActionType[] reacts, effectType e, AIDecisionType t)
+    public override int EnumTarget => enumTarget;
+
+    public MainAction_TargetManyPoints(ActionEffectBase ae, string n, string i, int m, ActionType a, ActionType[] reacts, effectType e, AIDecisionType t, int enumT)
     {
         effect = ae;
         mainActionName = n;
@@ -174,6 +181,7 @@ public class MainAction_TargetManyPoints : MainActionBase
         effectType = e;
         reactsTo = reacts;
         aIDecisionType = t;
+        enumTarget = enumT;
     }
 
     public override void Activate(ControllerBase controller, DroneUnitBody user)
@@ -268,6 +276,7 @@ public class MainAction_TargetSelf : MainActionBase
     private effectType effectType;
     private AIDecisionType aIDecisionType;
     private ActionEffectBase effect;
+    private int enumTarget;
 
 
     public void SetTargetSelfPrefabPath(String PrefabPath)
@@ -293,7 +302,9 @@ public class MainAction_TargetSelf : MainActionBase
 
     public override AIDecisionType AIDecisionType => aIDecisionType;
 
-    public MainAction_TargetSelf(ActionEffectBase ae, string n, string i, int m, ActionType a, ActionType[] reacts, effectType e, AIDecisionType t)
+    public override int EnumTarget => enumTarget;
+
+    public MainAction_TargetSelf(ActionEffectBase ae, string n, string i, int m, ActionType a, ActionType[] reacts, effectType e, AIDecisionType t, int enumT)
     {
         effect = ae;
         mainActionName = n;
@@ -303,6 +314,7 @@ public class MainAction_TargetSelf : MainActionBase
         effectType = e;
         reactsTo = reacts;
         aIDecisionType = t;
+        enumTarget = enumT;
     }
 
     public override void Activate(ControllerBase controller, DroneUnitBody user)

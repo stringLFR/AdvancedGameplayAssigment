@@ -24,7 +24,11 @@ MonoBehaviour:
       level: 13
       myReactionNodes:
       - {fileID: 11400000, guid: cdc55000094b66f44a5b14ccca9956bd, type: 2}
-      myMainActions: []
+      myMainActions:
+      - {fileID: 11400000, guid: fa6448b35ff21b54aa063d74d1e53be3, type: 2}
+      - {fileID: 11400000, guid: a63a8832761aff5468a5c0c9d936f12d, type: 2}
+      - {fileID: 11400000, guid: 35444ee8835491845974b5e1b3f7459f, type: 2}
+      - {fileID: 11400000, guid: fe1ffc882d802c14e8c7a2e6b2aa8e70, type: 2}
     - droneName: TestEnemy 2
       STR: 4
       DEX: 4
@@ -35,7 +39,11 @@ MonoBehaviour:
       level: 13
       myReactionNodes:
       - {fileID: 11400000, guid: cdc55000094b66f44a5b14ccca9956bd, type: 2}
-      myMainActions: []
+      myMainActions:
+      - {fileID: 11400000, guid: fa6448b35ff21b54aa063d74d1e53be3, type: 2}
+      - {fileID: 11400000, guid: a63a8832761aff5468a5c0c9d936f12d, type: 2}
+      - {fileID: 11400000, guid: 35444ee8835491845974b5e1b3f7459f, type: 2}
+      - {fileID: 11400000, guid: fe1ffc882d802c14e8c7a2e6b2aa8e70, type: 2}
     - droneName: TestEnemy 3
       STR: 4
       DEX: 4
@@ -46,7 +54,11 @@ MonoBehaviour:
       level: 13
       myReactionNodes:
       - {fileID: 11400000, guid: cdc55000094b66f44a5b14ccca9956bd, type: 2}
-      myMainActions: []
+      myMainActions:
+      - {fileID: 11400000, guid: fa6448b35ff21b54aa063d74d1e53be3, type: 2}
+      - {fileID: 11400000, guid: a63a8832761aff5468a5c0c9d936f12d, type: 2}
+      - {fileID: 11400000, guid: 35444ee8835491845974b5e1b3f7459f, type: 2}
+      - {fileID: 11400000, guid: fe1ffc882d802c14e8c7a2e6b2aa8e70, type: 2}
     - droneName: TestEnemy 4
       STR: 4
       DEX: 4
@@ -57,4 +69,8 @@ MonoBehaviour:
       level: 13
       myReactionNodes:
       - {fileID: 11400000, guid: cdc55000094b66f44a5b14ccca9956bd, type: 2}
-      myMainActions: []
+      myMainActions:
+      - {fileID: 11400000, guid: fa6448b35ff21b54aa063d74d1e53be3, type: 2}
+      - {fileID: 11400000, guid: a63a8832761aff5468a5c0c9d936f12d, type: 2}
+      - {fileID: 11400000, guid: 35444ee8835491845974b5e1b3f7459f, type: 2}
+      - {fileID: 11400000, guid: fe1ffc882d802c14e8c7a2e6b2aa8e70, type: 2}

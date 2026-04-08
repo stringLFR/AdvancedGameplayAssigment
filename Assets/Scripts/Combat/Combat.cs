@@ -149,7 +149,32 @@ public sealed class Combat : MonoBehaviour
                 {
                     case AIDecisionType.NONE:
 
-                        return; 
+                        return;
+                    case AIDecisionType.Find_MostWounded:
+
+                        aiBase = new AI_Decision_Find_MostWounded();
+
+                        break;
+                    case AIDecisionType.Find_MostHealthy:
+
+                        aiBase = new AI_Decision_Find_MostHealthy();
+
+                        break;
+                    case AIDecisionType.Find_MostBuffed:
+
+                        aiBase = new AI_Decision_Find_MostBuffed();
+
+                        break;
+                    case AIDecisionType.Find_MostDebuffed:
+
+                        aiBase = new AI_Decision_Find_MostDebuffed();
+
+                        break;
+                    case AIDecisionType.Find_StatusInflicted:
+
+                        aiBase = new AI_Decision_Find_StatusInflicted();
+
+                        break;
                 }
 
                 aiBase.InitAIDecision(action, enemy, aiController);
@@ -181,7 +206,6 @@ public sealed class Combat : MonoBehaviour
 
     public void Tick() //Update called from actionFlowStack!
     {
-        print("COMBAT");
         time += Time.deltaTime;
 
         if (time > 2)

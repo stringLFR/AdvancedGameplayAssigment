@@ -17,6 +17,7 @@ public struct MainActionStats
     public ActionType[] reactionTypes;
     public string assetPath;
     public AIDecisionType AIDecisionType;
+    public int AIDecisionEnumTarget;
 }
 
 public abstract class MainActionBase
@@ -24,6 +25,8 @@ public abstract class MainActionBase
     public abstract string MainActionName { get; }
     public abstract ActionType ActionType { get; }
     public abstract ActionType[] ReactionTypes { get; }
+
+    public abstract int EnumTarget {  get; }
     public abstract effectType EffectType { get; }
 
     public abstract AIDecisionType AIDecisionType { get; }

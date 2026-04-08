@@ -18,5 +18,8 @@ MonoBehaviour:
     manaCost: 1
     Effect: 6
     mainActionType: 2
-    actionType: 4
+    actionType: 0
+    reactionTypes: 0500000014000000
     assetPath: Assets/Prefabs/Slashes/OverHeadSlash.prefab
+    AIDecisionType: 2
+    AIDecisionEnumTarget: 0

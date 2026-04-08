@@ -18,7 +18,8 @@ MonoBehaviour:
     manaCost: 1
     Effect: 2
     mainActionType: 1
-    actionType: 4
-    reactionTypes: 
+    actionType: 20
+    reactionTypes: 0000000005000000
     assetPath: 
-    AIDecisionType: 0
+    AIDecisionType: 2
+    AIDecisionEnumTarget: 0

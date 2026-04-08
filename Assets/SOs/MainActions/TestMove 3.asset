@@ -18,5 +18,8 @@ MonoBehaviour:
     manaCost: 4
     Effect: 1
     mainActionType: 2
-    actionType: 4
+    actionType: 5
+    reactionTypes: 0000000014000000
     assetPath: Assets/Prefabs/Projectiles/Rock.prefab
+    AIDecisionType: 2
+    AIDecisionEnumTarget: 0

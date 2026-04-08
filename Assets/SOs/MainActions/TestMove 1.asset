@@ -18,5 +18,8 @@ MonoBehaviour:
     manaCost: 1
     Effect: 4
     mainActionType: 3
-    actionType: 4
+    actionType: 5
+    reactionTypes: 0000000014000000
     assetPath: Assets/Prefabs/Areas/QuickSplash.prefab
+    AIDecisionType: 2
+    AIDecisionEnumTarget: 0

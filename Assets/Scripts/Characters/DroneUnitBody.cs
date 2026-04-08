@@ -145,6 +145,7 @@ public sealed class DroneUnitBody : MonoBehaviour
 
 
     public int MyMaxHP => maxHP;
+    public int MyMaxMana => maxMana;
     public int MyHP => HP;
     public int MyMana => mana;
     public int MySanity => sanity;

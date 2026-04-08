@@ -55,13 +55,13 @@ public class AIController : ControllerBase, IADSCreator<CombatListener,MainActio
         lastDecisionOnStack = null;
         turnHolder = user;
         Debug.Log("corutine Start");
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
 
         AIADS.CreateAncestryStack();
 
         AIADS.ActivateAncestryChain();
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
 
         isdone = true;
         turnHolder = null;
@@ -148,12 +148,14 @@ public abstract class AI_DecisionBase : IADSNode<CombatListener, MainActionBase>
 
     public virtual float GetInputScore(CombatListener input)
     {
-        float priorityScore = 0;
+        float priorityInput = 0f;
         float baseInput = GetInputValue(input);
+        float manaInput = Mathf.Clamp((user.MyMana - myAction.ManaCost) / user.MyMaxMana,0, user.MyMaxMana);
+        float randomInput = UnityEngine.Random.Range(-0.10f, 0.10f);
 
-        if (controller.lastDecisionOnStack != null && controller.lastDecisionOnStack.MyTargetPos == myTargetPos) priorityScore = 0.25f;
+        if (controller.lastDecisionOnStack != null && controller.lastDecisionOnStack.MyTargetPos == myTargetPos) priorityInput = UnityEngine.Random.Range(0.10f, 0.20f);
 
-        return ((baseInput + priorityScore) * 100) / Vector3.Distance(user.transform.position, myTargetPos);
+        return ((baseInput * 100) / Vector3.Distance(user.transform.position, myTargetPos)) + randomInput + priorityInput + manaInput / 2;
     }
 
     public virtual void HandleADSOutputChain(Func<MainActionBase> ancestralOutputChain, int maxChainIndex, int chainIndex)

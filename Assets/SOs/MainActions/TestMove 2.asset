@@ -21,5 +21,10 @@ MonoBehaviour:
     actionType: 0
     reactionTypes: 0500000014000000
     assetPath: Assets/Prefabs/Slashes/OverHeadSlash.prefab
-    AIDecisionType: 2
+    AIDecisionType: 1
     AIDecisionEnumTarget: 0
+    AIBaseInputModifier: 1
+    AIDistanceInputModifier: 1
+    AIRandomInputModifier: 1
+    AIManaInoutModifier: 1
+    AIPriorityInputModifier: 1

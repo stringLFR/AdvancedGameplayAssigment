@@ -23,3 +23,8 @@ MonoBehaviour:
     assetPath: 
     AIDecisionType: 2
     AIDecisionEnumTarget: 0
+    AIBaseInputModifier: 1
+    AIDistanceInputModifier: 1
+    AIRandomInputModifier: 1
+    AIManaInoutModifier: 1
+    AIPriorityInputModifier: 1

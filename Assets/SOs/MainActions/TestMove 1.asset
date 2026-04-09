@@ -21,5 +21,10 @@ MonoBehaviour:
     actionType: 5
     reactionTypes: 0000000014000000
     assetPath: Assets/Prefabs/Areas/QuickSplash.prefab
-    AIDecisionType: 2
-    AIDecisionEnumTarget: 0
+    AIDecisionType: 5
+    AIDecisionEnumTarget: 1
+    AIBaseInputModifier: 1
+    AIDistanceInputModifier: 1
+    AIRandomInputModifier: 1
+    AIManaInoutModifier: 1
+    AIPriorityInputModifier: 1

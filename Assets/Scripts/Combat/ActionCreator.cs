@@ -24,12 +24,16 @@ public static class ActionCreator
                 MainAction_TargetPoint runToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
                     stats.MainActionDescription, stats.manaCost, stats.actionType, stats.reactionTypes, stats.Effect, stats.AIDecisionType, stats.AIDecisionEnumTarget);
 
+                runToPoint.SetAIDecisionModifiers(stats);
+
                 return runToPoint;
             case MainActionTypes.AssetToPoint:
 
                 MainAction_TargetPoint AssetToPoint = new MainAction_TargetPoint(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
                     stats.MainActionDescription, stats.manaCost, stats.actionType, stats.reactionTypes, stats.Effect, stats.AIDecisionType, stats.AIDecisionEnumTarget);
                 AssetToPoint.SetTargetPointPrefabPath(stats.assetPath);
+
+                AssetToPoint.SetAIDecisionModifiers(stats);
 
                 return AssetToPoint;
             case MainActionTypes.assetToManyPoints:
@@ -39,12 +43,16 @@ public static class ActionCreator
                 assetToManyPoints.SetTargetManyPrefabPath(stats.assetPath);
                 assetToManyPoints.Init(10f);
 
+                assetToManyPoints.SetAIDecisionModifiers(stats);
+
                 return assetToManyPoints;
             case MainActionTypes.assetOnSelf:
 
                 MainAction_TargetSelf assetOnSelf = new MainAction_TargetSelf(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
                     stats.MainActionDescription, stats.manaCost, stats.actionType, stats.reactionTypes, stats.Effect, stats.AIDecisionType, stats.AIDecisionEnumTarget);
                 assetOnSelf.SetTargetSelfPrefabPath(stats.assetPath);
+
+                assetOnSelf.SetAIDecisionModifiers(stats);
 
                 return assetOnSelf;
         }

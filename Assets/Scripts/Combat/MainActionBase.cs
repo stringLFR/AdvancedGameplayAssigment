@@ -18,6 +18,17 @@ public struct MainActionStats
     public string assetPath;
     public AIDecisionType AIDecisionType;
     public int AIDecisionEnumTarget;
+
+    [Range(0,2)]
+    public float AIBaseInputModifier;
+    [Range(0, 2)]
+    public float AIDistanceInputModifier;
+    [Range(0, 2)]
+    public float AIRandomInputModifier;
+    [Range(0, 2)]
+    public float AIManaInoutModifier;
+    [Range(0, 2)]
+    public float AIPriorityInputModifier;
 }
 
 public abstract class MainActionBase
@@ -34,7 +45,22 @@ public abstract class MainActionBase
 
     public abstract string MainActionInfo { get; }
 
+    public float AIBaseInputModifier;
+    public float AIDistanceInputModifier;
+    public float AIRandomInputModifier;
+    public float AIManaInputModifier;
+    public float AIPriorityInputModifier;
+
     public abstract void Activate(ControllerBase controller, DroneUnitBody user);
+
+    public void SetAIDecisionModifiers(MainActionStats stats)
+    {
+        AIBaseInputModifier = stats.AIBaseInputModifier;
+        AIDistanceInputModifier = stats.AIDistanceInputModifier;
+        AIRandomInputModifier = stats.AIRandomInputModifier;
+        AIManaInputModifier = stats.AIManaInoutModifier;
+        AIPriorityInputModifier = stats.AIPriorityInputModifier;
+    }
 
     protected void ActivateADS(MainActionBase trigger)
     {

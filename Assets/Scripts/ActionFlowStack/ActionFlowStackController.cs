@@ -431,6 +431,12 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
     {
         combatDone = true;
 
+        if (winningTeam == null) //Player lost!
+        {
+            ActionFlowStackController.Instance.SetCombatState(CombatState.LOST);
+            return;
+        }
+
         for (int i = 0; i < winningTeam.Count; i++)
         {
             if (winningTeam[i].MyHP <= 0)
@@ -448,13 +454,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             winningTeam[i].DroneUnit.afterCombatStats.HPdamageTakenPercentile = winningTeam[i].MyMaxHP - winningTeam[i].MyHP;
         }
 
-        if (winningTeam != null) //Player won!
-        {
-            ActionFlowStackController.Instance.SetCombatState(CombatState.WON);
-            return;
-        }
-
-        ActionFlowStackController.Instance.SetCombatState(CombatState.LOST);
+        ActionFlowStackController.Instance.SetCombatState(CombatState.WON);
     }
 
     public void OnBegin(bool bFirstTime) 

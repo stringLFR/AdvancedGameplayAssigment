@@ -135,7 +135,7 @@ public class Status_Knockback : StatusBase
 
     private const float minimumKnockBackSpeed = 2.5f;
 
-    private const float Speed = 25f;
+    private const float Speed = 12.5f;
 
     private const float friction = 99f;
 

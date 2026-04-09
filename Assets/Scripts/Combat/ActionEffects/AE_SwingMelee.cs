@@ -11,7 +11,7 @@ public class AE_SwingMelee : ActionEffectBase
 
     protected AsyncOperationHandle<GameObject> meleePrefab;
 
-    protected const float warpSpeed = 5.0f;
+    protected const float warpSpeed = 1.25f;
 
     protected const float warpMaxLerpValue = 0.75f;
 

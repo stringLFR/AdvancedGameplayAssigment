@@ -53,6 +53,13 @@ public sealed class Combat : MonoBehaviour
     [SerializeField]
     private int combatTextLineCountMax = 5;
 
+
+    [SerializeField]
+    private TextMeshProUGUI synergyText;
+
+    [SerializeField]
+    private GameObject synergyImage;
+
     public int CombatTextLineCountMax => combatTextLineCountMax;
 
     public TextMeshProUGUI CombatText => combatText;
@@ -94,6 +101,7 @@ public sealed class Combat : MonoBehaviour
         playerController = new PlayerController(this);
         aiController = new AIController(this);
         aiController.InitAI();
+        synergyImage.SetActive(false);
 
         PlayerHud.SetActive(false);
 
@@ -175,6 +183,21 @@ public sealed class Combat : MonoBehaviour
                         aiBase = new AI_Decision_Find_StatusInflicted();
 
                         break;
+                    case AIDecisionType.Find_LeastBuffed:
+
+                        aiBase = new AI_Decision_Find_LeastBuffed();
+
+                        break;
+                    case AIDecisionType.Find_LeastDebuffed:
+
+                        aiBase = new AI_Decision_Find_LeastDebuffed();
+
+                        break;
+                    case AIDecisionType.Find_Not_StatusInflicted:
+
+                        aiBase = new AI_Decision_Find_Not_StatusInflicted();
+
+                        break;
                 }
 
                 aiBase.InitAIDecision(action, enemy, aiController);
@@ -227,5 +250,72 @@ public sealed class Combat : MonoBehaviour
 
             actionEffectObjects[i].CombatUpdate();
         }
+    }
+
+    public void ActivateSynergyPanel(DroneUnitBody target)
+    {
+        synergyImage.SetActive(true);
+        synergyText.text += "<color=yellow>Active Status Effects:";
+
+        if(target.AppliedStatusDict.TryGetValue(Status_Stunned.StunnedKey, out StatusBase status) == true)
+        {
+            synergyText.text += "<br><color=yellow>Stunned";
+        }
+
+        if (target.AppliedStatusDict.TryGetValue(Status_Knockback.KnockbackKey, out StatusBase status1) == true)
+        {
+            synergyText.text += "<br><color=yellow>KnockBack";
+        }
+
+        if (target.AppliedStatusDict.TryGetValue(Status_Leaking.LeakingKey, out StatusBase status2) == true)
+        {
+            synergyText.text += "<br><color=yellow>Leaking";
+        }
+
+        if (target.AppliedStatusDict.TryGetValue(Status_Negation.NegationKey, out StatusBase status3) == true)
+        {
+            synergyText.text += "<br><color=yellow>Negation";
+        }
+
+        if (target.AppliedStatusDict.TryGetValue(Status_Hacked.HackedKey, out StatusBase status4) == true)
+        {
+            synergyText.text += "<br><color=yellow>Hacked";
+        }
+
+        if (target.AppliedStatusDict.TryGetValue(Status_ManaBurn.ManaBurnKey, out StatusBase status5) == true)
+        {
+            synergyText.text += "<br><color=yellow>ManaBurn";
+        }
+
+        synergyText.text += "<br>";
+        synergyText.text += "<br><color=green>Current Buff Values:";
+        synergyText.text += $"<br><color=green>Overdrive: <color=white>{target.Overdrive}";
+        synergyText.text += $"<br><color=green>MartialProwess: <color=white>{target.MartialProwess}";
+        synergyText.text += $"<br><color=green>MagicalProwess: <color=white>{target.MagicalProwess}";
+        synergyText.text += $"<br><color=green>ArmorPolish: <color=white>{target.ArmorPolish}";
+        synergyText.text += $"<br><color=green>ManaReinforcement: <color=white>{target.ManaReinforcement}";
+        synergyText.text += $"<br><color=green>CriticalProtection: <color=white>{target.CriticalProtection}";
+        synergyText.text += $"<br><color=green>MultiHits: <color=white>{target.MultiHits}";
+        synergyText.text += $"<br><color=green>ManaRegeneration: <color=white>{target.ManaRegeneration}";
+        synergyText.text += $"<br><color=green>HealthRegeneration: <color=white>{target.HealthRegeneration}";
+        synergyText.text += $"<br><color=green>StatusProtection: <color=white>{target.StatusProtection}";
+
+        synergyText.text += "<br>";
+        synergyText.text += "<br><color=red>Current Debuff Values:";
+        synergyText.text += $"<br><color=red>ArmorBreak: <color=white>{target.ArmorBreak}";
+        synergyText.text += $"<br><color=red>ManaSusceptibility: <color=white>{target.ManaSusceptibility}";
+        synergyText.text += $"<br><color=red>MartialIneptitiude: <color=white>{target.MartialIneptitiude}";
+        synergyText.text += $"<br><color=red>MagicalIneptitiude: <color=white>{target.MagicalIneptitiude}";
+        synergyText.text += $"<br><color=red>CriticalVulnerability: <color=white>{target.CriticalVulnerability}";
+        synergyText.text += $"<br><color=red>CriticalExploit: <color=white>{target.CriticalExploit}";
+        synergyText.text += $"<br><color=red>StatusVulnerability: <color=white>{target.StatusVulnerability}";
+        synergyText.text += $"<br><color=red>HealthDrain: <color=white>{target.HealthDrain}";
+        synergyText.text += $"<br><color=red>ManaDrain: <color=white>{target.ManaDrain}";
+    }
+
+    public void DeactivateSynergyPanel()
+    {
+        synergyImage.SetActive(false);
+        synergyText.text = string.Empty;
     }
 }

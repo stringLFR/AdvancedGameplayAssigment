@@ -368,6 +368,24 @@ MonoBehaviour:
   procedualCore: {fileID: 7462557800488158945}
   myUI: {fileID: 7649165524820287470}
   Overdrive: 0
+  MartialProwess: 0
+  MagicalProwess: 0
+  ArmorPolish: 0
+  ManaReinforcement: 0
+  CriticalProtection: 0
+  MultiHits: 0
+  ManaRegeneration: 0
+  HealthRegeneration: 0
+  StatusProtection: 0
+  ArmorBreak: 0
+  ManaSusceptibility: 0
+  MartialIneptitiude: 0
+  MagicalIneptitiude: 0
+  CriticalVulnerability: 0
+  CriticalExploit: 0
+  StatusVulnerability: 0
+  HealthDrain: 0
+  ManaDrain: 0
 --- !u!114 &7462557800488158945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2161,6 +2179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1fb19899c1581488499019f08d278b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DroneUIPanel
+  _unitBody: {fileID: 672325117890024527}
   healthValueText: {fileID: 3001023384368971526}
   manaValueText: {fileID: 4587961273065034447}
   sanityValueText: {fileID: 6648633551428470003}

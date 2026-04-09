@@ -29,6 +29,7 @@ public struct MainActionStats
     public float AIManaInoutModifier;
     [Range(0, 2)]
     public float AIPriorityInputModifier;
+    public bool targetAlly;
 }
 
 public abstract class MainActionBase
@@ -50,6 +51,7 @@ public abstract class MainActionBase
     public float AIRandomInputModifier;
     public float AIManaInputModifier;
     public float AIPriorityInputModifier;
+    public bool targetAlly;
 
     public abstract void Activate(ControllerBase controller, DroneUnitBody user);
 
@@ -60,6 +62,7 @@ public abstract class MainActionBase
         AIRandomInputModifier = stats.AIRandomInputModifier;
         AIManaInputModifier = stats.AIManaInoutModifier;
         AIPriorityInputModifier = stats.AIPriorityInputModifier;
+        targetAlly = stats.targetAlly;
     }
 
     protected void ActivateADS(MainActionBase trigger)

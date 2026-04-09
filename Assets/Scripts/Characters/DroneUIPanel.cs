@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class DroneUIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    [SerializeField]
     private DroneUnitBody _unitBody;
 
 
@@ -26,7 +27,6 @@ public class DroneUIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _unitBody = GetComponent<DroneUnitBody>();
         canvas.worldCamera = Camera.main;
 
 
@@ -106,10 +106,18 @@ public class DroneUIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerEnter(PointerEventData eventData)
     {
         hoverPanel.SetActive(true);
+
+        if (CombatListener.Combat == null) return;
+
+        CombatListener.Combat.ActivateSynergyPanel(_unitBody);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void OnPointerExit(PointerEventData eventData)
     {
         hoverPanel.SetActive(false);
+
+        if (CombatListener.Combat == null) return;
+
+        CombatListener.Combat.DeactivateSynergyPanel();
     }
 }

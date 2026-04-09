@@ -7,7 +7,7 @@ using System;
 
 public enum AIDecisionType //Only works with AIController!
 {
-    NONE, Find_MostWounded, Find_MostHealthy, Find_MostBuffed, Find_MostDebuffed, Find_StatusInflicted,
+    NONE, Find_MostWounded, Find_MostHealthy, Find_MostBuffed, Find_LeastBuffed, Find_MostDebuffed, Find_LeastDebuffed, Find_StatusInflicted, Find_Not_StatusInflicted,
 }
 
 public class AIController : ControllerBase, IADSCreator<CombatListener,MainActionBase>
@@ -139,7 +139,7 @@ public abstract class AI_DecisionBase : IADSNode<CombatListener, MainActionBase>
 
     protected abstract float SetMinScore();
 
-    protected abstract float GetInputValue(CombatListener input);
+    protected abstract float GetBaseInputValue(CombatListener input);
 
     public virtual MainActionBase GetADSOutput()
     {
@@ -149,7 +149,7 @@ public abstract class AI_DecisionBase : IADSNode<CombatListener, MainActionBase>
     public virtual float GetInputScore(CombatListener input)
     {
         float priorityInput = 0f;
-        float baseInput = GetInputValue(input);
+        float baseInput = GetBaseInputValue(input);
         float manaInput = Mathf.Clamp((user.MyMana - myAction.ManaCost) / user.MyMaxMana,0, user.MyMaxMana);
         float randomInput = UnityEngine.Random.Range(-0.10f, 0.10f);
 
@@ -181,9 +181,11 @@ public abstract class AI_DecisionBase : IADSNode<CombatListener, MainActionBase>
 
 public class AI_Decision_Find_MostWounded : AI_DecisionBase
 {
-    protected override float GetInputValue(CombatListener input)
+    protected override float GetBaseInputValue(CombatListener input)
     {
-        DroneUnitBody[] targetTeam = user.IsEnemy == false ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray();
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ? 
+            (myAction.targetAlly == true ?  CombatListener.Combat.Playerteam.ToArray() : CombatListener.Combat.EnemyTeam.ToArray())
+            :(myAction.targetAlly == true ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray());
 
         int mostWoundedIndex = -1;
         int currentHP = int.MaxValue;
@@ -192,6 +194,11 @@ public class AI_Decision_Find_MostWounded : AI_DecisionBase
         foreach (var hp in targetTeam)
         {
             index++;
+
+            if (hp == user) continue;
+
+            if (hp.MyHP <= 0) continue;
+
             if (hp.MyHP >= currentHP)
             {
                 continue;
@@ -215,9 +222,11 @@ public class AI_Decision_Find_MostWounded : AI_DecisionBase
 
 public class AI_Decision_Find_MostHealthy : AI_DecisionBase
 {
-    protected override float GetInputValue(CombatListener input)
+    protected override float GetBaseInputValue(CombatListener input)
     {
-        DroneUnitBody[] targetTeam = user.IsEnemy == false ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray();
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ?
+            (myAction.targetAlly == true ? CombatListener.Combat.Playerteam.ToArray() : CombatListener.Combat.EnemyTeam.ToArray())
+            : (myAction.targetAlly == true ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray());
 
         int mostHealthyIndex = -1;
         int currentHP = int.MinValue;
@@ -226,6 +235,11 @@ public class AI_Decision_Find_MostHealthy : AI_DecisionBase
         foreach (var hp in targetTeam)
         {
             index++;
+
+            if (hp == user) continue;
+
+            if (hp.MyHP <= 0) continue;
+
             if (hp.MyHP <= currentHP)
             {
                 continue;
@@ -249,9 +263,11 @@ public class AI_Decision_Find_MostHealthy : AI_DecisionBase
 
 public class AI_Decision_Find_MostBuffed : AI_DecisionBase
 {
-    protected override float GetInputValue(CombatListener input)
+    protected override float GetBaseInputValue(CombatListener input)
     {
-        DroneUnitBody[] targetTeam = user.IsEnemy == false ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray();
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ?
+            (myAction.targetAlly == true ? CombatListener.Combat.Playerteam.ToArray() : CombatListener.Combat.EnemyTeam.ToArray())
+            : (myAction.targetAlly == true ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray());
 
         int mostBuffedIndex = -1;
         int currentBuffValue = int.MinValue;
@@ -260,6 +276,11 @@ public class AI_Decision_Find_MostBuffed : AI_DecisionBase
         foreach (var hp in targetTeam)
         {
             index++;
+
+            if (hp == user) continue;
+
+            if (hp.MyHP <= 0) continue;
+
             if (hp.GetTargetBuffValue((BuffsEnum)myAction.EnumTarget) <= currentBuffValue)
             {
                 continue;
@@ -272,7 +293,48 @@ public class AI_Decision_Find_MostBuffed : AI_DecisionBase
 
         myTargetPos = targetTeam[mostBuffedIndex].transform.position;
 
-        return currentBuffValue / currentBuffValue + 1;
+        return currentBuffValue / (currentBuffValue + 1);
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+
+public class AI_Decision_Find_LeastBuffed : AI_DecisionBase
+{
+    protected override float GetBaseInputValue(CombatListener input)
+    {
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ?
+            (myAction.targetAlly == true ? CombatListener.Combat.Playerteam.ToArray() : CombatListener.Combat.EnemyTeam.ToArray())
+            : (myAction.targetAlly == true ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray());
+
+        int leastBuffedIndex = -1;
+        int currentBuffValue = int.MaxValue;
+        int index = -1;
+
+        foreach (var hp in targetTeam)
+        {
+            index++;
+
+            if (hp == user) continue;
+
+            if (hp.MyHP <= 0) continue;
+
+            if (hp.GetTargetBuffValue((BuffsEnum)myAction.EnumTarget) > currentBuffValue)
+            {
+                continue;
+            }
+            currentBuffValue = hp.GetTargetBuffValue((BuffsEnum)myAction.EnumTarget);
+            leastBuffedIndex = index;
+        }
+
+        if (leastBuffedIndex < 0) return -1;
+
+        myTargetPos = targetTeam[leastBuffedIndex].transform.position;
+
+        return 1 / currentBuffValue + 1;
     }
 
     protected override float SetMinScore()
@@ -283,9 +345,11 @@ public class AI_Decision_Find_MostBuffed : AI_DecisionBase
 
 public class AI_Decision_Find_MostDebuffed : AI_DecisionBase
 {
-    protected override float GetInputValue(CombatListener input)
+    protected override float GetBaseInputValue(CombatListener input)
     {
-        DroneUnitBody[] targetTeam = user.IsEnemy == false ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray();
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ?
+            (myAction.targetAlly == true ? CombatListener.Combat.Playerteam.ToArray() : CombatListener.Combat.EnemyTeam.ToArray())
+            : (myAction.targetAlly == true ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray());
 
         int mostDebuffedIndex = -1;
         int currentDebuffValue = int.MinValue;
@@ -294,6 +358,11 @@ public class AI_Decision_Find_MostDebuffed : AI_DecisionBase
         foreach (var hp in targetTeam)
         {
             index++;
+
+            if (hp == user) continue;
+
+            if (hp.MyHP <= 0) continue;
+
             if (hp.GetTargetDebuffValue((DebuffsEnum)myAction.EnumTarget) <= currentDebuffValue)
             {
                 continue;
@@ -306,7 +375,48 @@ public class AI_Decision_Find_MostDebuffed : AI_DecisionBase
 
         myTargetPos = targetTeam[mostDebuffedIndex].transform.position;
 
-        return currentDebuffValue / currentDebuffValue + 1;
+        return currentDebuffValue / (currentDebuffValue + 1);
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+
+public class AI_Decision_Find_LeastDebuffed : AI_DecisionBase
+{
+    protected override float GetBaseInputValue(CombatListener input)
+    {
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ?
+            (myAction.targetAlly == true ? CombatListener.Combat.Playerteam.ToArray() : CombatListener.Combat.EnemyTeam.ToArray())
+            : (myAction.targetAlly == true ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray());
+
+        int leastDebuffedIndex = -1;
+        int currentDebuffValue = int.MaxValue;
+        int index = -1;
+
+        foreach (var hp in targetTeam)
+        {
+            index++;
+
+            if (hp == user) continue;
+
+            if (hp.MyHP <= 0) continue;
+
+            if (hp.GetTargetDebuffValue((DebuffsEnum)myAction.EnumTarget) > currentDebuffValue)
+            {
+                continue;
+            }
+            currentDebuffValue = hp.GetTargetDebuffValue((DebuffsEnum)myAction.EnumTarget);
+            leastDebuffedIndex = index;
+        }
+
+        if (leastDebuffedIndex < 0) return -1;
+
+        myTargetPos = targetTeam[leastDebuffedIndex].transform.position;
+
+        return 1 / currentDebuffValue + 1;
     }
 
     protected override float SetMinScore()
@@ -317,9 +427,11 @@ public class AI_Decision_Find_MostDebuffed : AI_DecisionBase
 
 public class AI_Decision_Find_StatusInflicted : AI_DecisionBase
 {
-    protected override float GetInputValue(CombatListener input)
+    protected override float GetBaseInputValue(CombatListener input)
     {
-        DroneUnitBody[] targetTeam = user.IsEnemy == false ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray();
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ?
+            (myAction.targetAlly == true ? CombatListener.Combat.Playerteam.ToArray() : CombatListener.Combat.EnemyTeam.ToArray())
+            : (myAction.targetAlly == true ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray());
 
         int mostStatusIndex = -1;
         int index = -1;
@@ -327,6 +439,11 @@ public class AI_Decision_Find_StatusInflicted : AI_DecisionBase
         foreach (var hp in targetTeam)
         {
             index++;
+
+            if (hp == user) continue;
+
+            if (hp.MyHP <= 0) continue;
+
             if (!hp.GetTargetStatus((StatusEnum)myAction.EnumTarget))
             {
                 continue;
@@ -337,6 +454,83 @@ public class AI_Decision_Find_StatusInflicted : AI_DecisionBase
         if (mostStatusIndex < 0) return -1;
 
         myTargetPos = targetTeam[mostStatusIndex].transform.position;
+
+        float returnValue = 0f;
+
+        switch ((StatusEnum)myAction.EnumTarget)
+        {
+            case StatusEnum.None:
+                break;
+            case StatusEnum.Stunned:
+
+                returnValue = 0.7f;
+
+                break;
+            case StatusEnum.Kncokback:
+
+                returnValue = 0.8f;
+
+                break;
+            case StatusEnum.Leaking:
+
+                returnValue = 0.99f;
+
+                break;
+            case StatusEnum.Negation:
+
+                returnValue = 0.51f;
+
+                break;
+            case StatusEnum.Hacked:
+
+                returnValue = 0.9f;
+
+                break;
+            case StatusEnum.Manaburn:
+
+                returnValue = 0.6f;
+
+                break;
+        }
+
+        return returnValue;
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+
+public class AI_Decision_Find_Not_StatusInflicted : AI_DecisionBase
+{
+    protected override float GetBaseInputValue(CombatListener input)
+    {
+        DroneUnitBody[] targetTeam = user.IsEnemy == false ?
+            (myAction.targetAlly == true ? CombatListener.Combat.Playerteam.ToArray() : CombatListener.Combat.EnemyTeam.ToArray())
+            : (myAction.targetAlly == true ? CombatListener.Combat.EnemyTeam.ToArray() : CombatListener.Combat.Playerteam.ToArray());
+
+        int nonStatusIndex = -1;
+        int index = -1;
+
+        foreach (var hp in targetTeam)
+        {
+            index++;
+
+            if (hp == user) continue;
+
+            if (hp.MyHP <= 0) continue;
+
+            if (hp.GetTargetStatus((StatusEnum)myAction.EnumTarget))
+            {
+                continue;
+            }
+            nonStatusIndex = index;
+        }
+
+        if (nonStatusIndex < 0) return -1;
+
+        myTargetPos = targetTeam[nonStatusIndex].transform.position;
 
         float returnValue = 0f;
 

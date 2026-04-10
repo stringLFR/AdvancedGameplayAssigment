@@ -198,6 +198,31 @@ public sealed class Combat : MonoBehaviour
                         aiBase = new AI_Decision_Find_Not_StatusInflicted();
 
                         break;
+                    case AIDecisionType.How_Wounded_Am_I:
+
+                        aiBase = new AI_Decision_How_Wounded_Am_I();
+
+                        break;
+                    case AIDecisionType.How_Healthy_Am_I:
+
+                        aiBase = new AI_Decision_How_Healthy_Am_I();
+
+                        break;
+                    case AIDecisionType.How_Buffed_Am_I:
+
+                        aiBase = new AI_Decision_How_Buffed_Am_I();
+
+                        break;
+                    case AIDecisionType.How_Debuffed_Am_I:
+
+                        aiBase = new AI_Decision_How_Debuffed_Am_I();
+
+                        break;
+                    case AIDecisionType.Do_I_Have_StatusInflicted:
+
+                        aiBase = new AI_Decision_Do_I_Have_StatusInflicted();
+
+                        break;
                 }
 
                 aiBase.InitAIDecision(action, enemy, aiController);
@@ -213,6 +238,7 @@ public sealed class Combat : MonoBehaviour
 
         if (body.MyHP <= 0)
         {
+            CombatListener.CombatantDied(body);
             GetNextTurnHolder();
             return;
         }
@@ -255,7 +281,7 @@ public sealed class Combat : MonoBehaviour
     public void ActivateSynergyPanel(DroneUnitBody target)
     {
         synergyImage.SetActive(true);
-        synergyText.text += "<color=yellow>Active Status Effects:";
+        synergyText.text += "<color=white>Active Status Effects:";
 
         if(target.AppliedStatusDict.TryGetValue(Status_Stunned.StunnedKey, out StatusBase status) == true)
         {
@@ -288,7 +314,7 @@ public sealed class Combat : MonoBehaviour
         }
 
         synergyText.text += "<br>";
-        synergyText.text += "<br><color=green>Current Buff Values:";
+        synergyText.text += "<br><color=white>Current Buff Values:";
         synergyText.text += $"<br><color=green>Overdrive: <color=white>{target.Overdrive}";
         synergyText.text += $"<br><color=green>MartialProwess: <color=white>{target.MartialProwess}";
         synergyText.text += $"<br><color=green>MagicalProwess: <color=white>{target.MagicalProwess}";
@@ -301,7 +327,7 @@ public sealed class Combat : MonoBehaviour
         synergyText.text += $"<br><color=green>StatusProtection: <color=white>{target.StatusProtection}";
 
         synergyText.text += "<br>";
-        synergyText.text += "<br><color=red>Current Debuff Values:";
+        synergyText.text += "<br><color=white>Current Debuff Values:";
         synergyText.text += $"<br><color=red>ArmorBreak: <color=white>{target.ArmorBreak}";
         synergyText.text += $"<br><color=red>ManaSusceptibility: <color=white>{target.ManaSusceptibility}";
         synergyText.text += $"<br><color=red>MartialIneptitiude: <color=white>{target.MartialIneptitiude}";

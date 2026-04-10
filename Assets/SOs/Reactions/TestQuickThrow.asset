@@ -18,7 +18,7 @@ MonoBehaviour:
     MinScore: 50
     ManaCost: 4
     IsRoot: 1
-    Effect: 45
+    Effect: 48
     Node: 1
     ActionType: 1
     Reactions: 0400000001000000

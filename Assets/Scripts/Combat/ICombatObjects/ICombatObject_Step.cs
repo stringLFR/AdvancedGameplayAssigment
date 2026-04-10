@@ -52,6 +52,12 @@ public class ICombatObject_Step : ICombatObject
     }
     protected virtual void LerpAlongPath()
     {
+        if (Caster.MyHP <= 0)
+        {
+            isActive = false;
+            return;
+        }
+
         if (pointIndex >= points)
         {
             CombatListener.travelers.Remove(Caster);

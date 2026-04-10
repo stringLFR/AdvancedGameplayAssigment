@@ -16,7 +16,7 @@ MonoBehaviour:
     MainActionName: shoot
     MainActionDescription: Moves towards traversable point. No range limit
     manaCost: 4
-    Effect: 1
+    Effect: 49
     mainActionType: 2
     actionType: 5
     reactionTypes: 0000000014000000
@@ -28,3 +28,4 @@ MonoBehaviour:
     AIRandomInputModifier: 1
     AIManaInoutModifier: 1
     AIPriorityInputModifier: 1
+    targetAlly: 0

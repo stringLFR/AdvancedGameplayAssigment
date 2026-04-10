@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.AI;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class AE_SwingMelee : ActionEffectBase
@@ -11,28 +13,50 @@ public class AE_SwingMelee : ActionEffectBase
 
     protected AsyncOperationHandle<GameObject> meleePrefab;
 
-    protected const float warpSpeed = 1.25f;
+    protected const float warpSpeed = 0.625f;
 
-    protected const float warpMaxLerpValue = 0.75f;
+    protected const float warpSpeedMovement = 10f;
 
-    protected IEnumerator WarpStep(Vector3 targetPos, DroneUnitBody caster)
+    protected IEnumerator WarpStep(Vector3 targetPos, DroneUnitBody caster, float mana)
     {
+        NavMeshPath path = new NavMeshPath();
+
+        NavMesh.SamplePosition(targetPos, out NavMeshHit hit, Mathf.Infinity, NavMesh.AllAreas);
+
+        NavMesh.CalculatePath(caster.transform.position, hit.position, NavMesh.AllAreas, path);
+
+        int points = path.corners.Length;
+        int pointIndex = 0;
+        Vector3 directionVelocity = Vector3.zero;
+
         float t = 0;
 
         while (true)
         {
             t += Time.deltaTime * warpSpeed;
 
-            Vector3 lerpValue = Vector3.Lerp(caster.transform.position, targetPos,t);
+            if (pointIndex >= points) break;
 
-            caster.transform.position = lerpValue;
-
-            if (t >= warpMaxLerpValue)
+            if (Vector3.Distance(caster.transform.position, path.corners[pointIndex] + (caster.ProcedualCore.Agent.baseOffset * Vector3.up)) <= caster.ProcedualCore.Agent.radius)
             {
-                break;
+                pointIndex++;
+                t = 0;
+
+                if (pointIndex >= points) break;
             }
+
+            Vector3 movementVecotr = (path.corners[pointIndex] + (caster.ProcedualCore.Agent.baseOffset * Vector3.up) - caster.transform.position).normalized;
+
+            directionVelocity = Vector3.Lerp(directionVelocity, movementVecotr, Mathf.Clamp01(t));
+
+            caster.ProcedualCore.Agent.Move(directionVelocity * caster.ProcedualCore.Agent.speed * warpSpeedMovement * Time.deltaTime);
+
+            caster.ProcedualCore.ManualNavRotTarget = path.corners[pointIndex];
+
             yield return null;
         }
+
+        SetUpMelee(caster, mana);
 
         yield return null;
     }
@@ -81,10 +105,7 @@ public class AE_SwingMelee : ActionEffectBase
             CombatListener.travelers.Remove(body);
         }
 
-        caster.ProcedualCore.ManualNavRotTarget = targetPos;
-        caster.StartCoroutine(WarpStep(targetPos,caster));
-
-        SetUpMelee(caster, mana);
+        caster.StartCoroutine(WarpStep(targetPos,caster,mana));
     }
 
     public override void TriggerActionEffect(float mana, DroneUnitBody caster, Vector3[] targetPositions)

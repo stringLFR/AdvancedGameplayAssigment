@@ -293,6 +293,7 @@ public class Status_ManaBurn : StatusBase
 
         if (triggerProgress >= triggerRate)
         {
+            triggerProgress = 0;
             ManaBurnDealDamage();
         }
 

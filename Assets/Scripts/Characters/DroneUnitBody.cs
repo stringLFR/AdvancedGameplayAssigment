@@ -231,11 +231,6 @@ public sealed class DroneUnitBody : MonoBehaviour
 
             leak.IncreaseLeakSpeed();
         }
-
-        if (HP <= 0)
-        {
-            CombatListener.CombatantDied(this);
-        }
     }
 
     public void DirectDamage(int damage)
@@ -245,11 +240,6 @@ public sealed class DroneUnitBody : MonoBehaviour
         CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} was dealt {damage} Direct Damage!");
 
         myUI.SetHealthSlider(HP);
-
-        if (HP <= 0)
-        {
-            CombatListener.CombatantDied(this);
-        }
     }
 
     public void SanityDamage(int damage)

@@ -8,6 +8,7 @@ using System;
 public enum AIDecisionType //Only works with AIController!
 {
     NONE, Find_MostWounded, Find_MostHealthy, Find_MostBuffed, Find_LeastBuffed, Find_MostDebuffed, Find_LeastDebuffed, Find_StatusInflicted, Find_Not_StatusInflicted,
+    How_Wounded_Am_I, How_Healthy_Am_I, How_Buffed_Am_I, How_Debuffed_Am_I, Do_I_Have_StatusInflicted,
 }
 
 public class AIController : ControllerBase, IADSCreator<CombatListener,MainActionBase>
@@ -211,7 +212,7 @@ public class AI_Decision_Find_MostWounded : AI_DecisionBase
 
         myTargetPos = targetTeam[mostWoundedIndex].transform.position;
 
-        return targetTeam[mostWoundedIndex].MyMaxHP - (targetTeam[mostWoundedIndex].MyHP / targetTeam[mostWoundedIndex].MyMaxHP);
+        return 1 - (targetTeam[mostWoundedIndex].MyHP / targetTeam[mostWoundedIndex].MyMaxHP);
     }
 
     protected override float SetMinScore()
@@ -252,7 +253,7 @@ public class AI_Decision_Find_MostHealthy : AI_DecisionBase
 
         myTargetPos = targetTeam[mostHealthyIndex].transform.position;
 
-        return (targetTeam[mostHealthyIndex].MyHP / targetTeam[mostHealthyIndex].MyMaxHP);
+        return targetTeam[mostHealthyIndex].MyHP / targetTeam[mostHealthyIndex].MyMaxHP;
     }
 
     protected override float SetMinScore()
@@ -578,3 +579,128 @@ public class AI_Decision_Find_Not_StatusInflicted : AI_DecisionBase
         return 0.25f;
     }
 }
+
+public class AI_Decision_How_Wounded_Am_I : AI_DecisionBase
+{
+    protected override float GetBaseInputValue(CombatListener input)
+    {
+        myTargetPos = user.transform.position;
+
+        return 1 - (user.MyHP / user.MyMaxHP);
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+
+public class AI_Decision_How_Healthy_Am_I : AI_DecisionBase
+{
+    protected override float GetBaseInputValue(CombatListener input)
+    {
+        myTargetPos = user.transform.position;
+
+        return user.MyHP / user.MyMaxHP;
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+
+public class AI_Decision_How_Buffed_Am_I : AI_DecisionBase
+{
+    protected override float GetBaseInputValue(CombatListener input)
+    {
+
+        myTargetPos = user.transform.position;
+
+        int currentBuffValue = user.GetTargetBuffValue((BuffsEnum)myAction.EnumTarget);
+
+        return 1 - currentBuffValue / currentBuffValue + 1;
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+
+public class AI_Decision_How_Debuffed_Am_I : AI_DecisionBase
+{
+    protected override float GetBaseInputValue(CombatListener input)
+    {
+
+        myTargetPos = user.transform.position;
+
+        int currentDebuffValue = user.GetTargetDebuffValue((DebuffsEnum)myAction.EnumTarget);
+
+        return currentDebuffValue / currentDebuffValue + 1;
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+
+public class AI_Decision_Do_I_Have_StatusInflicted : AI_DecisionBase
+{
+    protected override float GetBaseInputValue(CombatListener input)
+    {
+        myTargetPos = user.transform.position;
+
+        float returnValue = 0f;
+
+        if (!user.GetTargetStatus((StatusEnum)myAction.EnumTarget))
+        {
+            return returnValue;
+        }
+
+        switch ((StatusEnum)myAction.EnumTarget)
+        {
+            case StatusEnum.None:
+                break;
+            case StatusEnum.Stunned:
+
+                returnValue = 0.7f;
+
+                break;
+            case StatusEnum.Kncokback:
+
+                returnValue = 0.8f;
+
+                break;
+            case StatusEnum.Leaking:
+
+                returnValue = 0.99f;
+
+                break;
+            case StatusEnum.Negation:
+
+                returnValue = 0.51f;
+
+                break;
+            case StatusEnum.Hacked:
+
+                returnValue = 0.9f;
+
+                break;
+            case StatusEnum.Manaburn:
+
+                returnValue = 0.6f;
+
+                break;
+        }
+
+        return returnValue;
+    }
+
+    protected override float SetMinScore()
+    {
+        return 0.25f;
+    }
+}
+

@@ -41,6 +41,8 @@ public sealed class DroneUnitBody : MonoBehaviour
     public int HealthRegeneration = 0; //Regain value based amount of HP on turn start!
     public int StatusProtection = 0; //Makes status damages taken less, based on value!
 
+    public void SwitchCOntroller(ControllerBase newController) => controller = newController;
+
     public int GetTargetBuffValue(BuffsEnum target)
     {
         switch (target)
@@ -231,6 +233,17 @@ public sealed class DroneUnitBody : MonoBehaviour
 
             leak.IncreaseLeakSpeed();
         }
+    }
+
+    public void HostilePreDamage(float percentile)
+    {
+        int damageTaken = (int)(maxHP * percentile);
+
+        HP -= damageTaken;
+
+        CombatListener.AddLineToCombatText($"{DroneUnit.DroneName} Takes {damageTaken} pre combat damage!");
+
+        myUI.SetHealthSlider(HP);
     }
 
     public void DirectDamage(int damage)

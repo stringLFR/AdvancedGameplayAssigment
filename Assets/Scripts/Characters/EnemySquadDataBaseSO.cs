@@ -17,8 +17,11 @@ public class EnemySquadDataBaseSO : ScriptableObject
     {
         [SerializeField] private EnemySquadSO[] enemySquads;
         [SerializeField] private int minimumLevelRequirement;
+        [SerializeField] private int maximumLevelRequirement;
 
         public EnemySquadSO[] EnemySquads => enemySquads;
         public int MinimumLevelRequirement => minimumLevelRequirement;
+
+        public int MaximumLevelRequirement => maximumLevelRequirement;
     }
 }

@@ -141,11 +141,15 @@ public sealed class Combat : MonoBehaviour
 
     private void SetupAIDecisions()
     {
-        foreach(DroneUnitBody enemy in enemyTeam)
+        List<DroneUnitBody> temp = new List<DroneUnitBody>();
+        temp.AddRange(enemyTeam);
+        temp.AddRange(playerTeam);
+
+        foreach (DroneUnitBody unit in temp)
         {
-            foreach(MainActionBase action in enemy.MainActions)
+            foreach(MainActionBase action in unit.MainActions)
             {
-                MainActionBase[] nodes = enemy.MainActions.FindAll(c => c.ReactionTypes.Contains(action.ActionType) == true && c.MainActionName != action.MainActionName).ToArray();
+                MainActionBase[] nodes = unit.MainActions.FindAll(c => c.ReactionTypes.Contains(action.ActionType) == true && c.MainActionName != action.MainActionName).ToArray();
 
                 string[] names = new string[nodes.Length];
 
@@ -225,7 +229,7 @@ public sealed class Combat : MonoBehaviour
                         break;
                 }
 
-                aiBase.InitAIDecision(action, enemy, aiController);
+                aiBase.InitAIDecision(action, unit, aiController);
                 aiBase.AddParents(names);
                 aiController.MyADS.AddADSNode(aiBase);
             }
@@ -241,6 +245,12 @@ public sealed class Combat : MonoBehaviour
             CombatListener.CombatantDied(body);
             GetNextTurnHolder();
             return;
+        }
+
+        if (body.MySanity <= 0 && body.Controller != AIController)
+        {
+            body.SwitchCOntroller(AIController);
+            body.SetEnemyBool(true);
         }
 
         turnOrder.Enqueue(body);

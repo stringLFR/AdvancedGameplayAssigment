@@ -16,3 +16,4 @@ MonoBehaviour:
   - enemySquads:
     - {fileID: 11400000, guid: 875caaab1222d8b49af2fb00fc014d8a, type: 2}
     minimumLevelRequirement: 1
+    maximumLevelRequirement: 2

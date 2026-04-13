@@ -325,6 +325,8 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
     private bool combatDone = false;
 
+    public float HostileDamageTaken = 0f;
+
     public void Init(Combat c)
     {
         SceneRoot.SetRoot(2);
@@ -334,44 +336,27 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
         List<ADSSetupStats> tempList = new List<ADSSetupStats>();
 
-        foreach(DroneUnit unit in ActionFlowStackController.Instance.Team.PlayerMembers.droneUnits)
+        InitPlayers(tempList);
+
+        InitEnemies(tempList);
+
+        foreach (ADSSetupStats nodeStats in tempList) //TODO TRY TO FIND BETTER WAY TO DO THIS!
         {
-            Vector3 randomPoint = Vector3.zero + Random.insideUnitSphere * 50;
-            NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, Mathf.Infinity, NavMesh.AllAreas);
-            GameObject obj = Object.Instantiate(baseCharacterPrefab.Result, hit.position, Quaternion.identity);
-            DroneUnitBody droneUnitBody = obj.GetComponent<DroneUnitBody>();
-            droneUnitBody.Init(unit, monoCOmbat.PlayerController);
-            monoCOmbat.Playerteam.Add(droneUnitBody);
-            droneUnitBody.SetEnemyBool(false);
+            ADSSetupStats[] nodes = tempList.FindAll(c => c.node.GetReactionType.Contains(nodeStats.node.GetActionType) == true && c.node.NameKey != nodeStats.node.NameKey).ToArray();
 
-            if (unit.MyMainActions != null)
-            {
-                foreach(MainActionStats m in unit.MyMainActions)
-                {
-                    droneUnitBody.MainActions.Add(ActionCreator.CreateMainAction(m, droneUnitBody.DroneUnit.DroneName));
-                }
-            }
+            string[] names = new string[nodes.Length];
 
-            if (unit.MyReactionNodes != null)
-            {
-                foreach (ActionNodeStats n in unit.MyReactionNodes)
-                {
-                    droneUnitBody.Reactions.Add(ActionCreator.CreateReactionAction(n, droneUnitBody.DroneUnit.DroneName));
-                }
+            for (int i = 0; i < nodes.Length; i++) names[i] = nodes[i].node.NameKey;
 
-                foreach (ActionNodeBase node in droneUnitBody.Reactions)
-                {
-                    adsInstance.AddADSNode(node);
-                    tempList.Add(new ADSSetupStats() {caster = droneUnitBody, node = node});
-                }
-            }
+            nodeStats.node.SetupNode(nodeStats.caster, names);
         }
+    }
 
+    private void InitEnemies(List<ADSSetupStats> tempList)
+    {
         List<EnemySquadDatabase> enemyTeams = new List<EnemySquadDatabase>();
-
-
         //May need to rework this a bit so that Exploration_Hostile decides which enemy squad to take from the database!
-        foreach(EnemySquadDatabase etso in enemyDatabase.Result.Databases) if (etso.MinimumLevelRequirement <= ActionFlowStackController.Instance.Team.PlayerTeamAverageLevel) enemyTeams.Add(etso);
+        foreach (EnemySquadDatabase etso in enemyDatabase.Result.Databases) if (etso.MinimumLevelRequirement <= ActionFlowStackController.Instance.Team.PlayerTeamAverageLevel && etso.MaximumLevelRequirement > ActionFlowStackController.Instance.Team.PlayerTeamAverageLevel) enemyTeams.Add(etso);
 
         EnemySquadDatabase enemyTeam = enemyTeams[Random.Range(0, enemyTeams.Count - 1)];
 
@@ -386,6 +371,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             droneUnitBodyEnemy.Init(unit, monoCOmbat.AIController);
             monoCOmbat.EnemyTeam.Add(droneUnitBodyEnemy);
             droneUnitBodyEnemy.SetEnemyBool(true);
+            droneUnitBodyEnemy.HostilePreDamage(HostileDamageTaken);
 
             if (unit.MyMainActions != null)
             {
@@ -409,18 +395,44 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
                 }
             }
         }
+    }
 
-        foreach(ADSSetupStats nodeStats in tempList) //TODO TRY TO FIND BETTER WAY TO DO THIS!
+    private void InitPlayers(List<ADSSetupStats> tempList)
+    {
+        foreach (DroneUnit unit in ActionFlowStackController.Instance.Team.PlayerMembers.droneUnits)
         {
-            ADSSetupStats[] nodes = tempList.FindAll(c => c.node.GetReactionType.Contains(nodeStats.node.GetActionType) == true && c.node.NameKey != nodeStats.node.NameKey).ToArray();
+            Vector3 randomPoint = Vector3.zero + Random.insideUnitSphere * 50;
+            NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, Mathf.Infinity, NavMesh.AllAreas);
+            GameObject obj = Object.Instantiate(baseCharacterPrefab.Result, hit.position, Quaternion.identity);
+            DroneUnitBody droneUnitBody = obj.GetComponent<DroneUnitBody>();
+            droneUnitBody.Init(unit, monoCOmbat.PlayerController);
+            monoCOmbat.Playerteam.Add(droneUnitBody);
+            droneUnitBody.SetEnemyBool(false);
 
-            string[] names = new string[nodes.Length];
+            if (unit.MyMainActions != null)
+            {
+                foreach (MainActionStats m in unit.MyMainActions)
+                {
+                    droneUnitBody.MainActions.Add(ActionCreator.CreateMainAction(m, droneUnitBody.DroneUnit.DroneName));
+                }
+            }
 
-            for (int i = 0; i < nodes.Length; i++) names[i] = nodes[i].node.NameKey;
+            if (unit.MyReactionNodes != null)
+            {
+                foreach (ActionNodeStats n in unit.MyReactionNodes)
+                {
+                    droneUnitBody.Reactions.Add(ActionCreator.CreateReactionAction(n, droneUnitBody.DroneUnit.DroneName));
+                }
 
-            nodeStats.node.SetupNode(nodeStats.caster, names);
+                foreach (ActionNodeBase node in droneUnitBody.Reactions)
+                {
+                    adsInstance.AddADSNode(node);
+                    tempList.Add(new ADSSetupStats() { caster = droneUnitBody, node = node });
+                }
+            }
         }
     }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public bool IsDone()
     {
@@ -439,7 +451,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
         for (int i = 0; i < winningTeam.Count; i++)
         {
-            if (winningTeam[i].MyHP <= 0)
+            if (winningTeam[i].MyHP <= 0 || winningTeam[i].MySanity <= 0)
             {
                 for (int j = 0; j < ActionFlowStackController.Instance.Team.PlayerMembers.droneUnits.Length; j++)
                 {
@@ -496,6 +508,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
     void cleanUp()
     {
+        HostileDamageTaken = 0f;
         CombatListener.CleanUp();
         mapPrefab.Release();
         Addressables.UnloadSceneAsync(combatScene);

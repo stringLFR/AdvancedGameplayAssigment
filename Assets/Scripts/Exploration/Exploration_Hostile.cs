@@ -10,6 +10,7 @@ public class Exploration_Hostile
 
     private DroneUnitBody explorer;
 
+    int maxHostileHP;
     int hostileHP;
     float baseSpeed;
     float tempSpeed;
@@ -51,7 +52,8 @@ public class Exploration_Hostile
         NavMesh.SamplePosition(randomPointEnemy, out NavMeshHit hitEnemy, Mathf.Infinity, NavMesh.AllAreas);
         GameObject obj = Object.Instantiate(expo.hostilePrefab.gameObject, hitEnemy.position, Quaternion.identity);
         body = obj.GetComponent<DroneUnitBody>();
-        hostileHP = hpValue;
+        maxHostileHP = hpValue;
+        hostileHP = maxHostileHP;
         baseSpeed = body.ProcedualCore.Agent.speed;
         tempSpeed = baseSpeed;
 
@@ -66,7 +68,12 @@ public class Exploration_Hostile
     public void EnterCombat(List<Exploration_Hostile> hostiles, List<Exploration_Caravan> caravans)
     {
         StopExplorationBodies(hostiles, caravans);
-        ActionFlowStackHandler.PushActionToStack(new FlowAction_Combat { });
+
+        FlowAction_Combat c = new FlowAction_Combat();
+
+        c.HostileDamageTaken = 1f - hostileHP / maxHostileHP;
+
+        ActionFlowStackHandler.PushActionToStack(c);
     }
 
     public static void StopExplorationBodies(List<Exploration_Hostile> hostiles, List<Exploration_Caravan> caravans)

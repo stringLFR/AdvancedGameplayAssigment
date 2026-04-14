@@ -475,7 +475,7 @@ public class Exploration : MonoBehaviour
                         for (int i = 0; i < SupplyData.Length; i++)
                         {
                             //Need to balance this with how towers act. Enemies defeated by towers won't give resources, while combat will!
-                            SupplyData[i].currentAmount += resourceGainOnCombatWin;
+                            SupplyData[i].currentAmount += resourceGainOnCombatWin * ActionFlowStackController.Instance.Team.PlayerTeamAverageLevel;
                             UpdateSlider(SupplyData[i]);
                         }
 

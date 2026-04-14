@@ -91,8 +91,8 @@ public class Projectile : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)] //This is inline hint for jit compiler!
     public void Fire(float mana, Vector3 pa, Vector3 pb)
     {
-        curve.SetVectors(UnityMaths.GetNumericsVecFromUnityVec(pa), 
-            UnityMaths.GetNumericsVecFromUnityVec(pb), 
+        curve.SetVectors(UnityMaths.GetNumericsVecFromUnityVec(pa + Vector3.up), 
+            UnityMaths.GetNumericsVecFromUnityVec(pb + Vector3.up), 
             UnityMaths.GetNumericsVecFromUnityVec(pa_Tangent + RandomTangent(pa_Tangent_Rand)), 
             UnityMaths.GetNumericsVecFromUnityVec(pb_Tangent + RandomTangent(pb_Tangent_Rand)));
         startingMana = mana;

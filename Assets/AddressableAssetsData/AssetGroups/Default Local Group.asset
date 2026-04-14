@@ -27,14 +27,32 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62bb91b42f3749e4f87d1593006ba718
+    m_Address: Assets/Prefabs/Projectiles/Massive Pierce Orb.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6e182ca9bfa78874090e9062e2df13fc
     m_Address: Assets/SOs/EnemySquadDatabase.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70dc57559ddd6454c873ce7071984655
+    m_Address: Assets/Prefabs/Projectiles/Magic missile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 81b380bac43f47c429088aed17026acb
     m_Address: Assets/Scenes/Combat.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96cd06f4addfe3144ba1f689323c9401
+    m_Address: Assets/Prefabs/Projectiles/Cube bullet.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
@@ -65,6 +83,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c16553f517639d64e95c3ac27aa1e0dc
     m_Address: Assets/Prefabs/QuckSlash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ceda499be79cf704995096fe0ca39fb5
+    m_Address: Assets/Prefabs/Projectiles/Pillar Projectile.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - default

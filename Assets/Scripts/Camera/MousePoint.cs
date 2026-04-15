@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 
 public class MousePoint : MonoBehaviour
 {
@@ -9,7 +10,12 @@ public class MousePoint : MonoBehaviour
     [SerializeField]
     private LayerMask targetLayer;
 
+    [SerializeField]
+    private DecalProjector projector;
+
     private bool isOverUI;
+
+    public DecalProjector Projector { get { return projector; } }
 
     public bool IsOverUI => isOverUI;
 

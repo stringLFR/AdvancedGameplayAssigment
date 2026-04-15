@@ -222,8 +222,13 @@ public class MainAction_TargetManyPoints : MainActionBase
     }
     IEnumerator PLayerInput(PlayerController p, DroneUnitBody d)
     {
+        //I can increase size this way!
+        MousePoint.instance.Projector.size *= targetRadius;
+
         while (true)
         {
+            
+            
 
             if (MousePoint.instance.IsOverUI == true)
             {
@@ -259,6 +264,9 @@ public class MainAction_TargetManyPoints : MainActionBase
 
             yield return null;
         }
+
+        //WHY CANT I REDUCE THE SIZE??
+        MousePoint.instance.Projector.size *= 0.1f;
 
         p.SetDoneBool(d);
 

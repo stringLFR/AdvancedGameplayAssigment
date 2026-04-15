@@ -316,6 +316,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
     private AsyncOperationHandle<GameObject> baseCharacterPrefab;
     private AsyncOperationHandle<SceneInstance> combatScene;
     private AsyncOperationHandle<EnemySquadDataBaseSO> enemyDatabase;
+    private EnemySquadSO enemySquadSO;
 
     public static ADS<CombatListener, ActionEffectBase> adsInstance;
 
@@ -336,6 +337,18 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
         List<ADSSetupStats> tempList = new List<ADSSetupStats>();
 
+        List<EnemySquadDatabase> enemyTeams = new List<EnemySquadDatabase>();
+
+        foreach (EnemySquadDatabase etso in enemyDatabase.Result.Databases) if (etso.MinimumLevelRequirement <= ActionFlowStackController.Instance.Team.PlayerTeamAverageLevel && etso.MaximumLevelRequirement > ActionFlowStackController.Instance.Team.PlayerTeamAverageLevel) enemyTeams.Add(etso);
+
+        EnemySquadDatabase enemyTeam = enemyTeams[Random.Range(0, enemyTeams.Count - 1)];
+
+        enemySquadSO = enemyTeam.EnemySquads[Random.Range(0, enemyTeam.EnemySquads.Length - 1)];
+
+        int reactionCap = enemySquadSO.Squad.droneUnits.Length + ActionFlowStackController.Instance.Team.PlayerMembers.droneUnits.Length;
+
+        adsInstance = CreateADS(reactionCap / 2, 100);
+
         InitPlayers(tempList);
 
         InitEnemies(tempList);
@@ -354,14 +367,7 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
 
     private void InitEnemies(List<ADSSetupStats> tempList)
     {
-        List<EnemySquadDatabase> enemyTeams = new List<EnemySquadDatabase>();
-        //May need to rework this a bit so that Exploration_Hostile decides which enemy squad to take from the database!
-        foreach (EnemySquadDatabase etso in enemyDatabase.Result.Databases) if (etso.MinimumLevelRequirement <= ActionFlowStackController.Instance.Team.PlayerTeamAverageLevel && etso.MaximumLevelRequirement > ActionFlowStackController.Instance.Team.PlayerTeamAverageLevel) enemyTeams.Add(etso);
-
-        EnemySquadDatabase enemyTeam = enemyTeams[Random.Range(0, enemyTeams.Count - 1)];
-
-        EnemySquadSO enemySquadSO = enemyTeam.EnemySquads[Random.Range(0, enemyTeam.EnemySquads.Length - 1)];
-
+        
         foreach (DroneUnit unit in enemySquadSO.Squad.droneUnits)
         {
             Vector3 randomPointEnemy = Vector3.zero + Random.insideUnitSphere * 50;
@@ -477,8 +483,8 @@ public sealed class FlowAction_Combat : IflowAction, IADSCreator<CombatListener,
             
             int randomIndex = Random.Range(0, combatMaps.Length - 1);
             string index = combatMaps[randomIndex];
+
             //Load info before switching scenes!
-            adsInstance = CreateADS(10, 100);
             mapPrefab = Addressables.LoadAssetAsync<GameObject>(index);
             baseCharacterPrefab = Addressables.LoadAssetAsync<GameObject>("Assets/Prefabs/Characters/ProcedualBody.prefab");
             enemyDatabase = Addressables.LoadAssetAsync<EnemySquadDataBaseSO>("Assets/SOs/EnemySquadDatabase.asset");

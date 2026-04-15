@@ -2267,7 +2267,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: fd8a3878c2809a34fbd0ee08721aaab4, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -4272,22 +4272,6 @@ PrefabInstance:
     - target: {fileID: 4491017486349074257, guid: d15840e93a8e0e24a813b96ae3104f66, type: 3}
       propertyPath: m_Name
       value: CameraHolder
-      objectReference: {fileID: 0}
-    - target: {fileID: 6279239185309678446, guid: d15840e93a8e0e24a813b96ae3104f66, type: 3}
-      propertyPath: m_ClearFlags
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6279239185309678446, guid: d15840e93a8e0e24a813b96ae3104f66, type: 3}
-      propertyPath: m_BackGroundColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6279239185309678446, guid: d15840e93a8e0e24a813b96ae3104f66, type: 3}
-      propertyPath: m_BackGroundColor.g
-      value: 0.86603415
-      objectReference: {fileID: 0}
-    - target: {fileID: 6279239185309678446, guid: d15840e93a8e0e24a813b96ae3104f66, type: 3}
-      propertyPath: m_BackGroundColor.r
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6995,6 +6979,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4854417814706154355, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0d67c0f1f7c364e489de69718f229075, type: 2}
     - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
       propertyPath: food
       value: 

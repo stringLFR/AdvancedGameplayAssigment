@@ -48,4 +48,14 @@ public class DroneUpgradePage : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         management.Reroll(myUnit, this);
     }
+
+    public void OnHealClick()
+    {
+        management.HealDrone(myUnit, this);
+    }
+
+    public void OnForceLevel()
+    {
+        management.ForceLevelUpDrone(myUnit, this);
+    }
 }

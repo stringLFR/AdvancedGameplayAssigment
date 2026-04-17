@@ -82,6 +82,11 @@ public sealed class DroneUnit
     public int Level => level;
     public int Memory => memory;
 
+    public void LevelUp()
+    {
+        level++;
+    }
+
     public void RerollUpgradeStats(float maxValue)
     {
         UpgradePageStruct newPage = new UpgradePageStruct();

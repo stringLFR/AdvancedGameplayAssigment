@@ -20,6 +20,12 @@ public class Exploration_Management : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI droneInfoPanel, sliderText;
 
+    [SerializeField]
+    private GameObject actionPage;
+
+    [SerializeField]
+    private TextMeshProUGUI MainActionInfoText, ReactionInfoText;
+
     FlowAction_Management managementFlowAction;
 
     public static bool Activated = false;
@@ -72,7 +78,7 @@ public class Exploration_Management : MonoBehaviour
                 $"{unit.myUpgradePageInfo.minus} - {(int)unit.myUpgradePageInfo.currentUpgradeValue / 4}");
         }
 
-        sliderText.text = $"{upgradeSlider.value}% Success rate!<br>{(upgradeSlider.value / upgradeSlider.maxValue)}% Cost Reduction!";
+        sliderText.text = $"{upgradeSlider.value}% <color=yellow>Success rate!<color=white><br>{(upgradeSlider.value / upgradeSlider.maxValue)}% <color=green>Cost Reduction!<color=white>";
         droneInfoPanel.text = defaultInfoPanelText;
 
         upgradePage.SetActive(false);
@@ -92,22 +98,23 @@ public class Exploration_Management : MonoBehaviour
         upgradePage.SetActive(true);
     }
 
+
     public void OnHover(DroneUnit unit)
     {
         droneInfoPanel.text = $"Name: {unit.DroneName}" +
             $"<br>Level: {unit.Level}" +
             $"<br>" +
-            $"<br>Current HP/Sanity Damages: " +
-            $"<br>- HP:{unit.afterCombatStats.HPdamageTakenPercentile}" +
-            $"<br>- Sanity:{unit.afterCombatStats.SanityDamageTakenPercentile}" +
+            $"<br>Current <color=Red>HP<color=white>/<color=yellow>Sanity<color=white> Damages: " +
+            $"<br>- <color=Red>HP:<color=white>{unit.afterCombatStats.HPdamageTakenPercentile}" +
+            $"<br>- <color=yellow>Sanity:<color=white>{unit.afterCombatStats.SanityDamageTakenPercentile}" +
             $"<br>" +
             $"<br>CoreStats:" +
-            $"<br>- Str: {(int)unit.GetSTR}" +
-            $"<br>- Dex: {(int)unit.GetDEX}" +
-            $"<br>- Con: {(int)unit.GetCON}" +
-            $"<br>- Int: {(int)unit.GetINT}" +
-            $"<br>- Wis: {(int)unit.GetWIS}" +
-            $"<br>- Cha: {(int)unit.GetCHA}";
+            $"<br>- <color=green>Str:<color=white> {(int)unit.GetSTR}" +
+            $"<br>- <color=green>Dex:<color=white> {(int)unit.GetDEX}" +
+            $"<br>- <color=green>Con:<color=white> {(int)unit.GetCON}" +
+            $"<br>- <color=green>Int:<color=white> {(int)unit.GetINT}" +
+            $"<br>- <color=green>Wis:<color=white> {(int)unit.GetWIS}" +
+            $"<br>- <color=green>Cha:<color=white> {(int)unit.GetCHA}";
     }
 
     public void OnHoverEnd()
@@ -166,8 +173,45 @@ public class Exploration_Management : MonoBehaviour
         OnHover(drone);
     }
 
+    public void HealDrone(DroneUnit drone, DroneUpgradePage page)
+    {
+        int hpCost = drone.afterCombatStats.HPdamageTakenPercentile;
+        int sanityCost = drone.afterCombatStats.SanityDamageTakenPercentile;
+
+        for (int i = 0; i < managementFlowAction.Expo.SupplyData.Length; i++)
+        {
+            if (managementFlowAction.Expo.SupplyData[i].Type != SupplyType.MEDICINE) continue;
+
+            managementFlowAction.Expo.SupplyData[i].currentAmount -= hpCost + sanityCost;
+            managementFlowAction.Expo.UpdateSlider(managementFlowAction.Expo.SupplyData[i]);
+        }
+
+        drone.afterCombatStats.HPdamageTakenPercentile = 0;
+        drone.afterCombatStats.SanityDamageTakenPercentile = 0;
+
+        OnHover(drone);
+    }
+
+    public void ForceLevelUpDrone(DroneUnit drone, DroneUpgradePage page)
+    {
+        int levelCost = drone.Level * 20;
+
+        for (int i = 0; i < managementFlowAction.Expo.SupplyData.Length; i++)
+        {
+            managementFlowAction.Expo.SupplyData[i].currentAmount -= levelCost;
+            managementFlowAction.Expo.UpdateSlider(managementFlowAction.Expo.SupplyData[i]);
+        }
+
+        drone.afterCombatStats.SanityDamageTakenPercentile += levelCost / 4;
+        drone.afterCombatStats.HPdamageTakenPercentile += levelCost / 2;
+
+        drone.LevelUp();
+
+        OnHover(drone);
+    }
+
     public void SliderTextUpdate()
     {
-        sliderText.text = $"{upgradeSlider.value}% Success rate!<br>{(upgradeSlider.value / upgradeSlider.maxValue)}% Cost Reduction!";
+        sliderText.text = $"{upgradeSlider.value}% <color=yellow>Success rate!<color=white><br>{(upgradeSlider.value / upgradeSlider.maxValue)}% <color=green>Cost Reduction!<color=white>";
     }
 }

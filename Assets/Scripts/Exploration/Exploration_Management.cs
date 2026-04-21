@@ -28,6 +28,12 @@ public class Exploration_Management : MonoBehaviour
 
     FlowAction_Management managementFlowAction;
 
+    private DroneUnit buyer;
+
+    public DroneUnit Buyer => buyer;
+
+    public FlowAction_Management ManagementAction => managementFlowAction;
+
     public static bool Activated = false;
 
     private const float maxUpgradeValue = 10;
@@ -40,6 +46,8 @@ public class Exploration_Management : MonoBehaviour
         "<br>You can take a more riskfull approach and not spend the normal amount of resources!" +
         "<br>(The slider manipulates cost by modifier between 0 and 1!)" +
         "<br>But this can lead to failure, which causes sanity damage to the drone!";
+
+    private const string DefaultIconTest = "Hover over icons to reveal info here!";
 
     private void Awake()
     {
@@ -80,8 +88,10 @@ public class Exploration_Management : MonoBehaviour
 
         sliderText.text = $"{upgradeSlider.value}% <color=yellow>Success rate!<color=white><br>{(upgradeSlider.value / upgradeSlider.maxValue)}% <color=green>Cost Reduction!<color=white>";
         droneInfoPanel.text = defaultInfoPanelText;
-
+        ReactionInfoText.text = DefaultIconTest;
+        MainActionInfoText.text = DefaultIconTest;
         upgradePage.SetActive(false);
+        actionPage.SetActive(false);
 
         Activated = true;
     }
@@ -96,6 +106,7 @@ public class Exploration_Management : MonoBehaviour
     public void OpenUpgradePage()
     {
         upgradePage.SetActive(true);
+        actionPage.SetActive(false);
     }
 
 
@@ -120,6 +131,26 @@ public class Exploration_Management : MonoBehaviour
     public void OnHoverEnd()
     {
         droneInfoPanel.text = defaultInfoPanelText;
+    }
+
+    public void OnReactionIconHover(string info)
+    {
+        ReactionInfoText.text = info;
+    }
+
+    public void OnReactionIconHoverEnd()
+    {
+        ReactionInfoText.text = DefaultIconTest;
+    }
+
+    public void OnMainIconHover(string info)
+    {
+        MainActionInfoText.text = info;
+    }
+
+    public void OnMainIconHoverEnd()
+    {
+        MainActionInfoText.text = DefaultIconTest;
     }
 
     public void Upgrade(DroneUnit drone,DroneUpgradePage page)
@@ -213,5 +244,11 @@ public class Exploration_Management : MonoBehaviour
     public void SliderTextUpdate()
     {
         sliderText.text = $"{upgradeSlider.value}% <color=yellow>Success rate!<color=white><br>{(upgradeSlider.value / upgradeSlider.maxValue)}% <color=green>Cost Reduction!<color=white>";
+    }
+
+    public void OpenShop(DroneUnit drone)
+    {
+        buyer = drone;
+        actionPage.SetActive(true);
     }
 }

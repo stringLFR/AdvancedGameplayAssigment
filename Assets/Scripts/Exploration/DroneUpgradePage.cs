@@ -58,4 +58,9 @@ public class DroneUpgradePage : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         management.ForceLevelUpDrone(myUnit, this);
     }
+
+    public void OnShopClick()
+    {
+        management.OpenShop(myUnit);
+    }
 }

@@ -120,7 +120,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 543603100695641226}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2525410956761883792}
+        m_TargetAssemblyTypeName: Exploration_ReactionBuyIcon, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1351493860716750114
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,6 +280,7 @@ GameObject:
   - component: {fileID: 3674803723384677757}
   - component: {fileID: 2584771964798627}
   - component: {fileID: 2024174875083821500}
+  - component: {fileID: 2525410956761883792}
   m_Layer: 5
   m_Name: ReactionIcon
   m_TagString: Untagged
@@ -333,3 +346,17 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2525410956761883792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4208679994303964855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53a065fc8e5023946ada458782a0b42b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Exploration_ReactionBuyIcon
+  management: {fileID: 0}
+  ReactionSO: {fileID: 0}

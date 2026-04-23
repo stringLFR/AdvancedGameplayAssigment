@@ -33,7 +33,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000032297205}
+  m_AnchoredPosition: {x: 0, y: 0.00011041921}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &184890597415995704
@@ -500,7 +500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000032297205}
+  m_AnchoredPosition: {x: 0, y: 0.00011041921}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1191471877839736454
@@ -4161,9 +4161,25 @@ PrefabInstance:
     m_TransformParent: {fileID: 8160365224258742994}
     m_Modifications:
     - target: {fileID: 2525410956761883792, guid: cce56475af30aa248a306fbc7ef11a33, type: 3}
+      propertyPath: costValue
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 2525410956761883792, guid: cce56475af30aa248a306fbc7ef11a33, type: 3}
+      propertyPath: ReactionSO
+      value: 
+      objectReference: {fileID: 11400000, guid: cdc55000094b66f44a5b14ccca9956bd, type: 2}
+    - target: {fileID: 2525410956761883792, guid: cce56475af30aa248a306fbc7ef11a33, type: 3}
       propertyPath: management
       value: 
       objectReference: {fileID: 5819919787542928405}
+    - target: {fileID: 2525410956761883792, guid: cce56475af30aa248a306fbc7ef11a33, type: 3}
+      propertyPath: costTypes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2525410956761883792, guid: cce56475af30aa248a306fbc7ef11a33, type: 3}
+      propertyPath: 'costTypes.Array.data[0]'
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3674803723384677757, guid: cce56475af30aa248a306fbc7ef11a33, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4412,9 +4428,21 @@ PrefabInstance:
       value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 2844946302661776718, guid: ed2660213ba1eee4290b7eef92cc3051, type: 3}
+      propertyPath: costValue
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844946302661776718, guid: ed2660213ba1eee4290b7eef92cc3051, type: 3}
       propertyPath: management
       value: 
       objectReference: {fileID: 5819919787542928405}
+    - target: {fileID: 2844946302661776718, guid: ed2660213ba1eee4290b7eef92cc3051, type: 3}
+      propertyPath: MainActionSO
+      value: 
+      objectReference: {fileID: 11400000, guid: fe1ffc882d802c14e8c7a2e6b2aa8e70, type: 2}
+    - target: {fileID: 2844946302661776718, guid: ed2660213ba1eee4290b7eef92cc3051, type: 3}
+      propertyPath: costTypes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3288347244539347536, guid: ed2660213ba1eee4290b7eef92cc3051, type: 3}
       propertyPath: m_Name
       value: MainActionIcon

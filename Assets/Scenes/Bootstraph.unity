@@ -1023,7 +1023,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: playerMembers.droneUnits.Array.data[0].myMainActions.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: playerMembers.droneUnits.Array.data[1].myMainActions.Array.size
@@ -1039,7 +1039,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: playerMembers.droneUnits.Array.data[0].myReactionNodes.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 342617211668133901, guid: 939c28ef37fca7049a9e038338971996, type: 3}
       propertyPath: playerMembers.droneUnits.Array.data[1].myReactionNodes.Array.size

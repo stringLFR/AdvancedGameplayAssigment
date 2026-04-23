@@ -52,6 +52,8 @@ public sealed class DroneUnit
     [SerializeField]
     private List<ReactionSO> myReactionNodes;
 
+    public List<ReactionSO> MyReactionNodesSO => myReactionNodes;
+
     public List<ActionNodeStats> MyReactionNodes
     {
         get
@@ -66,6 +68,8 @@ public sealed class DroneUnit
 
     [SerializeField]
     private List<MainActionSO> myMainActions;
+
+    public List<MainActionSO> MyMainActionSOs => myMainActions;
 
     public List<MainActionStats> MyMainActions
     {

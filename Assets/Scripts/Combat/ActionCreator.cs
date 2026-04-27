@@ -41,7 +41,7 @@ public static class ActionCreator
                 MainAction_TargetManyPoints assetToManyPoints = new MainAction_TargetManyPoints(CreateActionEffect(stats.Effect), stats.MainActionName + " " + userName,
                     stats.MainActionDescription, stats.manaCost, stats.actionType, stats.reactionTypes, stats.Effect, stats.AIDecisionType, stats.AIDecisionEnumTarget);
                 assetToManyPoints.SetTargetManyPrefabPath(stats.assetPath);
-                assetToManyPoints.Init(10f);
+                assetToManyPoints.Init(5f);
 
                 assetToManyPoints.SetAIDecisionModifiers(stats);
 

@@ -71,7 +71,7 @@ public class PlayerController : ControllerBase
         }
 
         done = true;
-
+        MousePoint.instance.Projector.size = Vector3.one;
         overdrives = 0;
     }
 

@@ -471,6 +471,7 @@ public class Exploration : MonoBehaviour
                     case CombatState.WON:
 
                         defeatedHostiles.Add(h);
+                        combatingHostiles.Remove(h);
 
                         for (int i = 0; i < SupplyData.Length; i++)
                         {
@@ -501,10 +502,6 @@ public class Exploration : MonoBehaviour
         {
             for (int i = 0; i < defeatedHostiles.Count; i++)
             {
-                if (combatingHostiles.TryGetValue(defeatedHostiles[i], out Exploration_Hostile actualValue) == true)
-                {
-                    combatingHostiles.Remove(defeatedHostiles[i]);
-                }
                 hostiles.Remove(defeatedHostiles[i]);
                 Destroy(defeatedHostiles[i].body.gameObject);
                 SetImagesHostile(hostiles.Count);

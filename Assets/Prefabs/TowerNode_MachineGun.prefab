@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 1064899932345732463}
   - component: {fileID: 8199016396398460823}
   m_Layer: 0
-  m_Name: TowerNode_Artillery
+  m_Name: TowerNode_MachineGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -191,22 +191,18 @@ MonoBehaviour:
   isTaking: 1
   supplies:
   - Type: 4
-    MaxAmount: 10
+    MaxAmount: 100
     currentAmount: 0
-    carryAmount: 2
-  - Type: 1
-    MaxAmount: 10
-    currentAmount: 0
-    carryAmount: 2
+    carryAmount: 10
   canvas: {fileID: 2662297087735931256}
   projector: {fileID: 103063611333651517}
-  fireRate: 5
-  targetRadius: 250
-  HitRadius: 10
-  hitRate: 0.75
-  slowDownEffect: 0.5
+  fireRate: 1
+  targetRadius: 100
+  HitRadius: 1
+  hitRate: 0.5
+  slowDownEffect: 1
   fallOffModifier: 0.01
-  damage: 5
+  damage: 1
   targets: 1
   resoursCostPerAttack: 1
 --- !u!1001 &5496077061677037255

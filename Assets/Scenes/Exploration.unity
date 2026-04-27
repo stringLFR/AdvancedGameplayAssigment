@@ -7142,11 +7142,11 @@ PrefabInstance:
     - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
       propertyPath: 'nodeTower.Array.data[1]'
       value: 
-      objectReference: {fileID: 8774186631835251731, guid: e16afaa0efd3b914c9525389b5c1103e, type: 3}
+      objectReference: {fileID: 8774186631835251731, guid: dcf16a9450fd3f948874d10ef8211a30, type: 3}
     - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
       propertyPath: 'nodeTower.Array.data[2]'
       value: 
-      objectReference: {fileID: 8774186631835251731, guid: e16afaa0efd3b914c9525389b5c1103e, type: 3}
+      objectReference: {fileID: 8774186631835251731, guid: 1dd90932095b50949935eed0df45e6d8, type: 3}
     - target: {fileID: 8609769885914358465, guid: 9f1cf397958f1e54faa4c15465c477f9, type: 3}
       propertyPath: 'nodeTower.Array.data[3]'
       value: 

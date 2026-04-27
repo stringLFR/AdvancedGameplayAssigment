@@ -215,6 +215,8 @@ public sealed class FlowAction_Exploration : IflowAction
             if (h.body.ProcedualCore.Root.tr.gameObject.activeInHierarchy == false) h.body.ProcedualCore.Root.tr.gameObject.SetActive(true);
 
             h.body.ProcedualCore.Agent.isStopped = false;
+
+            h.SetHostileDestination(expo, nodes, caravans);
         }
 
         foreach (Exploration_Caravan c in caravans)

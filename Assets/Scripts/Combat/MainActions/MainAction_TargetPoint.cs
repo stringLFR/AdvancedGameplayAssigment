@@ -60,6 +60,7 @@ public class MainAction_TargetPoint : MainActionBase
 
         if (controller is PlayerController)
         {
+            MousePoint.instance.Projector.size = Vector3.one;
             user.StopAllCoroutines();
             user.StartCoroutine(PLayerInput(controller as PlayerController, user));
         }
@@ -189,6 +190,7 @@ public class MainAction_TargetManyPoints : MainActionBase
 
         if (controller is PlayerController)
         {
+            MousePoint.instance.Projector.size = Vector3.one;
             user.StopAllCoroutines();
             user.StartCoroutine(PLayerInput(controller as PlayerController, user));
         }
@@ -223,13 +225,10 @@ public class MainAction_TargetManyPoints : MainActionBase
     IEnumerator PLayerInput(PlayerController p, DroneUnitBody d)
     {
         //I can increase size this way!
-        MousePoint.instance.Projector.size *= targetRadius;
+        MousePoint.instance.Projector.size *= targetRadius * 2;
 
         while (true)
         {
-            
-            
-
             if (MousePoint.instance.IsOverUI == true)
             {
                 yield return null;
@@ -260,13 +259,10 @@ public class MainAction_TargetManyPoints : MainActionBase
 
                 break;
             }
-
+            
 
             yield return null;
         }
-
-        //WHY CANT I REDUCE THE SIZE??
-        MousePoint.instance.Projector.size *= 0.1f;
 
         p.SetDoneBool(d);
 
@@ -330,6 +326,7 @@ public class MainAction_TargetSelf : MainActionBase
 
         if (controller is PlayerController)
         {
+            MousePoint.instance.Projector.size = Vector3.one;
             user.StopAllCoroutines();
             user.StartCoroutine(PLayerInput(controller as PlayerController, user));
         }

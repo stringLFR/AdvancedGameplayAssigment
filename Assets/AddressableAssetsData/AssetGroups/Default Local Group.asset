@@ -27,6 +27,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ba7f6958d5beb84db775b8589a4503a
+    m_Address: Assets/Prefabs/Slashes/TriplePierceSlash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 62bb91b42f3749e4f87d1593006ba718
     m_Address: Assets/Prefabs/Projectiles/Massive Pierce Orb.prefab
     m_ReadOnly: 0
@@ -77,6 +83,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b03869f5d6539ac4da7009fcf8c09f78
     m_Address: Assets/Prefabs/Slashes/OverHeadSlash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd53a6ac390a7ec4fb5fd240e67e5ca4
+    m_Address: Assets/Prefabs/Slashes/CircleSlash .prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
